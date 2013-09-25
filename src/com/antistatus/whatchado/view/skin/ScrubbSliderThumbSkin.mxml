@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SparkSkin xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fb="http://ns.adobe.com/flashbuilder/2009">
+
+	<!-- host component -->
+	<fx:Metadata>
+		<![CDATA[ 
+        /** 
+         * @copy spark.skins.spark.ApplicationSkin#hostComponent
+         */
+        [HostComponent("spark.components.Button")]
+        ]]>
+	</fx:Metadata>
+
+	<!-- states -->
+	<s:states>
+		<s:State name="up"/>
+		<s:State name="over"/>
+		<s:State name="down"/>
+		<s:State name="disabled"/>
+	</s:states>
+
+	<!--	<s:BitmapImage id="thumb"
+					   horizontalCenter="0" verticalCenter="0"
+					   source="@Embed(source='../assets/skin/skin.swf', symbol='progressThumb')"
+					   />-->
+	<s:Path data="H 20 L 10 10 L 0 0" x="-10">
+		<s:fill>
+			<s:SolidColor color="#FFFFFF"/>
+		</s:fill>
+	</s:Path>
+	<s:Rect id="hBar" x="-1" top="14" width="2" height="100%">
+		<s:fill>
+			<s:SolidColor color="#51C3C5" alpha="1"/>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter quality="2" color="#69CBDE" angle="0" distance="0"/>
+		</s:filters>
+	</s:Rect>
+
+</s:SparkSkin>

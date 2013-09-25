@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				autoDrawBackground="false" selected="{NavigationButtonVO(data).type.active}">
+	<fx:Script>
+		<![CDATA[
+			import com.antistatus.whatchado.event.ViewEvent;
+			import com.antistatus.whatchado.model.vo.NavigationButtonVO;
+			
+			protected function clickHandler(event:MouseEvent):void
+			{
+				dispatchEvent(new ViewEvent(ViewEvent.SELECT, NavigationButtonVO(data).type, true));
+			}
+			
+			override public function set itemIndex(value:int):void
+			{
+				super.itemIndex = value;
+			}
+		]]>
+	</fx:Script>
+	<s:states>
+		<s:State name="normal"/>
+		<s:State name="hovered"/>
+		<s:State name="selected"/>
+	</s:states>   
+	
+	<s:Button excludeFrom="selected" enabled="{NavigationButtonVO(data).enabled}" label="{NavigationButtonVO(data).name}" useHandCursor="true" styleName="defaultTopButton" click="clickHandler(event)" buttonMode="true"/>
+	<s:Button includeIn="selected" enabled="{NavigationButtonVO(data).enabled}" label="{NavigationButtonVO(data).name}" useHandCursor="true" styleName="defaultTopButtonActive" click="clickHandler(event)" buttonMode="true"/>
+</s:ItemRenderer>

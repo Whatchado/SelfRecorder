@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300" xmlns:component="com.antistatus.whatchado.view.component.*">
+	<fx:Script>
+		<![CDATA[
+			import com.antistatus.whatchado.event.ViewEvent;
+			import com.antistatus.whatchado.view.skin.VideoControlsSkin;
+			import com.antistatus.whatchado.view.skin.VolumeControlSkin;
+			
+			protected function tippsButtonClickHandler(event:MouseEvent):void
+			{
+				dispatchEvent(new ViewEvent(ViewEvent.CLICK));
+			}
+			protected function recordButtonClickHandler(event:MouseEvent):void
+			{
+				currentState = "record";
+			}
+		]]>
+	</fx:Script>
+	<s:states>
+		<s:State name="start"/>
+		<s:State name="record"/>
+	</s:states>
+		
+	<s:RichText id="questionText" width="592" height="50" bottom="10" left="100" fontSize="20"/>
+	<s:Group top="150" bottom="160" left="155" right="155" includeIn="start">
+		<component:VideoScreen id="videoScreen" width="100%" height="100%"/>
+		<component:VolumeControl left="90" bottom="10" skinClass="com.antistatus.whatchado.view.skin.VolumeControlSkin"/>
+		<component:VideoControls left="10" bottom="10" skinClass="com.antistatus.whatchado.view.skin.VideoControlsSkin"/>
+		<!--<component:VideoProgress y="510" x="100" width="502"/>-->
+	</s:Group>
+	<component:VideoRecorder top="150" id="videoRecorder" includeIn="record"/>
+	<s:Button  label="Tipps" y="200" left="10" height="30" click="tippsButtonClickHandler(event)"/>
+	<s:Button  label="Aufnahme" y="260" left="10" height="30" click="recordButtonClickHandler(event)"/>
+</s:Group>

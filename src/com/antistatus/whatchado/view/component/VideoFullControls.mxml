@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:components="com.arimba.view.components.*" mouseMove="mouseMoveHandler(event)" creationComplete="creationCompleteHandler(event)">
+
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			import org.osmf.layout.AbsoluteLayoutFacet;
+
+			[Bindable]
+			private var controlsVisible:Boolean = true;
+
+			[Bindable]
+			private var fullHeight:int = 0;
+
+			private var hideTimer:Timer = new Timer(2000);
+
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				hideTimer.addEventListener(TimerEvent.TIMER, onTimer);
+				hideTimer.start();
+			}
+
+			protected function mouseMoveHandler(event:MouseEvent):void
+			{
+				Mouse.show();
+				controlsVisible = true;
+				hideTimer.reset();
+				hideTimer.start();
+			}
+
+			private function onTimer(event:TimerEvent):void
+			{
+				controlsVisible = false;
+				Mouse.hide();
+			}
+		]]>
+	</fx:Script>
+
+
+	<fx:Declarations>
+		<s:Parallel id="hideControls">
+			<s:Fade alphaFrom="1" alphaTo="0"/>
+		</s:Parallel>
+		<s:Parallel id="showControls">
+			<s:Fade alphaFrom="0" alphaTo="1"/>
+		</s:Parallel>
+	</fx:Declarations>
+	<s:HGroup horizontalCenter="0" bottom="100" id="controlBar" visible="{controlsVisible}" showEffect="{showControls}" hideEffect="{hideControls}">
+		<components:VideoControls/>
+		<components:VideoProgress id="progressBar" width="300"/>
+	</s:HGroup>
+
+</s:Group>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:component="com.antistatus.whatchado.view.component.*">
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			
+			import spark.events.IndexChangeEvent;
+			
+			import org.osmf.net.StreamType;
+			[Bindable]
+			private var cameraNames:ArrayCollection;
+			[Bindable]
+			private var microphoneNames:ArrayCollection;
+			
+			[Bindable]
+			public var camera:Camera;
+			public var microphone:Microphone;
+			
+			public function start(e:Event=null):void
+			{
+				cameraNames = new ArrayCollection(Camera.names);
+				microphoneNames = new ArrayCollection(Microphone.names);
+				if(cameraNames.length)
+				{
+					cameraSelector.selectedIndex = 0;
+					setupCamera();					
+				}
+				if(microphoneNames.length)
+				{
+					microphoneSelector.selectedIndex = 0;
+					setupMicrophone();					
+					microphoneGain.value = microphone.gain;
+				}
+			}
+			public function stop():void
+			{
+				video.videoObject.attachCamera(null);
+				microphoneMonitor.stop();
+			}
+			
+			protected function microphoneSelectorChangeHandler(event:IndexChangeEvent):void
+			{
+				setupMicrophone();
+			}
+			
+			protected function cameraSelectorChangeHandler(event:IndexChangeEvent):void
+			{
+				setupCamera();
+			}
+			
+			protected function microphoneGainChangeHandler(event:Event):void
+			{
+				if(microphone)
+					microphoneMonitor.microphone.gain = microphoneGain.value;
+			}
+			
+			private function setupMicrophone():void
+			{
+				microphone = Microphone.getMicrophone(microphoneSelector.selectedIndex);
+				microphoneMonitor.microphone = microphone;
+				microphoneMonitor.startMonitor();
+			}
+			
+			private function setupCamera():void
+			{
+				camera = Camera.getCamera(cameraSelector.selectedIndex.toString());
+				camera.setQuality(0, 0);
+				camera.setMode(450, 253, 30, false);
+				video.width = camera.width;
+				video.height = camera.height;
+				video.videoObject.attachCamera(camera);
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:Group  width="100%" top="32" bottom="32" height="330" left="500">
+		<s:filters>
+			<s:DropShadowFilter blurX="18" blurY="18" distance="4" angle="120"/>
+		</s:filters>
+		<s:Rect width="100%" height="100%">
+			<s:fill>
+				<s:SolidColor color="#ededed"/>
+			</s:fill>
+		</s:Rect>
+		<s:VideoDisplay id="video" horizontalCenter="0" verticalCenter="0" scaleX="-1" creationComplete="start(event)">
+			<s:source>
+				<s:DynamicStreamingVideoSource host="" streamType="{StreamType.LIVE}">
+					<s:DynamicStreamingVideoItem/>
+				</s:DynamicStreamingVideoSource>
+			</s:source>
+		</s:VideoDisplay>
+	</s:Group>
+	<s:Group  width="500" height="375" top="10">
+		<s:filters>
+			<s:DropShadowFilter blurX="18" blurY="18" distance="4" angle="120"/>
+		</s:filters>
+		<s:Rect width="100%" height="100%">
+			<s:fill>
+				<s:SolidColor color="#ededed"/>
+			</s:fill>
+		</s:Rect>
+		<s:VGroup left="20" right="20" top="20" gap="0">
+			<s:Label id="settingsCameraHeadline" styleName="headlineBig"/>
+			<s:Label id="settingsCameraSubHeadline" styleName="headlineSmall"/>
+			<s:HGroup verticalAlign="middle" width="100%" horizontalAlign="right" paddingTop="40" paddingBottom="40" paddingRight="60">
+				<s:Label id="settingsCameraSelectorLabel" width="80" textAlign="left"/>
+				<s:ComboBox dataProvider="{cameraNames}" width="280" id="cameraSelector" change="cameraSelectorChangeHandler(event)"/>
+					
+			</s:HGroup>
+			
+			<s:Label id="settingsMicrophoneHeadline" styleName="headlineBig"/>
+			<s:Label id="settingsMicrophoneSubHeadline" styleName="headlineSmall"/>
+			<s:HGroup width="100%" verticalAlign="middle" horizontalAlign="right" paddingTop="40" paddingRight="60" paddingBottom="5">
+				<s:Label id="settingsMicrophoneSelectorLabel" width="80" textAlign="left"/>
+				<s:ComboBox cornerRadius="8" dataProvider="{microphoneNames}"  width="280" id="microphoneSelector" change="microphoneSelectorChangeHandler(event)"/>
+					
+			</s:HGroup>
+			<s:HGroup width="100%" height="24" horizontalAlign="right" paddingTop="4" paddingRight="60">
+				<component:MicrophoneMonitor id="microphoneMonitor"/>
+			</s:HGroup>
+			<s:HGroup paddingTop="5" width="100%" horizontalAlign="right" paddingRight="60">
+				<s:Label id="settingsMicrophoneVolumeLabel" width="80" textAlign="left"/>
+				<s:HSlider id="microphoneGain" change="microphoneGainChangeHandler(event)" width="280" minimum="1" maximum="100"/>
+			</s:HGroup>
+		</s:VGroup>
+	</s:Group>
+	
+</s:Group>

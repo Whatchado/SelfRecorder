@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009"
+					   xmlns:s="library://ns.adobe.com/flex/spark"
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   xmlns:rl2="http://ns.robotlegs.org/flex/rl2"
+					   xmlns:local="*" width="1000" height="700">
+	<fx:Declarations>
+		<rl2:ContextBuilder>
+			<local:ApplicationBundle/>
+			<local:ApplicationConfig/>
+		</rl2:ContextBuilder>
+	</fx:Declarations>
+	<fx:Style source="style.css"/>
+	<s:BitmapImage id="paperback" left="0" right="0" height="100%" fillMode="scale"
+				   source="@Embed(source='../assets/skin/diyBG.jpg')"/>
+	<s:BitmapImage width="443" height="241" horizontalCenter="0" verticalCenter="0" source="@Embed(source='../assets/skin/start_logo.png')"/>
+	<s:Scroller left="0" right="0" top="0" bottom="0">
+		<s:Group id="container"/>
+	</s:Scroller>
+</s:WindowedApplication>

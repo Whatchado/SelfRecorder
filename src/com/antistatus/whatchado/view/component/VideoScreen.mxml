@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ @flowerModelElementId _atcHUCScEeCYs9ywgL1wSQ
+-->
+<s:Group width="400"
+		 height="300"
+		 creationComplete="creationCompleteHandler(event)"
+		 xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:components="com.arimba.view.components.*">
+	<fx:Declarations>
+		<s:Fade id="fadeOut"
+				alphaFrom="1"
+				alphaTo="0"/>
+		<s:Fade id="fadeIn"
+				alphaFrom="0"
+				alphaTo="1"/>
+		<s:Wipe id="wipeDown"
+				direction="down"/>
+		<s:Resize id="zoom"
+				  heightFrom="0"
+				  widthFrom="0"/>
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.antistatus.whatchado.event.StreamClientEvent;
+			import com.antistatus.whatchado.event.SystemEvent;
+			import com.antistatus.whatchado.event.ViewEvent;
+			import com.antistatus.whatchado.model.vo.StreamVO;
+			import com.antistatus.whatchado.utilities.StreamClient;
+			import com.antistatus.whatchado.utilities.Trace;
+			
+			import mx.events.FlexEvent;
+
+			[Bindable]
+			public var borderVisible:Boolean = false;
+
+			public var nc:NetConnection = new NetConnection();
+
+			private var _overlayVisible:Boolean = true;
+
+			[Bindable]
+			public function get overlayVisible():Boolean
+			{
+				return _overlayVisible;
+			}
+
+			public function set overlayVisible(value:Boolean):void
+			{
+				_overlayVisible = value;
+			}
+
+			public var stream:NetStream;
+
+			private var _streamConnected:Boolean = false;
+
+			public function get streamConnected():Boolean
+			{
+				return _streamConnected;
+			}
+
+			public function set streamConnected(value:Boolean):void
+			{
+				_streamConnected = value;
+				//overlayVisible = value;
+			}
+
+			public var streamData:StreamVO;
+
+			public var video:Video;
+
+			public var vodEndTime:int;
+
+			public var vodStartTime:int;
+
+			private var _volume:Number = 0;
+
+
+			public function get volume():Number
+			{
+				return _volume;
+			}
+
+			public function set volume(value:Number):void
+			{
+				if (_volume == value)
+					return;
+
+				_volume = value;
+
+				if (!streamData)
+					return;
+
+				stream.soundTransform = new SoundTransform(value);
+
+			}
+
+			private var client:StreamClient;
+
+			private var firstRun:Boolean = true;
+
+			private var videoHeightRatio:Number;
+
+			private var videoOriginalHeight:int;
+
+			private var videoOriginalWidth:int = 320;
+
+			private var videoWidthRatio:Number = 240;
+			public var videoDuration:Number = 0;
+
+			public function closeStream():void
+			{
+				if (streamConnected)
+					stream.close();
+
+				destroyStream();
+			}
+
+			public function connect():void
+			{
+				if (!streamData)
+					return;
+
+				buffer.visible = true;
+				nc.addEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
+				nc.connect(null);
+			}
+
+			public function pauseStream():void
+			{
+
+				if (stream && stream.time >= 0)
+					stream.pause();
+				else
+					closeStream();
+			}
+
+			public function resumeStream():void
+			{
+				if (stream && stream.time >= 0)
+					stream.resume();
+				else
+					connect();
+			}
+
+
+			public function seekStream(seekTime:int):void
+			{
+				if (!streamData || !stream)
+					return;
+
+				stream.seek(seekTime);
+			}
+
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				video = new Video();
+				video.name = "video";
+				//smoothing video ??
+				video.smoothing = true;
+				videoDisplay.addChild(video);
+
+			}
+
+			protected function overlayClickHandler(event:MouseEvent):void
+			{
+				dispatchEvent(new ViewEvent(ViewEvent.CLICK));
+			}
+
+			/**
+			 * @inheritDoc
+			 * @flowerModelElementId _atkqNCScEeCYs9ywgL1wSQ
+			 */
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+			{
+				super.updateDisplayList(unscaledWidth, unscaledHeight);
+
+				if (!video)
+					return;
+
+				var xsc:Number = unscaledWidth / videoOriginalWidth;
+				var ysc:Number = unscaledHeight / videoOriginalHeight;
+
+				if (xsc > ysc)
+				{
+					video.width = videoOriginalWidth * unscaledHeight / videoOriginalHeight;
+					video.height = unscaledHeight;
+				}
+				else
+				{
+					video.width = unscaledWidth;
+					video.height = videoOriginalHeight * unscaledWidth / videoOriginalWidth;
+				}
+
+				video.x = Math.round(unscaledWidth / 2 - video.width / 2);
+				video.y = Math.round(unscaledHeight / 2 - video.height / 2);
+			}
+
+			private function asyncErrorHandler(event:AsyncErrorEvent):void
+			{
+				// ignore AsyncErrorEvent events.
+			}
+
+			private function destroyStream():void
+			{
+				if (!stream)
+					return;
+
+				stream.removeEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
+				stream.removeEventListener(AsyncErrorEvent.ASYNC_ERROR, asyncErrorHandler);
+
+				client.removeEventListener(StreamClientEvent.META_DATA, streamMetaDataHandler);
+				client.removeEventListener(StreamClientEvent.MESSAGE, streamMessageHandler);
+				client.removeEventListener(StreamClientEvent.PLAY_COMPLETE, streamCompleteHandler);
+				client.removeEventListener(StreamClientEvent.PLAY_STATUS, streamPlayStatusHandler);
+				stream = null;
+				client = null;
+				streamConnected = false;
+			}
+
+			private function netStatusHandler(event:NetStatusEvent):void
+			{
+				dispatchEvent(event);
+				Trace.log(this, event.info.code, 0x004455);
+				Trace.log(this, event);
+
+				if (event.info.code == "NetConnection.Connect.Failed")
+				{
+					streamConnected = false;
+				}
+
+				if (event.info.code == "NetConnection.Connect.Closed")
+				{
+					streamConnected = false;
+				}
+
+				if (event.info.code == "NetConnection.Connect.Success")
+				{
+
+					stream = new NetStream(nc);
+					stream.addEventListener(NetStatusEvent.NET_STATUS, netStreamStatusHandler);
+					stream.addEventListener(AsyncErrorEvent.ASYNC_ERROR, asyncErrorHandler);
+					client = new StreamClient();
+					client.addEventListener(StreamClientEvent.META_DATA, streamMetaDataHandler);
+					client.addEventListener(StreamClientEvent.MESSAGE, streamMessageHandler);
+					client.addEventListener(StreamClientEvent.PLAY_COMPLETE, streamCompleteHandler);
+					client.addEventListener(StreamClientEvent.PLAY_STATUS, streamPlayStatusHandler);
+					stream.client = client;
+					video.attachNetStream(stream);
+
+					stream.soundTransform = new SoundTransform(.7);
+					streamConnected = true;
+					playStream();
+
+				}
+			}
+
+			private function netStreamStatusHandler(event:NetStatusEvent):void
+			{
+				dispatchEvent(event);
+
+				if (event.info.code == "NetStream.Pause.Notify")
+					return;
+
+				Trace.log(this, event.info.code, 0x004455);
+				Trace.log(this, event);
+
+				if (event.info.code == "NetStream.Play.StreamNotFound")
+				{
+					Trace.warning(this, event);
+					streamConnected = false;
+				}
+			}
+
+			private function playStream():void
+			{
+				if (!streamData || !stream)
+					return;
+
+				stream.play(streamData.streamName);
+
+				// seek startTime in VOD
+				if (vodStartTime && stream.time > vodStartTime)
+					stream.seek(stream.time);
+				else if (vodStartTime)
+					stream.seek(vodStartTime);
+			}
+
+
+			private function securityErrorHandler(event:SecurityErrorEvent):void
+			{
+				Trace.error(this, event);
+			}
+
+			private function setVideoSize(w:int, h:int):void
+			{
+				if (videoOriginalWidth == w && videoOriginalHeight == h)
+					return;
+
+				videoOriginalWidth = w;
+				videoOriginalHeight = h;
+				videoWidthRatio = w / h;
+				videoHeightRatio = h / w;
+				invalidateDisplayList();
+			}
+
+			private function setVideoDuration(duration:Number):void
+			{
+				dispatchEvent(new SystemEvent(SystemEvent.VIDEO_DURATION_CHANGED, duration));
+			}
+
+			private function streamCompleteHandler(event:StreamClientEvent):void
+			{
+				Trace.log(this, "Stream complete!", 0x004455);
+				dispatchEvent(new ViewEvent(ViewEvent.COMPLETE));
+			}
+
+			private function streamMessageHandler(event:StreamClientEvent):void
+			{
+				Trace.log(this, event, 0xFF4455);
+			}
+
+			private function streamMetaDataHandler(event:StreamClientEvent):void
+			{
+				if (event.data.width)
+					setVideoSize(event.data.width, event.data.height);
+				if (event.data.duration)
+					setVideoDuration(event.data.duration);
+
+				Trace.log(this, event, 0x3300FF);
+			}
+
+			private function streamPlayStatusHandler(event:StreamClientEvent):void
+			{
+				Trace.log(this, event, 0xcc4500);
+			}
+		]]>
+	</fx:Script>
+	
+
+	<s:Group width="100%"
+			 height="100%"
+			 addedEffect="{wipeDown}">
+		<s:Rect width="100%"
+				height="100%">
+			<s:fill>
+				<s:SolidColor color="black"
+							  alpha="1"/>
+			</s:fill>
+		</s:Rect>
+	</s:Group>
+	<s:SpriteVisualElement id="videoDisplay"
+						   width="100%"
+						   height="100%"/>
+	<mx:SWFLoader id="buffer"
+				  width="100"
+				  height="100"
+				  horizontalCenter="0"
+				  verticalCenter="0"
+				  source="buffer.swf"
+				  visible="false"/>
+</s:Group>

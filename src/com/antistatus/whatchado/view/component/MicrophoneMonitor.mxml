@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="280" height="24" creationComplete="creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			public var microphone:Microphone;
+			private var microphoneBytes:ByteArray;
+			private var microphoneSound:Sound;
+			private var sc:SoundChannel;
+			private var soundBytes:ByteArray = new ByteArray();
+			private var equalizerLines:Vector.<Shape> = new Vector.<Shape>(512, true);
+			private var ctr:int;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+				
+			}
+			public function startMonitor():void{
+				try
+				{
+					
+					if (microphone != null) 
+					{
+						// kill (some) feedback
+						microphone.setUseEchoSuppression(true);
+						// send ALL mic input to the speaker
+						//microphone.setLoopBack(true);
+						// listen for events
+						microphone.addEventListener(ActivityEvent.ACTIVITY, activityHandler, false, 0, true);
+						setAudio();
+					}
+				}
+				catch (e:Error)
+				{
+					trace("(caught error) SoundRecorder.SoundRecorder: " + e.toString() + " :\n.\n" + e.getStackTrace());
+				}
+			}
+			
+			// initial audio setup when the microphone is active
+			private function setAudio():void
+			{
+				// this is in case of repeated calls to this method
+				if (hasEventListener(Event.ENTER_FRAME))
+				{
+					removeEventListener(Event.ENTER_FRAME, changeDisplay);
+				}
+				
+				microphone.gain = 40;
+				microphone.rate = 44;
+				microphone.setSilenceLevel(0.0);
+				microphone.codec = SoundCodec.SPEEX;
+				microphone.setUseEchoSuppression(true);
+				//microphone.setLoopBack(false);
+				
+				addEventListener(Event.ENTER_FRAME, changeDisplay, false, 0, true);
+			}
+			
+			private function changeDisplay(e:Event):void
+			{
+					activityMeter.width = 3.16 * microphone.activityLevel;
+			}
+			
+			private function activityHandler(event:ActivityEvent):void 
+			{
+				trace("activityHandler: " + event.activating);
+			}
+			
+			public function stop():void
+			{
+				//microphoneSound.removeEventListener(SampleDataEvent.SAMPLE_DATA, soundSampleDataHandler);
+				microphone.removeEventListener(ActivityEvent.ACTIVITY, activityHandler);
+				removeEventListener(Event.ENTER_FRAME, changeDisplay);
+				microphone.setLoopBack(false);
+				microphone = null;
+			}
+			
+		]]>
+	</fx:Script>
+		<s:BitmapImage width="280" height="24" fillMode="repeat"
+					   source="@Embed(source='../assets/skin/volumeMeterOff.png')"/>
+	<s:Group width="280" height="24">
+		
+		<s:BitmapImage width="280" height="24" fillMode="repeat"
+					   source="@Embed(source='../assets/skin/volumeMeterOn.png')"/>
+		<s:mask>
+			<s:Group width="280" height="24">
+				<s:Rect id="activityMeter" width="0" height="24">
+					<s:fill>
+						<s:SolidColor color="#000"/>
+					</s:fill>
+				</s:Rect>
+				
+			</s:Group>
+		</s:mask>
+	</s:Group>
+</s:Group>

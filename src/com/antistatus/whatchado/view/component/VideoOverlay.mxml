@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/mx">
+
+	<fx:Script>
+		<![CDATA[
+			protected function mouseOutHandler(event:MouseEvent):void
+			{
+				displayOverlay.visible = false;
+			}
+
+			protected function mouseOverHandler(event:MouseEvent):void
+			{
+				displayOverlay.visible = true;
+			}
+		]]>
+
+	</fx:Script>
+	<fx:Declarations>
+		<s:Fade alphaFrom="0" alphaTo="1" id="fadeIn" duration="300"/>
+		<s:Fade alphaFrom="1" alphaTo="0" id="fadeOut" duration="50"/>
+	</fx:Declarations>
+
+
+
+	<s:Group width="100%" height="100%" id="displayOverlay" visible="false" showEffect="{fadeIn}" hideEffect="{fadeOut}">
+		<s:BitmapImage source="@Embed(source='../assets/skin/skin.swf', symbol='fullscreen')" verticalCenter="0" horizontalCenter="0"/>
+	</s:Group>
+	<s:Group width="100%" height="100%" mouseOut="mouseOutHandler(event)" mouseOver="mouseOverHandler(event)">
+		<s:Rect height="100%" width="100%">
+			<s:fill>
+				<s:SolidColor color="white" alpha="0"/>
+			</s:fill>
+		</s:Rect>
+	</s:Group>
+</s:Group>

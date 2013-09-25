@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin width="30"
+		height="30"
+		height.expanded="110"
+		xmlns:fx="http://ns.adobe.com/mxml/2009"
+		xmlns:s="library://ns.adobe.com/flex/spark"
+		xmlns:mx="library://ns.adobe.com/flex/mx"
+		rollOver="clickHandler(event)"
+		rollOut="rollOutHandler(event)">
+	
+	<!-- host component -->
+	<fx:Metadata>
+		[HostComponent("com.antistatus.whatchado.view.component.VolumeControl")]
+	</fx:Metadata>
+	
+	
+	<fx:Script>
+		<![CDATA[
+			
+			import mx.events.FlexEvent;
+			
+			import spark.events.TrackBaseEvent;
+			
+			public var volumeValue:int = 0;
+			private var rolledOut:Boolean = false;
+			
+			private var thumbDown:Boolean = false;
+			
+			protected function expandedEnterStateHandler(event:FlexEvent):void
+			{
+				var transform:ColorTransform;
+				
+				transform = plusButton.transform.colorTransform;
+				transform.color = getStyle("chromeColor");
+				plusButton.transform.colorTransform = transform;
+				
+				transform = minusButton.transform.colorTransform;
+				transform.color = getStyle("chromeColor");
+				minusButton.transform.colorTransform = transform;
+			}
+			
+			protected function rollOutHandler(event:MouseEvent):void
+			{
+				if (thumbDown)
+					rolledOut = true;
+				else
+					currentState = "normal";
+			}
+			
+			protected function clickHandler(event:MouseEvent):void
+			{
+				currentState = "expanded";
+				volumeSlider.setFocus();
+			}
+			
+			protected function thumbPressHandler(event:TrackBaseEvent):void
+			{
+				thumbDown = true;
+			}
+			
+			protected function thumbReleaseHandler(event:TrackBaseEvent):void
+			{
+				if (rolledOut)
+					currentState = "normal";
+				
+				rolledOut = false;
+				thumbDown = false;
+			}
+			
+			private function volumeMinusClickHandler(event:MouseEvent):void
+			{
+				if (volumeSlider.value <= .08)
+					volumeSlider.value = 0;
+				else
+					volumeSlider.value -= .08;
+				hostComponent.updateVolumeStatus();
+			}
+			
+			
+			private function volumePlusClickHandler(event:MouseEvent):void
+			{
+				if (volumeSlider.value >= .92)
+					volumeSlider.value = 1;
+				else
+					volumeSlider.value += .08;
+				hostComponent.updateVolumeStatus();
+			}
+		]]>
+	</fx:Script>
+	<s:states>
+		<s:State name="normal"/>
+		<s:State name="expanded"
+				 enterState="expandedEnterStateHandler(event)"/>
+		<s:State name="disabled"/>
+	</s:states>
+	
+<!--	<s:transitions>
+		<s:Transition fromState="*"
+					  toState="expanded">
+			<s:Parallel>
+				<s:Resize target="{border}"/>
+				<s:Resize target="{fill}"/>
+				<s:Wipe direction="down"
+						target="{volumeSliderGroup}"/>
+				<s:Fade alphaFrom="0"
+						alphaTo="1"
+						target="{volumeSliderGroup}"/>
+			</s:Parallel>
+		</s:Transition>
+		<s:Transition fromState="*"
+					  toState="normal">
+			<s:Parallel duration="1.5">
+				<s:Resize target="{border}"/>
+				<s:Resize target="{fill}"/>
+				<s:Wipe direction="up"
+						target="{volumeSliderGroup}"/>
+				<s:Fade alphaFrom="1"
+						alphaTo="0"
+						target="{volumeSliderGroup}"/>
+			</s:Parallel>
+		</s:Transition>
+	</s:transitions>-->
+	
+	
+	<s:Rect left="-10"
+			right="-10"
+			top="-10"
+			bottom="-10">
+		<s:fill>
+			<s:SolidColor alpha="0"/>
+		</s:fill>
+	</s:Rect>
+	
+	<s:Rect id="border"
+			left="0"
+			right="0"
+			top="0"
+			height="30"
+			height.expanded="110"
+			radiusX="2">
+		<s:fill>
+			<s:SolidColor color="#919498"/>
+		</s:fill>
+	</s:Rect>
+	<s:Rect id="fill"
+			top="1"
+			left="1"
+			right="1"
+			height="30"
+			height.expanded="108"
+			radiusX="2">
+		<s:fill>
+			<s:LinearGradient rotation="270"
+							  rotation.disabled="90"
+							  scaleX="{height}"
+							  y="{height}">
+				<s:GradientEntry ratio="0"
+								 color="#C1C4C6"/>
+				<s:GradientEntry ratio="0.1"
+								 color="#E1E1E3"/>
+				<s:GradientEntry ratio="0.18"
+								 color="#EDECED"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+
+	
+	<s:Group bottom="0"
+			 top="26"
+			 id="volumeSliderGroup"
+			 horizontalCenter="0">
+		<s:VSlider id="volumeSlider"
+				   width="14"
+				   bottom="20"
+				   horizontalCenter="0"
+				   top="14"
+				   minimum="0.0"
+				   maximum="1.0"
+				   value="0.7"
+				   includeIn="expanded"
+				   snapInterval="0.01"
+				   liveDragging="true"
+				   thumbPress="thumbPressHandler(event)"
+				   thumbRelease="thumbReleaseHandler(event)"
+				   skinClass="com.antistatus.whatchado.view.skin.VolumeSliderSkin"
+				   focusEnabled.normal="false"
+				   focusEnabled.expanded="true"/>
+		
+		<s:Group width="100%"
+				 height="14"
+				 click="volumePlusClickHandler(event)">
+			<s:BitmapImage id="plusButton"
+						   horizontalCenter="0"
+						   source="@Embed(source='../assets/skin/skin.swf', symbol='volumePlus')"
+						   includeIn="expanded"/>
+		</s:Group>
+		<s:Group width="100%"
+				 height="20"
+				 bottom="0"
+				 click="volumeMinusClickHandler(event)">
+			<s:BitmapImage id="minusButton"
+						   horizontalCenter="0"
+						   bottom="9"
+						   source="@Embed(source='../assets/skin/skin.swf', symbol='volumeMinus')"
+						   includeIn="expanded"/>
+		</s:Group>
+	</s:Group>
+	<s:Button id="volumeButton"
+			  label="volumemedium"
+			  buttonMode="true"
+			  enabled.expanded="true"
+			  enabled.disabled="true"
+			  enabled="false"
+			  skinClass="com.antistatus.whatchado.view.skin.ControlsButtonSkin"
+			  width="30"
+			  height="30"/>
+</s:Skin>
+
+
+
+

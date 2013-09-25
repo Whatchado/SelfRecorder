@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx">
+
+
+
+
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+
+			[Bindable]
+			public var questionsDataProvider:ArrayCollection;
+			[Bindable]
+			public var menuDataProvider:ArrayCollection;
+
+		]]>
+	</fx:Script>
+	<s:DataGroup width="100%" height="40" dataProvider="{menuDataProvider}" itemRenderer="com.antistatus.whatchado.view.component.TopMenuItemRenderer" >
+		<s:layout>
+			<s:HorizontalLayout gap="0"/>
+		</s:layout>
+	</s:DataGroup>
+	<s:DataGroup width="100%" height="30" bottom="0" dataProvider="{questionsDataProvider}" itemRenderer="com.antistatus.whatchado.view.component.QuestionsMenuItemRenderer">
+		<s:layout>
+			<s:HorizontalLayout gap="0" horizontalAlign="center"/>
+		</s:layout>
+	</s:DataGroup>
+</s:Group>

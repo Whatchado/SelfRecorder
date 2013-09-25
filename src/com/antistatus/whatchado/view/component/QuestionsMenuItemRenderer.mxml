@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				autoDrawBackground="false">
+	<fx:Script>
+		<![CDATA[
+			import com.antistatus.whatchado.event.ViewEvent;
+			import com.antistatus.whatchado.model.vo.NavigationButtonVO;
+			
+			protected function clickHandler(event:MouseEvent):void
+			{
+				dispatchEvent(new ViewEvent(ViewEvent.SELECT, NavigationButtonVO(data).type, true));
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:Button label="{NavigationButtonVO(data).name}" useHandCursor="true" enabled="{NavigationButtonVO(data).enabled}" styleName="{NavigationButtonVO(data).enabled ? (NavigationButtonVO(data).completed ? 'completedQuestionButton' : 'incompleteQuestionButton') : 'defaultQuestionButton'}" click="clickHandler(event)" skinClass="com.antistatus.whatchado.view.skin.QuestionsMenuButtonSkin" buttonMode="true"/>
+</s:ItemRenderer>

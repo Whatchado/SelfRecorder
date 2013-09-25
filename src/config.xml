@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<header>title</header>
+	<autoplay>true</autoplay>
+
+	<menu>
+		<button title="Intro" type="intro"/>
+		<button title="Einrichten" type="test"/>
+		<button title="Tour" type="tour"/>
+		<button title="Frage 1" type="question" id="0"/>
+		<button title="Frage 2" type="question" id="1"/>
+		<button title="Frage 3" type="question" id="2"/>
+		<button title="Frage 4" type="question" id="3"/>
+		<button title="Frage 5" type="question" id="4"/>
+		<button title="Frage 6" type="question" id="5"/>
+		<button title="Frage 7" type="question" id="6"/>
+		<button title="Fertigstellen" type="upload"/>
+		￼
+	</menu>
+	<questions>
+		<question id="1" text="Was steht auf deiner Visitenkarte?" video="videos/Frage01_s.mp4" time="15"/>
+		<question id="2" text="Worum geht's in deinem Job?" video="videos/Frage02_s.mp4" time="90"/>
+		<question id="3" text="Wie schaut dein Werdegang aus?" video="videos/Frage03_s.mp4" time="90"/>
+		<question id="4" text="Ginge es auch ohne deinen Werdegang?" video="videos/Frage04_s.mp4" time="30"/>
+		<question id="5" text="Was ist das Coolste an deinem Job?" video="videos/Frage05_s.mp4" time="30"/>
+		<question id="6" text="Welche Einschränkungen bringt der Job mit sich?" video="videos/Frage06_s.mp4" time="30"/>
+		<question id="7" text="Drei Ratschläge an dein 14jähriges Ich?" video="videos/Frage07_s.mp4" time="30"/>
+	</questions>
+
+	<tippsLabel label="Tipps" video="videos/Technik_s.mp4"/>
+	
+	<cameraSettings headline="WÄHLE DEINE KAMERA." subHeadline="Auf der rechten Seite siehst du, was die Kamera sieht." selectorLabel="Camera:"/>
+	<microphoneSettings headline="WÄHLE DEIN MIKROFON." subHeadline="Die Maximal-Lautstärke des Mikrofons sollte etwa bei 80-90% des Balkens sein." selectorLabel="Microphone:" volumeLabel="Volume:"/>
+	
+	
+	
+	
+	<introText>
+	<![CDATA[
+<P><A NAME="_GoBack"></A><FONT COLOR="#ffc000"><FONT FACE="Helvetica, serif"><FONT SIZE=15 STYLE="font-size: 20pt">DAS
+WICHTIGSTE AUF EINEM BLICK</FONT></FONT></FONT></P>
+<P><FONT FACE="Helvetica, serif"><FONT SIZE=13>Du möchtest dein
+eigenes WHATCHADO-Video aufnehmen? Dann leg gleich los!</FONT></FONT></P>
+<P><BR><BR>
+</P>
+<P><FONT FACE="Helvetica, serif"><FONT SIZE=13><B>VORBEREITUNG …</B></FONT></FONT></P>
+<P><FONT FACE="Helvetica, serif"><FONT SIZE=13><U>Du brauchst:</U></FONT></FONT></P>
+<OL>
+	<LI><P><FONT FACE="Helvetica, serif"><FONT SIZE=13>Eine ruhige
+	Umgebung mit nettem/kreativem/coolen Hintergrund</FONT></FONT></P></LI>
+	<LI><P><FONT FACE="Helvetica, serif"><FONT SIZE=13>Eine Webcam und
+	ein Mikro</FONT></FONT></P></LI>
+	<LI><P><FONT FACE="Helvetica, serif"><FONT SIZE=13><SPAN LANG="en-US">Windows
+	Movie Maker oder Photo Booth für Mac</SPAN></FONT></FONT></P></LI>
+	<LI><P><FONT FACE="Helvetica, serif"><FONT SIZE=13>Videoprofis dürfen
+	natürlich ihr eigenes Equpiment und Schnittsoftware verwenden</FONT></FONT></P></LI>
+</OL>
+<P><FONT FACE="Helvetica, serif"><FONT SIZE=13><U>Achte darauf, dass …</U></FONT></FONT></P>
+<OL>
+	<LI><P>… <FONT FACE="Helvetica, serif"><FONT SIZE=13>dein Gesicht
+	gut ausgeleuchtet ist!</FONT></FONT></P></LI>
+	<LI><P>… <FONT FACE="Helvetica, serif"><FONT SIZE=13>keine Werbung
+	für deine Firma im Bild ist (und auch nicht in deinen Antworten)</FONT></FONT></P></LI>
+	<LI><P>… <FONT FACE="Helvetica, serif"><FONT SIZE=13>die
+	Aufnahmestärke des Mikros hoch genug eingestellt ist (vorher einen
+	Test machen) Hier ein kleines Youtube-Tutorial dazu:
+	https://www.youtube.com/watch?v=dZX_N7-7JMs</FONT></FONT></P></LI>
+	<LI><P>… <FONT FACE="Helvetica, serif"><FONT SIZE=13>dein Laptop
+	auf Augenhöhe ist.</FONT></FONT></P></LI>
+	<LI><P>… <FONT FACE="Helvetica, serif"><FONT SIZE=13>deine Haare
+	gekämmt sind.</FONT></FONT></P></LI>
+</OL>
+<P><BR><BR>
+</P>
+<P><FONT FACE="Helvetica, serif"><FONT SIZE=13><B>LOS GEHT’S!</B></FONT></FONT></P>
+<OL>
+	<LI><P><FONT FACE="Helvetica, serif"><FONT SIZE=13>Öffne das erste
+	Video „GETTING STARTED“ und folge den Anweisungen!</FONT></FONT></P></LI>
+	<LI><P><FONT FACE="Helvetica, serif"><FONT SIZE=13>Mach zuerst einen
+	Testlauf um zu sehen, ob alles funktioniert.</FONT></FONT></P></LI>
+	<LI><P><FONT FACE="Helvetica, serif"><FONT SIZE=13>Schau dir zu jeder
+	der 7 Fragen unsere Erklärungsvideos an und klicke am Ende auf
+	Pause, um in Ruhe die Frage im Video noch einmal durchzulesen.</FONT></FONT></P></LI>
+	<LI><P><FONT FACE="Helvetica, serif"><FONT SIZE=13>Zeichne zu jeder
+	Antwort 1 Video auf!</FONT></FONT></P></LI>
+	<LI><P><FONT FACE="Helvetica, serif"><FONT SIZE=13>Du kannst im
+	Windows Live Movie Maker, sowie in Photo Booth einen Anfangs-und
+	Endpunkt für dein Antwortvideo festlegen.</FONT></FONT></P></LI>
+	<LI><P><FONT FACE="Helvetica, serif"><FONT SIZE=13>Die Änderungen
+	nach dem Schnitt müssen noch einmal als Video gespeichert werden.
+	Benenne deine fertigen Antwortvideos jeweils mit „Antwort_01“
+	bis „Antwort_07“. Am Ende solltest du 7 Videofiles haben.</FONT></FONT></P></LI>
+	<LI><P><FONT FACE="Helvetica, serif"><FONT SIZE=13>Lass uns diese
+	über WeTransfer oder einem anderen Upload-Service zukommen. Email:
+	<A HREF="mailto:storyteller@whatchado.net">storyteller@whatchado.net</A></FONT></FONT></P></LI>
+</OL>
+<P><FONT FACE="Helvetica, serif"><FONT SIZE=13>Wir erstellen daraus
+dein persönliches WHATCHADO-Video!</FONT></FONT></P>
+<P><BR><BR>
+</P>
+<P><FONT FACE="Helvetica, serif"><FONT SIZE=13>Unser Ziel ist es, eine
+einfache Anleitung zu erstellen, damit wirklich JEDER sein eigenes
+WHATCHADO-Video machen kann. Daher bitten wir dich, uns nachdem du
+uns deine Videos geschickt hast, Feedback zu geben. Du kannst uns bei
+Unklarheiten jederzeit kontaktieren. Wende dich an
+<A HREF="mailto:storyteller@whatchado.net">storyteller@whatchado.net</A></FONT></FONT></P>
+<P><FONT FACE="Helvetica, serif"><FONT SIZE=13>Danke fürs Mitmachen!</FONT></FONT></P>
+]]>
+	</introText>
+</config>

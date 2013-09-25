@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:fx="http://ns.adobe.com/mxml/2009"
+		xmlns:s="library://ns.adobe.com/flex/spark"
+		xmlns:mx="library://ns.adobe.com/flex/mx">
+	<!-- host component -->
+	<fx:Metadata>
+		[HostComponent("com.antistatus.whatchado.view.component.VideoControls")]
+	</fx:Metadata>
+	<fx:Script>
+		<![CDATA[
+		]]>
+	</fx:Script>
+
+	<!-- states -->
+	<s:states>
+		<s:State name="normal"/>
+		<s:State name="fullcontrols"/>
+	</s:states>
+
+	<!-- SkinParts
+	name=play, type=spark.components.Button, required=true
+	name=pause, type=spark.components.Button, required=true
+	-->
+
+
+	<s:Button id="play"
+			  width="30"
+			  height="30"
+			  label="play"
+			  width.fullcontrols="40"
+			  buttonMode="true"
+			  height.fullcontrols="40"
+			  skinClass="com.antistatus.whatchado.view.skin.ControlsButtonSkin"/>
+	<s:Button id="pause"
+			  width="30"
+			  height="30"
+			  label="pause"
+			  width.fullcontrols="40"
+			  buttonMode="true"
+			  y.fullcontrols="0"
+			  x.fullcontrols="45"
+			  x="35"
+			  height.fullcontrols="40"
+			  skinClass="com.antistatus.whatchado.view.skin.ControlsButtonSkin"/>
+</s:Skin>

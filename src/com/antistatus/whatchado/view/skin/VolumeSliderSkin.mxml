@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SparkSkin minHeight="11"
+			 xmlns:fx="http://ns.adobe.com/mxml/2009"
+			 xmlns:s="library://ns.adobe.com/flex/spark"
+			 xmlns:fb="http://ns.adobe.com/flashbuilder/2009"
+			 alpha.disabled="0.5">
+
+	<fx:Metadata>
+		<![CDATA[ 
+        /** 
+         * @copy spark.skins.spark.ApplicationSkin#hostComponent
+         */
+        [HostComponent("spark.components.supportClasses.SliderBase")]
+    ]]>
+	</fx:Metadata>
+
+	<fx:Script fb:purpose="styling">
+		/**
+		 * @private
+		 */
+		override protected function initializationComplete():void
+		{
+			useChromeColor = false;
+			super.initializationComplete();
+		}
+	</fx:Script>
+
+	<s:states>
+		<s:State name="normal"/>
+		<s:State name="disabled"/>
+	</s:states>
+
+	<s:Button id="track"
+			  top="0"
+			  bottom="0"
+			  left="2"
+			  right="2"
+			  skinClass="spark.skins.spark.VSliderTrackSkin"/>
+
+	<s:Button id="thumb"
+			  width="14"
+			  height="17"
+			  left="0"
+			  right="0"
+			  skinClass="com.antistatus.whatchado.view.skin.VolumeThumbSkin"/>
+			<!-- -->
+</s:SparkSkin>

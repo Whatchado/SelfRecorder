@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Window xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300" creationComplete="creationCompleteHandler(event)" closing="closingHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			[Bindable]
+			private var logText:String;
+			private var sharedObject:SharedObject;
+			private var timer:Timer;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				sharedObject = SharedObject.getLocal("whatchadoLog");
+				logText = sharedObject.data.log;
+				timer = new Timer(1000);
+				timer.addEventListener(TimerEvent.TIMER, timerHandler);
+				timer.start();
+			}
+			
+			protected function clickHandler(event:MouseEvent):void
+			{
+				sharedObject.clear();
+			}
+			
+			protected function timerHandler(event:TimerEvent):void
+			{
+				logText = sharedObject.data.log;
+			}
+			
+			protected function closingHandler(event:Event):void
+			{
+				if(timer)
+					timer.removeEventListener(TimerEvent.TIMER, timerHandler);
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Group width="100%" height="40" >
+		<s:Rect width="100%" height="100%">
+			<s:fill>
+				<s:SolidColor color="#DDDDDD"/>
+			</s:fill>
+		</s:Rect>
+		<s:Label text="Log:" top="10" left="10" fontSize="14" color="#FFFFFF"/>
+		<s:Button label="clear" click="clickHandler(event)" top="5" right="10"/>
+	</s:Group>
+	<s:Scroller width="100%" height="100%" top="40" verticalScrollPolicy="on">
+		<s:Group>
+			
+			<s:RichText id="loggerText" text="{logText}" paddingTop="5" paddingBottom="5" left="10" right="10"/>
+		</s:Group>			
+	</s:Scroller>
+</s:Window>

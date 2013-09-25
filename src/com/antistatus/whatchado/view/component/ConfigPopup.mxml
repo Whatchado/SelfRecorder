@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Panel xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 title="Configuration"
+		 creationComplete="init()">
+	
+	<fx:Script>
+		<![CDATA[
+			import com.antistatus.whatchado.service.ConfigurationManager;
+			
+			import mx.events.FlexEvent;
+			import mx.utils.StringUtil;
+			
+			private var cfgMngr:ConfigurationManager;
+			
+			private function init():void
+			{
+				cfgMngr = ConfigurationManager.getInst();
+				javaTI.text = cfgMngr.config.javaHome;
+			}
+			
+			private function onSave():void
+			{
+				cfgMngr.config.javaHome = StringUtil.trim(javaTI.text);
+				if (cfgMngr.isJavaHomeValid())
+				{
+					dispatchEvent(new Event("saveConfig"));
+				}
+				else
+				{
+					errLbl.text = "Java Home is not configured properly. \nPlease check again";
+				}
+			}
+			
+			
+			
+		]]>
+	</fx:Script>
+	
+	<s:layout>
+		<s:VerticalLayout paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0"/>
+	</s:layout>
+
+	<s:Form width="100%" >
+	
+		<s:layout>
+			<s:FormLayout gap="0" />
+		</s:layout>
+		
+		<s:FormItem width="100%">
+			<s:Label maxDisplayedLines="3" width="100%" color="#6c8dae"
+					 text="Please configure the application once and enjoy your local video recording."/>	
+		</s:FormItem>
+		<s:FormItem label="Java Home:" width="100%">
+			<s:TextInput id="javaTI" width="100%"/>
+		</s:FormItem>
+		<s:FormItem width="100%">
+			<s:layout>
+				<s:VerticalLayout paddingTop="0"/>
+			</s:layout>
+			<mx:HRule width="100%"/>
+			<s:HGroup width="100%" height="30">
+				<s:Label id="errLbl" color="red" width="100%"/>
+				<s:Button label="Save" click="onSave()"/>
+			</s:HGroup>
+		</s:FormItem>
+	</s:Form>
+	
+	
+	
+</s:Panel>

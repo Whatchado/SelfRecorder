@@ -1,0 +1,85 @@
+/* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace mx "library://ns.adobe.com/flex/mx";
+@namespace view "com.antistatus.whatchado.view.*";
+
+@font-face
+{
+	src: url("../assets/fonts/RobotoCondensed-Regular.ttf");
+	fontFamily: robotoCondensed;
+	advancedAntiAliasing: true;
+	embedAsCFF: true; 
+	unicodeRange:
+		U+0000-U+00FF,U+20AC-U+20AC; /*a-Z,0-9,punctuation,Latin 1,€*/
+}
+@font-face
+{
+	src: url("../assets/fonts/RobotoCondensed-Bold.ttf");
+	fontFamily: robotoCondensed;
+	advancedAntiAliasing: true;
+	fontWeight: bold;
+	embedAsCFF: true; 
+	unicodeRange:
+		U+0000-U+00FF,U+20AC-U+20AC; /*a-Z,0-9,punctuation,Latin 1,€*/
+}
+
+view|MainView s|Scroller s|VScrollBar{
+	focusAlpha: 0;
+	focusEnabled: false;
+	up-arrow-skin: ClassReference("undefined");
+	down-arrow-skin: ClassReference("undefined");
+	skin-class: ClassReference("com.antistatus.whatchado.view.skin.VScrollBarSkin");
+}
+
+s|Button
+{
+	fontFamily: robotoCondensed;
+	fontWeight: bold;	
+	fontSize: 13;
+	typographicCase: uppercase;
+	iconPlacement:right;
+}
+
+.headlineBig
+{
+	fontFamily: robotoCondensed;
+	fontWeight: bold;	
+	fontSize: 25;
+}
+.headlineSmall
+{
+	fontFamily: robotoCondensed;
+	fontSize: 15;
+}
+
+.completedQuestionButton
+{
+	icon: Embed(source="../assets/skin/ok_buticon.png");
+}
+.incompleteQuestionButton
+{
+	icon: Embed(source="../assets/skin/reco_buticon.png");
+}
+.defaultQuestionButton
+{
+	icon: Embed(source="../assets/skin/default_buticon_question.png");
+}
+.defaultTopButton
+{
+	icon: Embed(source="../assets/skin/default_buticon.png");
+	iconPlacement:right;
+	skin-class: ClassReference("com.antistatus.whatchado.view.skin.TopMenuButtonSkin");
+}
+.defaultTopButtonActive
+{
+	icon: Embed(source="../assets/skin/default_buticon_active.png");
+	iconPlacement:right;
+	skin-class: ClassReference("com.antistatus.whatchado.view.skin.TopMenuActiveButtonSkin");
+	color: #FFFFFF;
+}
+.defaultButton
+{
+	icon: Embed(source="../assets/skin/default_buticon.png");
+	iconPlacement:right;
+	skin-class: ClassReference("com.antistatus.whatchado.view.skin.TopMenuButtonSkin");
+}

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SparkSkin xmlns:fx="http://ns.adobe.com/mxml/2009"
+			 xmlns:s="library://ns.adobe.com/flex/spark"
+			 xmlns:fb="http://ns.adobe.com/flashbuilder/2009"
+			 minWidth="15"
+			 minHeight="15"
+			 xmlns:mx="library://ns.adobe.com/flex/mx">
+
+	<!-- host component -->
+	<fx:Metadata>
+		<![CDATA[ 
+        /** 
+         * @copy spark.skins.spark.ApplicationSkin#hostComponent
+         */
+        [HostComponent("spark.components.Button")]
+        ]]>
+	</fx:Metadata>
+
+	<fx:Script fb:purpose="styling">
+		<![CDATA[
+			/* Define the skin elements that should not be colorized.
+			 For button, the graphics are colorized but the label is not. */
+			private static const exclusions:Array = ["labelDisplay", "playUp", "playSmallUp", "pauseUp", "volume", "volumeMedium", "volumeLow", "volumeMute", "fill", "border"];
+
+			/**
+			 * @private
+			 */
+			override public function get colorizeExclusions():Array
+			{
+				return exclusions;
+			}
+
+			private var cornerRadius:Number = 2;
+			[Bindable]
+			private var labelText:String = "";
+
+			/**
+			 * @private
+			 */
+			override protected function initializationComplete():void
+			{
+				useChromeColor = true;
+				super.initializationComplete();
+			}
+
+			/**
+			 *  @private
+			 */
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+			{
+
+				if (border.radiusX != cornerRadius)
+				{
+					border.radiusX = cornerRadius;
+					fill.radiusX = cornerRadius;
+				}
+
+				if (labelDisplay)
+					labelText = labelDisplay.text;
+				super.updateDisplayList(unscaledWidth, unscaledHeight);
+			}
+
+			private function colorize(transform:Transform):Transform
+			{
+				transform.colorTransform.color = 0x004781;
+				return transform;
+			}
+		]]>
+	</fx:Script>
+
+	<!-- states -->
+	<s:states>
+		<s:State name="up"/>
+		<s:State name="over"/>
+		<s:State name="down"/>
+		<s:State name="disabled"/>
+	</s:states>
+
+
+	<!-- layer 7: border - put on top of the fill so it doesn't disappear when scale is less than 1 -->
+	<!--- @private -->
+	<s:Rect id="border"
+			left="0"
+			right="0"
+			top="0"
+			bottom="0"
+			radiusX="2"
+			visible="{Boolean(labelText.indexOf('volume')==-1)}">
+		<s:fill>
+			<s:SolidColor color="#919498"/>
+		</s:fill>
+	</s:Rect>
+	<!-- layer 2: fill -->
+	<!--- @private -->
+	<s:Rect id="fill"
+			left="1"
+			right="1"
+			top="1"
+			bottom="1"
+			radiusX="2"
+			alpha="{(labelText.indexOf('volume')==-1)?1:0}">
+		<s:fill>
+			<s:LinearGradient rotation="270"
+							  rotation.over="90"
+							  rotation.disabled="90">
+				<s:GradientEntry ratio="0"
+								 color="#C1C4C6"/>
+				<s:GradientEntry ratio="0.199582"
+								 color="#D7D8D9"/>
+				<s:GradientEntry ratio="0.418695"
+								 color="#E5E4E6"/>
+				<s:GradientEntry ratio="0.662084"
+								 color="#EBEBEC"/>
+				<s:GradientEntry ratio="1"
+								 color="#EDECED"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+
+
+
+	<!-- layer 8: text -->
+	<!--- @copy spark.components.supportClasses.ButtonBase#labelDisplay -->
+	<s:Label id="labelDisplay"
+			 textAlign="center"
+			 visible="false"
+			 horizontalCenter="0"
+			 verticalCenter="1"
+			 left="10"
+			 right="10"
+			 top="2"
+			 bottom="2">
+	</s:Label>
+	<s:BitmapImage id="playUp"
+				   horizontalCenter="2"
+				   verticalCenter="0"
+				   source="@Embed(source='../assets/skin/skin.swf', symbol='playIconUp')"
+				   visible="{Boolean(labelText == 'play')}"
+				   excludeFrom="disabled"/>
+	<s:BitmapImage id="playDown"
+				   horizontalCenter="2"
+				   verticalCenter="0"
+				   source="@Embed(source='../assets/skin/skin.swf', symbol='playIcon')"
+				   visible="{Boolean(labelText == 'play')}"
+				   includeIn="disabled"/>
+	<s:BitmapImage id="playSmallUp"
+				   horizontalCenter="2"
+				   verticalCenter="-1"
+				   source="@Embed(source='../assets/skin/skin.swf', symbol='playIconSmallUp')"
+				   visible="{Boolean(labelText == 'playsmall')}"
+				   excludeFrom="disabled"/>
+	<s:BitmapImage id="playSmallDown"
+				   horizontalCenter="2"
+				   verticalCenter="-1"
+				   source="@Embed(source='../assets/skin/skin.swf', symbol='playIconSmall')"
+				   visible="{Boolean(labelText == 'playsmall')}"
+				   includeIn="disabled"/>
+	<s:BitmapImage id="pauseUp"
+				   horizontalCenter="0"
+				   verticalCenter="0"
+				   source="@Embed(source='../assets/skin/skin.swf', symbol='pauseIconUp')"
+				   visible="{Boolean(labelText == 'pause')}"
+				   excludeFrom="disabled"/>
+	<s:BitmapImage id="pauseDown"
+				   horizontalCenter="0"
+				   verticalCenter="0"
+				   source="@Embed(source='../assets/skin/skin.swf', symbol='pauseIcon')"
+				   visible="{Boolean(labelText == 'pause')}"
+				   includeIn="disabled"/>
+
+	<s:BitmapImage id="volume"
+				   horizontalCenter="0"
+				   verticalCenter="0"
+				   source="@Embed(source='../assets/skin/skin.swf', symbol='volumeIconUp')"
+				   visible="{Boolean(labelText == 'volume')}"
+				   includeIn="disabled"/>
+	<s:BitmapImage id="volumeMedium"
+				   horizontalCenter="0"
+				   verticalCenter="0"
+				   source="@Embed(source='../assets/skin/skin.swf', symbol='volumeMediumIconUp')"
+				   visible="{Boolean(labelText == 'volumemedium')}"
+				   includeIn="disabled"/>
+	<s:BitmapImage id="volumeLow"
+				   horizontalCenter="0"
+				   verticalCenter="0"
+				   source="@Embed(source='../assets/skin/skin.swf', symbol='volumeLowIconUp')"
+				   visible="{Boolean(labelText == 'volumelow')}"
+				   includeIn="disabled"/>
+	<s:BitmapImage id="volumeMute"
+				   horizontalCenter="0"
+				   verticalCenter="0"
+				   source="@Embed(source='../assets/skin/skin.swf', symbol='volumeMuteIconUp')"
+				   visible="{Boolean(labelText == 'volumemute')}"
+				   includeIn="disabled"/>
+
+	<s:BitmapImage id="volumeUp"
+				   horizontalCenter="0"
+				   verticalCenter="0"
+				   source="@Embed(source='../assets/skin/skin.swf', symbol='volumeIcon')"
+				   visible="{Boolean(labelText == 'volume')}"
+				   excludeFrom="disabled"/>
+	<s:BitmapImage id="volumeMediumUp"
+				   horizontalCenter="0"
+				   verticalCenter="0"
+				   source="@Embed(source='../assets/skin/skin.swf', symbol='volumeMediumIcon')"
+				   visible="{Boolean(labelText == 'volumemedium')}"
+				   excludeFrom="disabled"/>
+	<s:BitmapImage id="volumeLowUp"
+				   horizontalCenter="0"
+				   verticalCenter="0"
+				   source="@Embed(source='../assets/skin/skin.swf', symbol='volumeLowIcon')"
+				   visible="{Boolean(labelText == 'volumelow')}"
+				   excludeFrom="disabled"/>
+	<s:BitmapImage id="volumeMuteUp"
+				   horizontalCenter="0"
+				   verticalCenter="0"
+				   source="@Embed(source='../assets/skin/skin.swf', symbol='volumeMuteIcon')"
+				   visible="{Boolean(labelText == 'volumemute')}"
+				   excludeFrom="disabled"/>
+</s:SparkSkin>
