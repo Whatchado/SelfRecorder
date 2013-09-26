@@ -9,6 +9,8 @@ package com.antistatus.whatchado.view
 	import com.antistatus.whatchado.utilities.Trace;
 	import com.antistatus.whatchado.view.MainView;
 	
+	import flash.utils.setTimeout;
+	
 	import flashx.textLayout.conversion.TextConverter;
 	
 	import robotlegs.bender.bundles.mvcs.Mediator;
@@ -37,6 +39,13 @@ package com.antistatus.whatchado.view
 			
 			view.menuButtonsDataProvider = model.menuButtonsDataProvider;
 			view.questionsButtonsDataProvider = model.questionsButtonsDataProvider;
+			
+			setTimeout(switchInfoState, 2000);
+		}
+		
+		private function switchInfoState():void
+		{
+			navigationSelectHandler(new ViewEvent(ViewEvent.SELECT, NavigationButtonVO(model.menuButtonsDataProvider.getItemAt(0)).type));
 		}
 		
 		private function startQuestionsHandler(event:ViewEvent):void

@@ -29,7 +29,7 @@
 						// kill (some) feedback
 						microphone.setUseEchoSuppression(true);
 						// send ALL mic input to the speaker
-						//microphone.setLoopBack(true);
+						microphone.setLoopBack(true);
 						// listen for events
 						microphone.addEventListener(ActivityEvent.ACTIVITY, activityHandler, false, 0, true);
 						setAudio();

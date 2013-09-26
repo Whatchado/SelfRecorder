@@ -2,7 +2,7 @@
 <s:SparkButtonSkin xmlns:fx="http://ns.adobe.com/mxml/2009" 
              xmlns:s="library://ns.adobe.com/flex/spark" 
              xmlns:fb="http://ns.adobe.com/flashbuilder/2009"
-             minWidth="21" minHeight="21" 
+             minWidth="18" minHeight="21" 
              alpha.disabled="0.5">
      
     <fx:Metadata>
@@ -39,13 +39,10 @@
     
     <!-- layer 1: shadow -->
     <!--- @private -->
-    <s:Rect left="2" right="2" top="2" bottom="2" radiusX="8">
+    <s:Rect left="4" right="3" top="2" bottom="2" radiusX="6">
         <s:fill>
            <s:SolidColor color="#b7b7b7"/>
         </s:fill>
-		<s:stroke>
-			<s:SolidColorStroke color="#cbcbcb"/>
-		</s:stroke>
     </s:Rect>
     
     <!-- layer 8: text -->

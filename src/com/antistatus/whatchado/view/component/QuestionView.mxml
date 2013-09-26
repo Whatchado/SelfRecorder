@@ -30,7 +30,7 @@
 		<component:VideoControls left="10" bottom="10" skinClass="com.antistatus.whatchado.view.skin.VideoControlsSkin"/>
 		<!--<component:VideoProgress y="510" x="100" width="502"/>-->
 	</s:Group>
-	<component:VideoRecorder top="150" id="videoRecorder" includeIn="record"/>
+	<component:VideoRecorder top="150" left="155" id="videoRecorder" includeIn="record"/>
 	<s:Button  label="Tipps" y="200" left="10" height="30" click="tippsButtonClickHandler(event)"/>
 	<s:Button  label="Aufnahme" y="260" left="10" height="30" click="recordButtonClickHandler(event)"/>
 </s:Group>

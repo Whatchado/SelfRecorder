@@ -14,20 +14,20 @@
 		<s:Move id="slideIn" xFrom="-1200" xTo="0" duration="4000"/>
 		<s:Move id="slideOut" xTo="-1200" xFrom="0" duration="4000"/>
 		<s:Sequence id="delayedFadeIn" >
-			<s:Pause duration="100"/>
-			<s:Fade alphaFrom="0" alphaTo="1" duration="1000"/>
+			<s:Pause duration="1000"/>
+			<s:Fade alphaFrom="0" alphaTo="1" duration="1000" effectStart="{introView.visible = true;}"/>
 		</s:Sequence>
 		<s:Sequence id="delayedfadeOut" >
 			<s:Pause duration="100"/>
 			<s:Fade alphaFrom="1" alphaTo="0" duration="1000"/>
 		</s:Sequence>
-		<s:Sequence id="delayedMoveInTop" >
+		<s:Sequence id="delayedMoveInTop">
 			<s:Pause duration="2000"/>
 			<s:Move yFrom="-200" yTo="0" duration="1000"/>
 		</s:Sequence>
 		<s:Sequence id="delayedMoveInBottom" >
 			<s:Pause duration="2000"/>
-			<s:Move yFrom="{height+200}" duration="1000"/>
+			<s:Move yFrom="{this.height+200}" duration="1000"/>
 		</s:Sequence>
 	</fx:Declarations>
 	<fx:Script>
@@ -35,8 +35,6 @@
 			import com.antistatus.whatchado.event.ViewEvent;
 			import com.antistatus.whatchado.model.vo.ErrorVO;
 			import com.antistatus.whatchado.utilities.Trace;
-			
-			import flash.utils.setTimeout;
 			
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
@@ -111,12 +109,6 @@
 				new LoggerWindow().open();
 			}
 			
-			
-			private function switchWelcome():void
-			{
-				currentState = "tour";
-			}
-			
 			protected function startQuestionsClickHandler(event:MouseEvent):void
 			{
 				dispatchEvent(new ViewEvent(ViewEvent.START));
@@ -146,13 +138,14 @@
 				dispatchEvent(new ViewEvent(ViewEvent.SETTINGS_SUBMIT));
 			}
 			
+			
 		]]>
 	</fx:Script>
 	
 	
 	<s:states>
-		<s:State name="start" enterState="setTimeout(switchWelcome,500)"/>
-		<s:State name="intro"/>
+		<s:State name="start"/>
+		<s:State name="intro" enterState="{topBarGroup.visible = true; bottomBarGroup.visible = true;}" exitState="{introView.visible = false;}"/>
 		<s:State name="test" exitState="testStateExitStateHandler(event)"/>
 		<s:State name="tour"/>
 		<s:State name="login"/>
@@ -163,9 +156,7 @@
 
 	</s:states>
 
-	<s:BitmapImage excludeFrom="start" top="40" height="83" horizontalCenter="0"
-				   source="@Embed(source='../assets/skin/top_shadow.png')" />
-	<s:Group includeIn="intro" left="0" right="0" top="92" bottom="66" addedEffect="{delayedFadeIn}">
+	<s:Group id="introView" includeIn="intro" left="0" right="0" top="92" bottom="66" addedEffect="{delayedFadeIn}" visible="false">
 		<s:Rect width="100%" height="100%">
 			<s:fill>
 				<s:SolidColor color="#FFFFFF"/>
@@ -177,13 +168,17 @@
 			</s:Group>			
 		</s:Scroller>
 	</s:Group>
-	<s:Group addedEffect="{delayedMoveInTop}" width="100%" height="100" x="0">
+	<s:Group id="topBarGroup" showEffect="{delayedMoveInTop}" width="100%" height="100" x="0" visible="false" excludeFrom="start">
+		<s:BitmapImage excludeFrom="start" top="40" height="83" horizontalCenter="0"
+				   source="@Embed(source='../assets/skin/top_shadow.png')" />
 		<s:BitmapImage id="topBar" excludeFrom="start" left="0" right="0" height="92" fillMode="repeat"
 				   source="@Embed(source='../assets/skin/bg_top.png')"/>
-	<component:MainNavigation id="navigation" excludeFrom="start" y="0" left="0" right="0" 
+		<s:BitmapImage top="13" horizontalCenter="0" width="285" height="39"
+					   source="@Embed(source='../assets/skin/diy_logo.png')"/>
+		<component:MainNavigation id="navigation" excludeFrom="start" y="0" left="0" right="0" 
 							  height="100" menuDataProvider="{menuButtonsDataProvider}" questionsDataProvider="{questionsButtonsDataProvider}"/>
 	</s:Group>
-	<s:Group addedEffect="{delayedMoveInBottom}" width="100%" height="66" bottom="0" >
+	<s:Group id="bottomBarGroup" showEffect="{delayedMoveInBottom}" width="100%" height="66" bottom="0" excludeFrom="start" visible="false">
 		<s:BitmapImage id="botBar" excludeFrom="start" left="0" right="0" height="88" fillMode="repeat"
 				   source="@Embed(source='../assets/skin/bg_bottom.png')"/>
 	</s:Group>
@@ -193,8 +188,7 @@
 		<s:Button label="Question Finish" click="nextQuestionsClickHandler(event)" includeIn="question"/>
 	</s:HGroup>
 		
-	<s:BitmapImage excludeFrom="start" top="13" horizontalCenter="0" width="285" height="39"
-					   source="@Embed(source='../assets/skin/diy_logo.png')"/>
+	
 	
 	
 	<component:QuestionView includeIn="question" width="100%" height="100%"/>
