@@ -17,9 +17,6 @@
     <application path="SelfRecorder.mxml">
       <airExcludes/>
     </application>
-    <application path="WhatchadoDIYRecorder.mxml">
-      <airExcludes/>
-    </application>
   </applications>
   <modules/>
   <workers/>

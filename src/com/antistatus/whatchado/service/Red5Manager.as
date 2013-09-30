@@ -4,14 +4,15 @@
 
 package com.antistatus.whatchado.service
 {
+	import com.antistatus.whatchado.base.BaseActor;
+	import com.antistatus.whatchado.event.SystemEvent;
+	import com.antistatus.whatchado.model.MainModel;
 	import com.antistatus.whatchado.utilities.Trace;
 	
 	import flash.desktop.NativeProcess;
 	import flash.desktop.NativeProcessStartupInfo;
-	import flash.display.DisplayObject;
 	import flash.events.DataEvent;
 	import flash.events.Event;
-	import flash.events.EventDispatcher;
 	import flash.events.NativeProcessExitEvent;
 	import flash.events.ProgressEvent;
 	import flash.events.TimerEvent;
@@ -19,17 +20,9 @@ package com.antistatus.whatchado.service
 	import flash.utils.Timer;
 	
 	import mx.controls.Alert;
-	import mx.core.FlexGlobals;
-	import mx.managers.PopUpManager;
-	
-	import spark.components.TextInput;
 
-	[Event(name = "started", type = "flash.events.Event")]
-	[Event(name = "stopped", type = "flash.events.Event")]
-	[Event(name = "logging", type = "flash.events.DataEvent")]
-	public class Red5Manager extends EventDispatcher
+	public class Red5Manager extends BaseActor
 	{
-		//private static const WIN_CMD_PATH:String = "C:/Windows/System32/cmd.exe";
 		private static const RED5_FOLDER:String = "server";
 
 		/**
@@ -37,14 +30,16 @@ package com.antistatus.whatchado.service
 		 */
 		public function Red5Manager():void
 		{
-			logsProcessor.addEventListener("started", dispatchEvent);
-			logsProcessor.addEventListener("shuttedDown", shuttedDown);
-			logsProcessor.addEventListener("addressInUse", addressInUse);
 		}
 
+		/**
+		 * Inject the <code>MainModel</code> Singleton.
+		 */
+		[Inject]
+		public var model:MainModel;
+		
 		private var forceCloseProcessTimer:Timer = new Timer(10000);
 
-		private var logsProcessor:LogsProcessor = new LogsProcessor();
 		private var startRed5Process:NativeProcess;
 
 		public function launchRed5():void
@@ -56,21 +51,6 @@ package com.antistatus.whatchado.service
 		{
 			invokeRed5(false);
 		}
-
-		/*private function executeBatch(batchName:String):void
-		{
-			var startupInfo:NativeProcessStartupInfo = new NativeProcessStartupInfo();
-			startupInfo.executable = new File(WIN_CMD_PATH);
-			startupInfo.workingDirectory = File.applicationDirectory.resolvePath(RED5_FOLDER);
-
-			//args
-			var processArguments:Vector.<String> = new Vector.<String>();
-			processArguments[0] = "/c";
-			processArguments[1] = batchName;
-			startupInfo.arguments = processArguments;
-
-			startProcess(startupInfo);
-		}*/
 
 		public function start():void
 		{
@@ -109,19 +89,29 @@ package com.antistatus.whatchado.service
 			}
 		}
 
-		private function dispatchLogEvent(log:String):void
+		private function processLogEvent(log:String):void
 		{
-			logsProcessor.process(log);
-			dispatchEvent(new DataEvent("logging", false, false, log));
+			var LAUNCHED:String = "Installer service created";
+			var SHUTTED_DOWN:String = "Stopping Coyote";
+			var ADDRESS_IN_USE:String = "Address already in use";
+			
+			if (log.indexOf(LAUNCHED) > -1)
+				dispatch(new Event("started", true));
+			if (log.indexOf(SHUTTED_DOWN) > -1)
+				dispatch(new Event("shuttedDown", true));
+			if (log.indexOf(ADDRESS_IN_USE) > -1)
+				dispatch(new Event("addressInUse", true));
+			
+			dispatch(new DataEvent("logging", false, false, log));
 		}
 
 		private function invokeRed5(launch:Boolean):void
 		{
 			var startupInfo:NativeProcessStartupInfo = new NativeProcessStartupInfo();
-			startupInfo.executable = ConfigurationManager.getInst().getJavaFile();
-			startupInfo.workingDirectory = File.applicationDirectory.resolvePath(RED5_FOLDER);
+			startupInfo.executable = model.getJavaFile();
+			startupInfo.workingDirectory = File.applicationStorageDirectory.resolvePath(RED5_FOLDER);
 
-			var separator:String = ConfigurationManager.isWin ? ";" : ":";
+			var separator:String = model.isWin ? ";" : ":";
 			
 			var arg5:String = File.applicationDirectory.resolvePath(RED5_FOLDER + '/boot.jar').nativePath;
 			arg5 +=  separator;
@@ -152,19 +142,20 @@ package com.antistatus.whatchado.service
 		{
 			var process:NativeProcess = event.target as NativeProcess;
 			var v:String = process.standardError.readUTFBytes(process.standardError.bytesAvailable);
-			dispatchLogEvent(v);
+			processLogEvent(v);
 		}
 
 		private function onOutput(event:ProgressEvent):void
 		{
 			var process:NativeProcess = event.target as NativeProcess;
 			var v:String = process.standardOutput.readUTFBytes(process.standardOutput.bytesAvailable);
-			dispatchLogEvent(v);
+			processLogEvent(v);
 		}
 
 		private function onProcessExit(e:Event = null):void
 		{
-			dispatchEvent(new Event("stopped"));
+			dispatch(new Event("stopped"));
+			dispatch(new SystemEvent(SystemEvent.RED5_ENDED));
 		}
 
 		private function shuttedDown(e:Event):void

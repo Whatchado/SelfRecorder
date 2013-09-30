@@ -2,17 +2,21 @@ package
 {
 
 	import com.antistatus.whatchado.controller.InitConfigCommand;
+	import com.antistatus.whatchado.controller.InitRed5Command;
 	import com.antistatus.whatchado.controller.UserSignInCommand;
+	import com.antistatus.whatchado.event.SystemEvent;
 	import com.antistatus.whatchado.event.UserEvent;
 	import com.antistatus.whatchado.model.MainModel;
 	import com.antistatus.whatchado.model.UserModel;
 	import com.antistatus.whatchado.service.ConfigDataService;
+	import com.antistatus.whatchado.service.Red5Manager;
 	import com.antistatus.whatchado.view.MainView;
 	import com.antistatus.whatchado.view.MainViewMediator;
 	import com.antistatus.whatchado.view.UserProfileMediator;
 	import com.antistatus.whatchado.view.UserProfileView;
 	import com.antistatus.whatchado.view.component.QuestionView;
 	import com.antistatus.whatchado.view.component.QuestionViewMediator;
+	import com.antistatus.whatchado.view.component.SelfRecorderMediator;
 	import com.antistatus.whatchado.view.component.VideoControls;
 	import com.antistatus.whatchado.view.component.VideoControlsMediator;
 	import com.antistatus.whatchado.view.component.VideoProgress;
@@ -53,6 +57,7 @@ package
 			injector.map(UserModel).asSingleton();
 			injector.map(MainModel).asSingleton();
 			injector.map(ConfigDataService).asSingleton();
+			injector.map(Red5Manager).asSingleton();
 			
 			
 			
@@ -66,9 +71,11 @@ package
 			mediatorMap.map(VideoProgress).toMediator(VideoProgressMediator);
 			mediatorMap.map(VideoRecorder).toMediator(VideoRecorderMediator);
 			mediatorMap.map(QuestionView).toMediator(QuestionViewMediator);
+			mediatorMap.map(SelfRecorder).toMediator(SelfRecorderMediator);
 			
 			
-			commandMap.map( LifecycleEvent.POST_INITIALIZE, LifecycleEvent ).toCommand(InitConfigCommand);
+			commandMap.map(LifecycleEvent.POST_INITIALIZE, LifecycleEvent).toCommand(InitConfigCommand);
+			commandMap.map(SystemEvent.RED5_READY, SystemEvent).toCommand(InitRed5Command);
 			
 			// Execute UserSignInCommand when UserEvent.SIGN_IN
 			// is dispatched on the context's Event Dispatcher

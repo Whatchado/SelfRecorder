@@ -33,23 +33,7 @@
 			
 			import mx.events.FlexEvent;
 
-			[Bindable]
-			public var borderVisible:Boolean = false;
-
 			public var nc:NetConnection = new NetConnection();
-
-			private var _overlayVisible:Boolean = true;
-
-			[Bindable]
-			public function get overlayVisible():Boolean
-			{
-				return _overlayVisible;
-			}
-
-			public function set overlayVisible(value:Boolean):void
-			{
-				_overlayVisible = value;
-			}
 
 			public var stream:NetStream;
 
@@ -89,7 +73,7 @@
 
 				_volume = value;
 
-				if (!streamData)
+				if (!stream || !streamData)
 					return;
 
 				stream.soundTransform = new SoundTransform(value);
@@ -101,12 +85,12 @@
 			private var firstRun:Boolean = true;
 
 			private var videoHeightRatio:Number;
+			private var videoWidthRatio:Number = 240;
 
 			private var videoOriginalHeight:int;
 
 			private var videoOriginalWidth:int = 320;
 
-			private var videoWidthRatio:Number = 240;
 			public var videoDuration:Number = 0;
 
 			public function closeStream():void

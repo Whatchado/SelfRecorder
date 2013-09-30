@@ -3,7 +3,20 @@
 					   xmlns:s="library://ns.adobe.com/flex/spark"
 					   xmlns:mx="library://ns.adobe.com/flex/mx"
 					   xmlns:rl2="http://ns.robotlegs.org/flex/rl2"
-					   xmlns:local="*" width="1000" height="700">
+					   xmlns:local="*" width="1000" height="700"  closing="closingHandler(event)">
+	
+	<fx:Script>
+		<![CDATA[
+			import com.antistatus.whatchado.event.ViewEvent;
+			protected function closingHandler(event:Event):void
+			{
+				event.preventDefault();
+				dispatchEvent(new ViewEvent(ViewEvent.EXIT));
+				//red5Starter.stop();
+			}
+		]]>
+	</fx:Script>
+	
 	<fx:Declarations>
 		<rl2:ContextBuilder>
 			<local:ApplicationBundle/>

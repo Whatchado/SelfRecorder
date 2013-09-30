@@ -2,6 +2,7 @@
 @namespace s "library://ns.adobe.com/flex/spark";
 @namespace mx "library://ns.adobe.com/flex/mx";
 @namespace view "com.antistatus.whatchado.view.*";
+@namespace component "com.antistatus.whatchado.view.component.*";
 
 @font-face
 {
@@ -29,6 +30,13 @@ view|MainView s|Scroller s|VScrollBar{
 	up-arrow-skin: ClassReference("undefined");
 	down-arrow-skin: ClassReference("undefined");
 	skin-class: ClassReference("com.antistatus.whatchado.view.skin.VScrollBarSkin");
+}
+view|MainView  component|QuestionView s|Scroller s|VScrollBar{
+	focusAlpha: 0;
+	focusEnabled: false;
+	up-arrow-skin: ClassReference("undefined");
+	down-arrow-skin: ClassReference("undefined");
+	skin-class: ClassReference("com.antistatus.whatchado.view.skin.VScrollBarLightSkin");
 }
 
 s|Button

@@ -30,18 +30,9 @@ package com.antistatus.whatchado.service
 		 * Configuration
 		 * 
 		 */
-		public function ConfigurationManager(enforcer:SingletonEnforcer)
+		public function ConfigurationManager()
 		{
-			if (!enforcer) throw new Error("ConfigurationManager can't be explicitly instantiated");
-			
 			configFile = File.applicationStorageDirectory.resolvePath(CONFIG_FILE);
-		}
-		
-		public static function getInst() : ConfigurationManager
-		{
-			if (!instance)
-				instance = new ConfigurationManager(new SingletonEnforcer());
-			return instance;
 		}
 		
 		//-----------------------------------------------------
@@ -155,10 +146,9 @@ package com.antistatus.whatchado.service
 			}
 		}
 		
-		public static function get isWin() : Boolean
+		public function get isWin() : Boolean
 		{
 			return Capabilities.os.toLowerCase().indexOf("win") > -1;
 		}
 	}
 }
-class SingletonEnforcer{}

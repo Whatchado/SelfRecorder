@@ -6,8 +6,10 @@ package com.antistatus.whatchado.model
 	import com.antistatus.whatchado.model.vo.ErrorVO;
 	import com.antistatus.whatchado.model.vo.LocalesVO;
 	
+	import flash.filesystem.File;
 	import flash.media.Camera;
 	import flash.media.Microphone;
+	import flash.system.Capabilities;
 	
 	import mx.collections.ArrayCollection;
 
@@ -82,10 +84,45 @@ package com.antistatus.whatchado.model
 		[Bindable]
 		public var currentStreamTime:int = -1;
 
-		
+		public var javaHome:String;
 		
 		public function MainModel()
 		{
+		}
+		
+		public function get isWin() : Boolean
+		{
+			return Capabilities.os.toLowerCase().indexOf("win") > -1;
+		}
+		
+		public function getJavaFile() : File
+		{
+			// Get a file reference to the JVM
+			var file:File = new File(javaHome);
+			if (isWin)
+			{
+				file = file.resolvePath("bin/javaw.exe");
+			}
+			else
+			{
+				file = file.resolvePath("Home/bin/java");
+			}
+			return file;
+		}
+		
+		public function isJavaHomeValid() : Boolean
+		{
+			if (!javaHome)
+				setDefaultJavaHome();
+			
+			return getJavaFile().exists;
+		}	
+		
+		private function setDefaultJavaHome() : void
+		{
+			javaHome = (isWin) ? 
+				"C:\\Program Files\\Java\\jre6" : 
+				"/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0";
 		}
 	}
 }

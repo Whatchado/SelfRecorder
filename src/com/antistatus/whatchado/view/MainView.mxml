@@ -98,11 +98,6 @@
 					Trace.log(this, "Error: " + any + " - " + stage.displayState);
 				}
 			}
-
-			protected function exitButtonClickHandler(event:MouseEvent):void
-			{
-				NativeApplication.nativeApplication.exit();
-			}
 			
 			protected function loggerButtonClickHandler(event:MouseEvent):void
 			{
@@ -197,5 +192,4 @@
 	<component:SettingsView id="settingsView" includeIn="test" x="0" verticalCenter="0" width="100%"/>
 	<s:Button right="0" id="loggerButton" label="logger" click="loggerButtonClickHandler(event)" bottom="0"/>
 	<s:Button right="0" id="fullScreenButton" label="fullscreen" click="fullScreenClickHandler(event)" top="0"/>
-	<s:Button label="exit" click="exitButtonClickHandler(event)" right="{fullScreenButton.width+5}"/>
 </s:Group>

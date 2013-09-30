@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				autoDrawBackground="false" height="65" width="100%">
+	<fx:Script>
+		<![CDATA[
+			import com.antistatus.whatchado.model.vo.RecordedFileVO;
+		]]>
+	</fx:Script>
+	<s:Rect width="100%" top="0" bottom="0" topRightRadiusX="8" bottomRightRadiusX="8">
+		<s:fill>
+			<s:SolidColor color="#FFFFFF"/>
+		</s:fill>
+	</s:Rect>
+	<s:Rect width="100%" top="45" bottom="0" bottomRightRadiusX="8">
+		<s:fill>
+			<s:SolidColor color="#000000" alpha=".1"/>
+		</s:fill>
+	</s:Rect>
+	<s:Label width="100%" y="2" text="{RecordedFileVO(data).label}"/>
+	<s:Label width="100%" y="32" text="{RecordedFileVO(data).date.toUTCString()}"/>
+	<s:Label width="100%" y="52" text="{RecordedFileVO(data).duration}"/>
+	
+</s:ItemRenderer>

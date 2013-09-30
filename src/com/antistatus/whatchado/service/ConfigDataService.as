@@ -2,16 +2,16 @@
 package com.antistatus.whatchado.service
 {
 
+	import com.antistatus.whatchado.base.BaseActor;
+	import com.antistatus.whatchado.event.SystemEvent;
 	import com.antistatus.whatchado.model.MainModel;
 	import com.antistatus.whatchado.model.vo.ErrorVO;
-	import com.antistatus.whatchado.model.vo.LocalesVO;
 	import com.antistatus.whatchado.model.vo.NavigationButtonVO;
 	import com.antistatus.whatchado.model.vo.NavigationTypeVO;
 	import com.antistatus.whatchado.model.vo.QuestionVO;
 	import com.antistatus.whatchado.utilities.Trace;
 	
 	import flash.events.Event;
-	import flash.events.FileListEvent;
 	import flash.events.IOErrorEvent;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
@@ -26,7 +26,7 @@ package com.antistatus.whatchado.service
 	/**
 	 * A Service class that handles loading and parsing of the config xml data.
 	 */
-	public class ConfigDataService
+	public class ConfigDataService extends BaseActor
 	{
 
 		public function ConfigDataService()
@@ -153,9 +153,30 @@ package com.antistatus.whatchado.service
 			model.locales.introText = xml.introText.toString();
 			
 			
-			
+			copyServerFiles();
 			
 			Trace.log(this, "config complete!");
+		}
+		
+		private function copyServerFiles():void
+		{
+			var resultDir:File = File.applicationStorageDirectory.resolvePath("server"); 
+			if(!resultDir.exists)
+			{
+				var sourceDir:File = File.applicationDirectory.resolvePath("server"); 
+				sourceDir.addEventListener(Event.COMPLETE, copyServerCompleteHandler);
+				
+				sourceDir.copyToAsync(resultDir);
+			}
+			else
+			{
+				dispatch(new SystemEvent(SystemEvent.RED5_READY));
+			}
+		}
+		
+		protected function copyServerCompleteHandler(event:Event):void
+		{
+			dispatch(new SystemEvent(SystemEvent.RED5_READY));
 		}
 		
 		private function copyFileToStorage(filename:String):File
