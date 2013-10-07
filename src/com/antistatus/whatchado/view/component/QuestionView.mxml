@@ -37,11 +37,16 @@
 			}
 			
 			
+			protected function recordExitStateHandler(event:FlexEvent):void
+			{
+				videoRecorder.disconnect();
+			}
+			
 		]]>
 	</fx:Script>
 	<s:states>
 		<s:State name="start" exitState="videoExitStateHandler(event)"/>
-		<s:State name="record" enterState="recordEnterStateHandler(event)"/>
+		<s:State name="record" enterState="recordEnterStateHandler(event)" exitState="recordExitStateHandler(event)"/>
 	</s:states>
 		
 	<s:RichText id="questionText" width="592" height="50" bottom="10" left="100" fontSize="20"/>

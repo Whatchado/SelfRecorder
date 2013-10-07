@@ -12,6 +12,9 @@ package com.antistatus.whatchado.model.vo
 		
 		public var introText:String = "";
 		public var tippsLabel:String = "";
+		public var settingsButton:String = "";
+		public var testRecordButton:String = "";
+		public var tippsButton:String = "";
 		
 		public function LocalesVO()
 		{

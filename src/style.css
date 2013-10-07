@@ -91,3 +91,8 @@ s|Button
 	iconPlacement:right;
 	skin-class: ClassReference("com.antistatus.whatchado.view.skin.TopMenuButtonSkin");
 }
+
+.settingsButton
+{
+	skin-class: ClassReference("com.antistatus.whatchado.view.skin.SettingsButtonSkin");
+}

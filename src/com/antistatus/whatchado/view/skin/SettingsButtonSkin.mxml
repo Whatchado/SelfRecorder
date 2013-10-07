@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SparkButtonSkin xmlns:fx="http://ns.adobe.com/mxml/2009" 
+             xmlns:s="library://ns.adobe.com/flex/spark" 
+             xmlns:fb="http://ns.adobe.com/flashbuilder/2009"
+             minWidth="21" minHeight="21" creationComplete="creationCompleteHandler(event)">
+     
+    <fx:Metadata>
+        <![CDATA[ 
+        /** 
+         * @copy spark.skins.spark.ApplicationSkin#hostComponent
+         */
+        [HostComponent("spark.components.Button")]
+        ]]>
+    </fx:Metadata>
+        
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				var leftRound:Boolean = Boolean(hostComponent.id == 'settingsButton');
+				if(leftRound)
+				{
+					filler.topLeftRadiusX= 16;
+					filler.bottomLeftRadiusX=16;
+				}
+				else
+				{
+					filler.topRightRadiusX=16;
+					filler.bottomRightRadiusX=16;
+				}
+			}
+			
+		]]>
+	</fx:Script>
+    <!-- states -->
+    <s:states>
+        <s:State name="up" />
+        <s:State name="over" />
+        <s:State name="down" />
+        <s:State name="disabled" />
+    </s:states>
+    
+    <!-- layer 2: fill -->
+    <!--- @private -->
+    <s:Rect id="filler" left="0" right="0" top="0" bottom="0">
+        <s:fill>
+            <s:SolidColor color="#FFFFFF" color.disabled="#377784"/>
+        </s:fill>
+		<s:filters>
+			<s:DropShadowFilter includeIn="disabled" inner="true" distance="2" blurX="4" blurY="4" strength=".5"/>
+		</s:filters>
+    </s:Rect>
+	<s:Label id="labelDisplay" typographicCase="uppercase" color.disabled="#FFFFFF" color="#377784"
+			 textAlign="center" fontSize="16"
+			 maxDisplayedLines="1"
+			 horizontalCenter="0" verticalCenter="0" verticalAlign="middle"
+			 left="10" right="10" top="2" bottom="2">
+		<s:filters>
+			<s:DropShadowFilter includeIn="disabled" distance="1" strength=".5"/>
+		</s:filters>
+	</s:Label>
+	
+	
+</s:SparkButtonSkin>

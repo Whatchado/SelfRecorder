@@ -4,7 +4,7 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 xmlns:view="com.antistatus.whatchado.view.*"
 		 xmlns:component="com.antistatus.whatchado.view.component.*"
-		 width="100%" height="100%">
+		 width="100%" height="100%" minHeight="600" minWidth="900">
 
 	<fx:Declarations>
 		<s:Power id="powerEasing" exponent="4"/>
@@ -134,6 +134,23 @@
 			}
 			
 			
+			protected function settingsButtonClickHandler(event:MouseEvent):void
+			{
+				testRecordView.videoRecorder.disconnect();
+				currentState = "test";
+				testRecordButton.enabled = true;
+				settingsButton.enabled = false;
+				settingsView.start();
+			}
+			
+			protected function testRecordButtonClickHandler(event:MouseEvent):void
+			{
+				currentState = "testrecord";
+				testRecordButton.enabled = false;
+				settingsButton.enabled = true;
+				testRecordView.videoRecorder.connect();
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -142,6 +159,7 @@
 		<s:State name="start"/>
 		<s:State name="intro" enterState="{topBarGroup.visible = true; bottomBarGroup.visible = true;}" exitState="{introView.visible = false;}"/>
 		<s:State name="test" exitState="testStateExitStateHandler(event)"/>
+		<s:State name="testrecord"/>
 		<s:State name="tour"/>
 		<s:State name="login"/>
 		<s:State name="fullscreen"/>
@@ -178,7 +196,7 @@
 				   source="@Embed(source='../assets/skin/bg_bottom.png')"/>
 	</s:Group>
 
-	<s:HGroup horizontalCenter="0" bottom="0" gap="10">
+	<s:HGroup right="100" bottom="0" gap="10">
 		<s:Button label="Start Interview" click="startQuestionsClickHandler(event)"/>
 		<s:Button label="Question Finish" click="nextQuestionsClickHandler(event)" includeIn="question"/>
 	</s:HGroup>
@@ -189,7 +207,15 @@
 	<component:QuestionView includeIn="question" width="100%" height="100%"/>
 	<view:UserProfileView/>
 
-	<component:SettingsView id="settingsView" includeIn="test" x="0" verticalCenter="0" width="100%"/>
+	<component:SettingsView id="settingsView" includeIn="test" verticalCenter="30" width="100%"/>
+	
+
+	<component:TestRecordView id="testRecordView" includeIn="testrecord" height="100%" width="100%"/>
+	<s:HGroup width="100%" top="129" height="36" gap="0" includeIn="test, testrecord" horizontalAlign="center">
+		<s:Button width="233" height="36" id="settingsButton" click="settingsButtonClickHandler(event)" styleName="settingsButton" name="left" enabled="false" buttonMode="true" useHandCursor="true"/>		
+		<s:Button width="233" height="36" id="testRecordButton" click="testRecordButtonClickHandler(event)" styleName="settingsButton" buttonMode="true" useHandCursor="true"/>		
+	</s:HGroup>
+	
 	<s:Button right="0" id="loggerButton" label="logger" click="loggerButtonClickHandler(event)" bottom="0"/>
 	<s:Button right="0" id="fullScreenButton" label="fullscreen" click="fullScreenClickHandler(event)" top="0"/>
 </s:Group>

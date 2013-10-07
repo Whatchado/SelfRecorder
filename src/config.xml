@@ -27,8 +27,9 @@
 		<question id="7" text="Drei Ratschläge an dein 14jähriges Ich?" video="videos/Frage07_s.mp4" time="30"/>
 	</questions>
 
-	<tippsLabel label="Tipps" video="videos/Technik_s.mp4"/>
-	
+	<tippsButton label="Tipps" video="videos/Technik_s.mp4"/>
+	<settingsButton label="Einstellungen"/>
+	<testRecordButton label="Aufnahme testen"/>
 	<cameraSettings headline="WÄHLE DEINE KAMERA." subHeadline="Auf der rechten Seite siehst du, was die Kamera sieht." selectorLabel="Camera:"/>
 	<microphoneSettings headline="WÄHLE DEIN MIKROFON." subHeadline="Die Maximal-Lautstärke des Mikrofons sollte etwa bei 80-90% des Balkens sein." selectorLabel="Microphone:" volumeLabel="Volume:"/>
 	

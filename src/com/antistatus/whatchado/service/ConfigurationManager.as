@@ -2,7 +2,6 @@ package com.antistatus.whatchado.service
 {
 	import com.antistatus.whatchado.model.vo.ConfigVO;
 	import com.antistatus.whatchado.utilities.Trace;
-	import com.antistatus.whatchado.view.component.ConfigPopup;
 	
 	import flash.display.DisplayObject;
 	import flash.events.Event;
@@ -24,7 +23,6 @@ package com.antistatus.whatchado.service
 		
 		private var configFile:File;
 		private var _config:ConfigVO;
-		private var configPopup:ConfigPopup;
 		
 		/**
 		 * Configuration
@@ -60,9 +58,6 @@ package com.antistatus.whatchado.service
 			}
 			else
 			{
-				configPopup = PopUpManager.createPopUp(FlexGlobals.topLevelApplication as DisplayObject, ConfigPopup, true) as ConfigPopup;
-				configPopup.addEventListener("saveConfig", save);
-				PopUpManager.centerPopUp(configPopup);
 				Trace.log(this, "Java path not valid!");
 			}
 		}
@@ -100,7 +95,6 @@ package com.antistatus.whatchado.service
 			fs.writeUTFBytes(xml);
 			fs.close();
 			
-			PopUpManager.removePopUp(configPopup);
 			dispatchEvent(new Event("configured"));
 		}
 		

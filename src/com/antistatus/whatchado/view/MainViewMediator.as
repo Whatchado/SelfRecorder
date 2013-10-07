@@ -109,6 +109,8 @@ package com.antistatus.whatchado.view
 				view.settingsView.settingsMicrophoneSubHeadline.text = model.locales.settingsMicrophoneSubHeadline;
 				view.settingsView.settingsMicrophoneSelectorLabel.text = model.locales.settingsMicrophoneSelectorLabel;
 				view.settingsView.settingsMicrophoneVolumeLabel.text = model.locales.settingsMicrophoneVolumeLabel;
+				view.settingsButton.label = model.locales.settingsButton;
+				view.testRecordButton.label = model.locales.testRecordButton;
 			
 				if(view.settingsView.video.videoObject)
 					view.settingsView.start();

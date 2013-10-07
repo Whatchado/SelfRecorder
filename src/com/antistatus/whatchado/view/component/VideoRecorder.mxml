@@ -199,7 +199,7 @@
 				}
 			}
 			
-			private function onStop() : void
+			public function onStop() : void
 			{
 				removeEventListener(Event.ENTER_FRAME, updateRecordTime);
 				stream.attachCamera(null);
@@ -239,6 +239,12 @@
 				videoHeightRatio = h / w;
 				invalidateDisplayList();
 			}
+			
+			public function disconnect():void
+			{
+				onStop();
+			}
+			
 		]]>
 	</fx:Script>
 	<s:states>		
@@ -253,7 +259,7 @@
 				<s:SolidColor color="#000000"/>
 			</s:fill>
 		</s:Rect>
-		<s:VideoDisplay id="videoDisplay" width="100%" height="100%">
+		<s:VideoDisplay id="videoDisplay" scaleX="-1"  width="100%" height="100%">
 			<s:source>
 				<s:DynamicStreamingVideoSource host="" streamType="{StreamType.LIVE}">
 					<s:DynamicStreamingVideoItem  />

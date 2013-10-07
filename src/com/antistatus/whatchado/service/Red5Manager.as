@@ -9,6 +9,7 @@ package com.antistatus.whatchado.service
 	import com.antistatus.whatchado.model.MainModel;
 	import com.antistatus.whatchado.utilities.Trace;
 	
+	import flash.desktop.NativeApplication;
 	import flash.desktop.NativeProcess;
 	import flash.desktop.NativeProcessStartupInfo;
 	import flash.events.DataEvent;
@@ -138,6 +139,7 @@ package com.antistatus.whatchado.service
 
 			startProcess(startupInfo);
 		}
+		
 		private function onError(event:ProgressEvent):void
 		{
 			var process:NativeProcess = event.target as NativeProcess;
@@ -150,6 +152,7 @@ package com.antistatus.whatchado.service
 			var process:NativeProcess = event.target as NativeProcess;
 			var v:String = process.standardOutput.readUTFBytes(process.standardOutput.bytesAvailable);
 			processLogEvent(v);
+			NativeApplication.nativeApplication.activate();
 		}
 
 		private function onProcessExit(e:Event = null):void

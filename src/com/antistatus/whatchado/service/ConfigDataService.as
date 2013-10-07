@@ -142,7 +142,9 @@ package com.antistatus.whatchado.service
 			model.tippsVideo = xml.tippsLabel.@video.toString();
 			file = copyFileToStorage(model.tippsVideo);
 			
-			model.locales.tippsLabel = xml.tippsLabel.@label.toString();
+			model.locales.tippsButton = xml.tippsButton.@label.toString();
+			model.locales.settingsButton = xml.settingsButton.@label.toString();
+			model.locales.testRecordButton = xml.testRecordButton.@label.toString();
 			model.locales.settingsCameraHeadline = xml.cameraSettings.@headline.toString();
 			model.locales.settingsCameraSubHeadline = xml.cameraSettings.@subHeadline.toString();
 			model.locales.settingsCameraSelectorLabel = xml.cameraSettings.@selectorLabel.toString();

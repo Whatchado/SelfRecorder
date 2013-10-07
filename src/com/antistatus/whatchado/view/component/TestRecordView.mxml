@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:component="com.antistatus.whatchado.view.component.*">
+	
+	<s:Rect top="160" bottom="100" left="135" right="122">
+		<s:stroke>
+			<s:SolidColorStroke color="#FFFFFF" weight="2" alpha="0.4"/>
+		</s:stroke>
+	</s:Rect>
+	<component:VideoRecorder top="185" bottom="0" left="160" right="147" id="videoRecorder"/>
+	<s:BitmapImage bottom="0" horizontalCenter="0" width="148" height="125" source="@Embed(source='../assets/skin/recordingButton.png')"/>
+		
+</s:Group>
