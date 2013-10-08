@@ -309,6 +309,10 @@
 			{
 				if (event.data.width)
 					setVideoSize(event.data.width, event.data.height);
+				else
+					setVideoSize(852, 480);
+					
+					
 				if (event.data.duration)
 					setVideoDuration(event.data.duration);
 

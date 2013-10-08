@@ -2,6 +2,7 @@
 package com.antistatus.whatchado.view.component
 {
 	import com.antistatus.whatchado.event.SystemEvent;
+	import com.antistatus.whatchado.event.ViewEvent;
 	import com.antistatus.whatchado.model.MainModel;
 	
 	import robotlegs.bender.bundles.mvcs.Mediator;
@@ -24,7 +25,7 @@ package com.antistatus.whatchado.view.component
 		override public function initialize():void
 		{
 			// context listeners
-			addContextListener(SystemEvent.VIDEO_RECORDED, videoRecordedHandler);
+			addContextListener(ViewEvent.VIDEO_RECORDED, videoRecordedHandler);
 
 			
 			videoRecorder.currentAnswer = model.currentQuestion;
@@ -33,7 +34,7 @@ package com.antistatus.whatchado.view.component
 			videoRecorder.currentMicrophone = model.currentMicrophone;
 		}
 		
-		private function videoRecordedHandler(event:SystemEvent):void
+		private function videoRecordedHandler(event:ViewEvent):void
 		{
 			// TODO Auto Generated method stub
 		}		

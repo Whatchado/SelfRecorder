@@ -51,7 +51,6 @@ package com.antistatus.whatchado.event
 		public static const VIDEO_DURATION_CHANGED:String = "videoDuration";
 		public static const NEXT_QUESTION:String = "nextQuestion";
 		public static const VIDEO_COMPLETE:String = "videoComplete";
-		public static const VIDEO_RECORDED:String = "videoRecorded";
 		public static const RED5_READY:String = "red5Ready";
 		public static const RED5_ENDED:String = "red5Ended";
 		public var value:Number;

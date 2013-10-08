@@ -68,6 +68,10 @@ package com.antistatus.whatchado.event
 		 * Dispatched in a View Component 
 		 */
 		public static const SUBMIT:String = "vcSubmit";
+		/**
+		 * Dispatched in a View Component 
+		 */
+		public static const VIDEO_RECORDED:String = "vcVideoRecorded";
 
 		/**
 		 * Dispatched in a View Component 

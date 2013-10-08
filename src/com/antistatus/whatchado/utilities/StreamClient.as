@@ -35,6 +35,12 @@ package com.antistatus.whatchado.utilities
 		}
 
 		/** Receiving the bandwidth check result. **/
+		public function setDataFrame(obj:Object):void
+		{
+			forward(obj, '@setDataFrame');
+		}
+		
+		/** Receiving the bandwidth check result. **/
 		public function onBWDone(... rest):void
 		{
 			if (rest.length > 0)

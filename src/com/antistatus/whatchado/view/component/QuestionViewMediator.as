@@ -32,12 +32,12 @@ package com.antistatus.whatchado.view.component
 		{
 			addContextListener(SystemEvent.NEXT_QUESTION, nextQuestionHandler);
 			addContextListener(SystemEvent.VIDEO_COMPLETE, videoCompleteHandler);
-			addViewListener(SystemEvent.VIDEO_RECORDED, videoRecordedHandler);
+			addViewListener(ViewEvent.VIDEO_RECORDED, videoRecordedHandler);
 			addViewListener(ViewEvent.CLICK, tippsClickHandler);
 			nextQuestion();
 		}
 		
-		private function videoRecordedHandler(event:SystemEvent):void
+		private function videoRecordedHandler(event:ViewEvent):void
 		{
 			getRecordedFiles();
 		}

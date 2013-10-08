@@ -6,6 +6,7 @@ package com.antistatus.whatchado.view
 	import com.antistatus.whatchado.model.MainModel;
 	import com.antistatus.whatchado.model.vo.NavigationButtonVO;
 	import com.antistatus.whatchado.model.vo.NavigationTypeVO;
+	import com.antistatus.whatchado.model.vo.QuestionVO;
 	import com.antistatus.whatchado.utilities.Trace;
 	import com.antistatus.whatchado.view.MainView;
 	
@@ -36,11 +37,22 @@ package com.antistatus.whatchado.view
 			addViewListener(ViewEvent.SETTINGS_SUBMIT, settingsSubmitHandler);
 			addViewListener(ViewEvent.START, startQuestionsHandler);
 			addViewListener(ViewEvent.CONTINUE, nextQuestionsHandler);
+			addViewListener(ViewEvent.VIDEO_RECORDED, videoRecordedHandler);
 			
 			view.menuButtonsDataProvider = model.menuButtonsDataProvider;
 			view.questionsButtonsDataProvider = model.questionsButtonsDataProvider;
 			
 			setTimeout(switchInfoState, 2000);
+		}
+		
+		private function videoRecordedHandler(event:ViewEvent):void
+		{
+			if(view.currentState == "testrecord")
+			{
+				view.testRecordView.showTestVideo();
+				model.currentVideo = "testrecording/test.flv";
+				dispatch(new VideoControlsEvent(VideoControlsEvent.START_VIDEO));
+			}
 		}
 		
 		private function switchInfoState():void
