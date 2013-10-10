@@ -6,7 +6,6 @@ package com.antistatus.whatchado.view
 	import com.antistatus.whatchado.model.MainModel;
 	import com.antistatus.whatchado.model.vo.NavigationButtonVO;
 	import com.antistatus.whatchado.model.vo.NavigationTypeVO;
-	import com.antistatus.whatchado.model.vo.QuestionVO;
 	import com.antistatus.whatchado.utilities.Trace;
 	import com.antistatus.whatchado.view.MainView;
 	
@@ -49,8 +48,8 @@ package com.antistatus.whatchado.view
 		{
 			if(view.currentState == "testrecord")
 			{
-				view.testRecordView.showTestVideo();
 				model.currentVideo = "testrecording/test.flv";
+				view.testRecordView.showTestVideo();
 				dispatch(new VideoControlsEvent(VideoControlsEvent.START_VIDEO));
 			}
 		}

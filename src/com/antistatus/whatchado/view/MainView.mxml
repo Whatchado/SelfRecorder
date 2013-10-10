@@ -151,6 +151,11 @@
 				testRecordView.videoRecorder.connect();
 			}
 			
+			protected function testrecordExitStateHandler(event:FlexEvent):void
+			{
+				testRecordView.currentState = "record";
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -159,7 +164,7 @@
 		<s:State name="start"/>
 		<s:State name="intro" enterState="{topBarGroup.visible = true; bottomBarGroup.visible = true;}" exitState="{introView.visible = false;}"/>
 		<s:State name="test" exitState="testStateExitStateHandler(event)"/>
-		<s:State name="testrecord"/>
+		<s:State name="testrecord" exitState="testrecordExitStateHandler(event)"/>
 		<s:State name="tour"/>
 		<s:State name="login"/>
 		<s:State name="fullscreen"/>

@@ -122,6 +122,10 @@ package com.antistatus.whatchado.view.component
 				view.recordingsDataProvider = new ArrayCollection(recordingsData);
 				
 			}
+			else
+			{
+				view.recordingsDataProvider = new ArrayCollection([]);
+			}
 		}
 		
 		private function getFileLabel(name:String):String

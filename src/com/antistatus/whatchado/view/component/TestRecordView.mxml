@@ -6,17 +6,26 @@
 	<fx:Script>
 		<![CDATA[
 			import com.antistatus.whatchado.view.skin.VideoControlsSkin;
+			
+			import mx.events.FlexEvent;
 			public function showTestVideo():void
 			{
 				currentState = "playback";
+				videoScreen.connect();
 			}
+			
+			protected function exitStateHandler(event:FlexEvent):void
+			{
+				videoScreen.closeStream();
+			}
+			
 		]]>
 	</fx:Script>
 	
 	
 	<s:states>
 		<s:State name="record"/>
-		<s:State name="playback"/>
+		<s:State name="playback" exitState="exitStateHandler(event)"/>
 	</s:states>
 	
 	

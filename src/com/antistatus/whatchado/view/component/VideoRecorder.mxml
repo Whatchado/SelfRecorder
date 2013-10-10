@@ -24,9 +24,6 @@
 			private var streamName:String;
 			private var stopRequested:Boolean;
 			
-			[Bindable] 
-			private var duration:Number = 0;
-			[Bindable] 
 			private var bufferLength:Number = 0;
 			private var startTime:Number;
 			public var currentCamera:Camera;
@@ -39,6 +36,7 @@
 			private var videoOriginalWidth:int = 320;
 			private var videoHeightRatio:Number;
 			private var videoWidthRatio:Number = 240;
+			private var sec:Number;
 			
 			public function connect():void
 			{
@@ -91,15 +89,18 @@
 				else
 					destination= File.applicationStorageDirectory.resolvePath("recordings/answer"+currentAnswer+"/" + streamName + ".flv");
 				
-				source.copyTo(destination, true);
-				source.deleteFile();
+				if(source.exists)
+				{
+					source.copyTo(destination, true);
+					source.deleteFile();
+				}
 				dispatchEvent(new ViewEvent(ViewEvent.VIDEO_RECORDED, {file: streamName + ".flv"}, true));
 				currentTake++;
 			}
 			
 			private function updateRecordTime(e:Event) : void
 			{
-				duration = new Date().time - startTime;
+				durationView.text = getTimeString(new Date().time - startTime);
 			}
 			
 			private function updateBufferLength(e:Event) : void
@@ -259,6 +260,30 @@
 				onStop();
 			}
 			
+			private function getTimeString(milli:Number):String
+			{
+				sec = milli/1000;
+				var s:Number = sec % 60;
+				var m:Number = Math.floor((sec % 3600 ) / 60);
+				var h:Number = Math.floor(sec / (60 * 60));
+				
+				var hourStr:String = (h == 0) ? "" : doubleDigitFormat(h) + ":";
+				var minuteStr:String = doubleDigitFormat(m) + ":";
+				var secondsStr:String = doubleDigitFormat(s);
+				
+				return hourStr + minuteStr + secondsStr;
+			}
+			
+			private function doubleDigitFormat($num:uint):String
+			{
+				if ($num < 10) 
+				{
+					return ("0" + $num);
+				}
+				return String($num);
+			}
+				
+			
 		]]>
 	</fx:Script>
 	<s:states>		
@@ -287,12 +312,8 @@
 				   excludeFrom="recordState" alpha.disconnectedState=".5"/>
 	
 	<s:BitmapImage bottom="0" horizontalCenter="0" width="148" height="125" source="@Embed(source='../assets/skin/recordingButtonRec.png')" includeIn="recordState"/>
-	<s:Button id="rBtn" skinClass="com.antistatus.whatchado.view.skin.EmptyButtonSkin" buttonMode="true" useHandCursor="true"
-			  horizontalCenter="0" width="148" height="125" bottom="0"
-			  enabled.disconnectedState="false"
-			  click="onRecord()" click.recordState="onStop()"/>
 	<!--/{bufferLength.toPrecision(2)}/{BUFFER_TIME}-->
-	<s:Label text="{(duration/1000).toPrecision(2)}"  includeIn="recordState"
+	<s:Label id="durationView"  includeIn="recordState"
 			 width="180"
 			 textAlign="center"
 			 fontWeight="bold" fontSize="20"
@@ -303,6 +324,10 @@
 			<s:DropShadowFilter distance="1" strength=".5"/>
 		</s:filters>
 	</s:Label>
+	<s:Button id="rBtn" skinClass="com.antistatus.whatchado.view.skin.EmptyButtonSkin" buttonMode="true" useHandCursor="true"
+			  horizontalCenter="0" width="148" height="125" bottom="0"
+			  enabled.disconnectedState="false"
+			  click="onRecord()" click.recordState="onStop()"/>
 	
 
 </s:Group>
