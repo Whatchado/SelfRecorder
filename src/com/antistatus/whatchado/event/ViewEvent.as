@@ -79,6 +79,7 @@ package com.antistatus.whatchado.event
 		public static const SETTINGS_SUBMIT:String = "vcSettingsSubmit";
 		
 		
+		public static const ITEM_SELECT:String = "vcItemSelectt";
 		
 		public function ViewEvent(type:String, targetObject:Object = null, bubbles:Boolean = false, cancelable:Boolean = false)
 		{

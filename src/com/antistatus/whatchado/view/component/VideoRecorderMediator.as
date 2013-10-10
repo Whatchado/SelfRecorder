@@ -1,7 +1,6 @@
 
 package com.antistatus.whatchado.view.component
 {
-	import com.antistatus.whatchado.event.SystemEvent;
 	import com.antistatus.whatchado.event.ViewEvent;
 	import com.antistatus.whatchado.model.MainModel;
 	

@@ -85,6 +85,7 @@ package com.antistatus.whatchado.model
 		public var currentStreamTime:int = -1;
 
 		public var javaHome:String;
+		public var selectedRecordings:Array = [];
 		
 		public function MainModel()
 		{

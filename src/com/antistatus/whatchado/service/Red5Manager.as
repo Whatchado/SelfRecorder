@@ -157,6 +157,7 @@ package com.antistatus.whatchado.service
 
 		private function onProcessExit(e:Event = null):void
 		{
+			Trace.log(this, e.toString());
 			dispatch(new Event("stopped"));
 			dispatch(new SystemEvent(SystemEvent.RED5_ENDED));
 		}

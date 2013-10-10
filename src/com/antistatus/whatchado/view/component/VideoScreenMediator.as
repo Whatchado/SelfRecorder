@@ -51,7 +51,7 @@ package com.antistatus.whatchado.view.component
 			
 			volumeWatcher = BindingUtils.bindProperty(videoScreen, "volume", model, "globalVolume");
 
-			progressTimer = setInterval(updateProgress, 250);
+			progressTimer = setInterval(updateProgress, 20);
 		}
 		
 		private function videoCompleteHandler(event:ViewEvent):void

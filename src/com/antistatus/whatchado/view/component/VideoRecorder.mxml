@@ -93,7 +93,7 @@
 				
 				source.copyTo(destination, true);
 				source.deleteFile();
-				dispatchEvent(new ViewEvent(ViewEvent.VIDEO_RECORDED, 0, true));
+				dispatchEvent(new ViewEvent(ViewEvent.VIDEO_RECORDED, {file: streamName + ".flv"}, true));
 				currentTake++;
 			}
 			
@@ -196,7 +196,7 @@
 				if(mode == "test")
 					streamName = "test";
 				else					
-					streamName = "answer"+ currentAnswer + "take" + currentTake + "_" + getDateTime();
+					streamName = currentAnswer + "_" + currentTake + "_" + getDateTime();
 		
 				dispatchLogEvent("Stream name generated: " + streamName + "\n");
 			}
@@ -281,31 +281,28 @@
 			</s:source>
 		</s:VideoDisplay>
 	</s:Group>
-	<s:Button id="rBtn" 
-			  width="80" height="80"
-			  label="Record" 
-			  fontSize="16"
-			  fontWeight="bold"
-			  enabled.recordState="false"
-			  enabled.disconnectedState="false"
-			  click="onRecord()" />
 	
-	<s:Button id="sBtn" 
-			  width="80" height="40"
-			  label="Stop" 
-			  fontSize="12"
-			  fontWeight="bold"
-			  enabled.stopState="false"
-			  enabled.disconnectedState="false"
-			  click="onStop()" />
-	<s:BitmapImage bottom="0" horizontalCenter="0" width="148" height="125" source="@Embed(source='../assets/skin/recordingButton.png')" excludeFrom="recordState"/>
+	<s:BitmapImage bottom="0" horizontalCenter="0" width="148"  height="125" 
+				   source="@Embed(source='../assets/skin/recordingButton.png')" 
+				   excludeFrom="recordState" alpha.disconnectedState=".5"/>
+	
 	<s:BitmapImage bottom="0" horizontalCenter="0" width="148" height="125" source="@Embed(source='../assets/skin/recordingButtonRec.png')" includeIn="recordState"/>
-	<s:Label text="{(duration/1000).toPrecision(2)}/{bufferLength.toPrecision(2)}/{BUFFER_TIME}" 
+	<s:Button id="rBtn" skinClass="com.antistatus.whatchado.view.skin.EmptyButtonSkin" buttonMode="true" useHandCursor="true"
+			  horizontalCenter="0" width="148" height="125" bottom="0"
+			  enabled.disconnectedState="false"
+			  click="onRecord()" click.recordState="onStop()"/>
+	<!--/{bufferLength.toPrecision(2)}/{BUFFER_TIME}-->
+	<s:Label text="{(duration/1000).toPrecision(2)}"  includeIn="recordState"
 			 width="180"
 			 textAlign="center"
-			 fontWeight="bold" 
+			 fontWeight="bold" fontSize="20"
 			 color="#FFFFFF"
-			 fontSize="16" horizontalCenter="0" bottom="50"/>
+			 horizontalCenter="0" 
+			 bottom="55">
+		<s:filters>
+			<s:DropShadowFilter distance="1" strength=".5"/>
+		</s:filters>
+	</s:Label>
 	
 
 </s:Group>

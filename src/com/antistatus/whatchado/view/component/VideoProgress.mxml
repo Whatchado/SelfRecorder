@@ -24,40 +24,9 @@
 			}
 		]]>
 	</fx:Script>
-	<s:Rect id="border"
-			left="0"
-			right="0"
-			top="0"
-			height="30"
-			radiusX="2">
-		<s:fill>
-			<s:SolidColor color="#919498"/>
-		</s:fill>
-	</s:Rect>
-	<s:Rect id="fill"
-			top="1"
-			left="1"
-			right="1"
-			height="30"
-			radiusX="2">
-		<s:fill>
-			<s:LinearGradient rotation="270"
-							  scaleX="{height}"
-							  y="{height}">
-				<s:GradientEntry ratio="0"
-								 color="#C1C4C6"/>
-				<s:GradientEntry ratio="0.1"
-								 color="#E1E1E3"/>
-				<s:GradientEntry ratio="0.18"
-								 color="#EDECED"/>
-			</s:LinearGradient>
-		</s:fill>
-	</s:Rect>
-	<s:Rect height="14" width="100%">
-		<s:fill>
-			<s:SolidColor color="#000000"/>
-		</s:fill>
-	</s:Rect>
-	<component:ProgressSlider id="progress" left="4" right="4" height="100%" liveDragging="false" maximum="{secondsTotal}" minimum="0" 
+	
+
+	
+	<component:ProgressSlider id="progress" left="0" right="0" height="100%" liveDragging="false" maximum="{secondsTotal}" minimum="0" 
 							   change="progressChangeHandler(event)" value="{secondsCurrent}" skinClass="com.antistatus.whatchado.view.skin.ScrubbSliderSkin" snapInterval=".1"/>
 </s:Group>

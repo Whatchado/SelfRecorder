@@ -49,12 +49,6 @@
 			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
 			{
 
-				if (border.radiusX != cornerRadius)
-				{
-					border.radiusX = cornerRadius;
-					fill.radiusX = cornerRadius;
-				}
-
 				if (labelDisplay)
 					labelText = labelDisplay.text;
 				super.updateDisplayList(unscaledWidth, unscaledHeight);
@@ -77,21 +71,6 @@
 	</s:states>
 
 
-	<!-- layer 7: border - put on top of the fill so it doesn't disappear when scale is less than 1 -->
-	<!--- @private -->
-	<s:Rect id="border"
-			left="0"
-			right="0"
-			top="0"
-			bottom="0"
-			radiusX="2"
-			visible="{Boolean(labelText.indexOf('volume')==-1)}">
-		<s:fill>
-			<s:SolidColor color="#919498"/>
-		</s:fill>
-	</s:Rect>
-	<!-- layer 2: fill -->
-	<!--- @private -->
 	<s:Rect id="fill"
 			left="1"
 			right="1"
@@ -99,22 +78,9 @@
 			bottom="1"
 			radiusX="2"
 			alpha="{(labelText.indexOf('volume')==-1)?1:0}">
-		<s:fill>
-			<s:LinearGradient rotation="270"
-							  rotation.over="90"
-							  rotation.disabled="90">
-				<s:GradientEntry ratio="0"
-								 color="#C1C4C6"/>
-				<s:GradientEntry ratio="0.199582"
-								 color="#D7D8D9"/>
-				<s:GradientEntry ratio="0.418695"
-								 color="#E5E4E6"/>
-				<s:GradientEntry ratio="0.662084"
-								 color="#EBEBEC"/>
-				<s:GradientEntry ratio="1"
-								 color="#EDECED"/>
-			</s:LinearGradient>
-		</s:fill>
+		<s:stroke>
+			<s:SolidColorStroke color="#919498"/>
+		</s:stroke>
 	</s:Rect>
 
 

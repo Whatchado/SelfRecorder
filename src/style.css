@@ -39,6 +39,12 @@ view|MainView  component|QuestionView s|Scroller s|VScrollBar{
 	skin-class: ClassReference("com.antistatus.whatchado.view.skin.VScrollBarLightSkin");
 }
 
+component|RecordingsItemRenderer
+{
+	fontFamily: robotoCondensed;
+	fontSize: 13;
+}
+
 s|Button
 {
 	fontFamily: robotoCondensed;

@@ -7,8 +7,10 @@ package com.antistatus.whatchado.view.component
 	import com.antistatus.whatchado.model.MainModel;
 	import com.antistatus.whatchado.model.vo.QuestionVO;
 	import com.antistatus.whatchado.model.vo.RecordedFileVO;
+	import com.antistatus.whatchado.utilities.Trace;
 	
 	import flash.filesystem.File;
+	import flash.net.SharedObject;
 	
 	import mx.collections.ArrayCollection;
 	
@@ -34,11 +36,38 @@ package com.antistatus.whatchado.view.component
 			addContextListener(SystemEvent.VIDEO_COMPLETE, videoCompleteHandler);
 			addViewListener(ViewEvent.VIDEO_RECORDED, videoRecordedHandler);
 			addViewListener(ViewEvent.CLICK, tippsClickHandler);
+			addViewListener(ViewEvent.ITEM_SELECT, recordingSelectHandler);
+			addViewListener(ViewEvent.DELETE, recordingDeleteHandler);
 			nextQuestion();
+		}
+		
+		private function recordingSelectHandler(event:ViewEvent):void
+		{
+			model.currentVideo = event.targetObject.file;
+			view.currentState = "playback";
+			view.videoScreen.connect();
+			dispatch(new VideoControlsEvent(VideoControlsEvent.START_VIDEO));
+			model.selectedRecordings[model.currentQuestion] = model.currentVideo.split("/").pop();
+			getRecordedFiles();
+		}
+		
+		private function recordingDeleteHandler(event:ViewEvent):void
+		{
+			var fileToDelete:File = File.applicationStorageDirectory.resolvePath(event.targetObject.file);
+			fileToDelete.deleteFile();
+			getRecordedFiles();
 		}
 		
 		private function videoRecordedHandler(event:ViewEvent):void
 		{
+			model.selectedRecordings[model.currentQuestion] = event.targetObject.file;
+			Trace.log(this, event.targetObject.file);
+			var selectedRecordingsStore:SharedObject = SharedObject.getLocal("selectedRecordings");
+			if(!selectedRecordingsStore.data.recordings)
+				selectedRecordingsStore.data.recordings = [];
+			
+			selectedRecordingsStore.data.recordings[model.currentQuestion] = event.targetObject.file;
+			selectedRecordingsStore.flush();
 			getRecordedFiles();
 		}
 		
@@ -66,7 +95,8 @@ package com.antistatus.whatchado.view.component
 		}
 		private function videoCompleteHandler(event:SystemEvent):void
 		{
-			view.currentState = "record";
+			if(view.currentState == "start")
+				view.currentState = "record";
 		}
 		
 		private function getRecordedFiles():void
@@ -78,10 +108,17 @@ package com.antistatus.whatchado.view.component
 				var recordingsData:Array = [];
 				for each (var file:File in recordings) 
 				{
-					var recordedFile:RecordedFileVO = new RecordedFileVO(file.name, getFileLabel(file.name), file.creationDate);
+					var recordedFile:RecordedFileVO = new RecordedFileVO("recordings/"+recordingsFolder.name+"/"+file.name, getFileLabel(file.name), file.creationDate);
+					recordedFile.duration = String(file.size/1000);
+					
+					if(model.selectedRecordings[model.currentQuestion] == file.name)
+						recordedFile.selected = true;
+					else
+						recordedFile.selected = false;
+					
 					recordingsData.push(recordedFile);
 				}
-				recordingsData.sortOn("date");
+				recordingsData.sortOn("date",  Array.DESCENDING);
 				view.recordingsDataProvider = new ArrayCollection(recordingsData);
 				
 			}
@@ -89,7 +126,7 @@ package com.antistatus.whatchado.view.component
 		
 		private function getFileLabel(name:String):String
 		{
-			return name;
+			return "AUFNAHME "+ name.split("_")[1];
 		}
 	}
 }

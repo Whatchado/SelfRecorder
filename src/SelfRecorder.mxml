@@ -3,17 +3,75 @@
 					   xmlns:s="library://ns.adobe.com/flex/spark"
 					   xmlns:mx="library://ns.adobe.com/flex/mx"
 					   xmlns:rl2="http://ns.robotlegs.org/flex/rl2"
-					   xmlns:local="*" width="1000" height="700"  closing="closingHandler(event)">
+					   xmlns:local="*" width="1000" height="700"  closing="closingHandler(event)" creationComplete="creationCompleteHandler(event)">
 	
 	<fx:Script>
 		<![CDATA[
 			import com.antistatus.whatchado.event.ViewEvent;
+			
+			import mx.events.FlexEvent;
 			protected function closingHandler(event:Event):void
 			{
 				event.preventDefault();
 				dispatchEvent(new ViewEvent(ViewEvent.EXIT));
 				//red5Starter.stop();
 			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+					var viewMenu:NativeMenuItem; 
+					var debugMenu:NativeMenuItem; 
+					
+					if (NativeWindow.supportsMenu){ 
+						stage.nativeWindow.menu = new NativeMenu(); 
+						stage.nativeWindow.menu.addEventListener(Event.SELECT, selectCommandMenu); 
+						viewMenu = stage.nativeWindow.menu.addItem(new NativeMenuItem("View")); 
+						viewMenu.submenu = createviewMenu(); 
+						debugMenu = stage.nativeWindow.menu.addItem(new NativeMenuItem("Debug")); 
+						debugMenu.submenu = createdebugMenu(); 
+					} 
+					
+					if (NativeApplication.supportsMenu){ 
+						NativeApplication.nativeApplication.menu.addEventListener(Event.SELECT, selectCommandMenu); 
+						viewMenu = NativeApplication.nativeApplication.menu.addItem(new NativeMenuItem("View")); 
+						viewMenu.submenu = createviewMenu(); 
+						debugMenu = NativeApplication.nativeApplication.menu.addItem(new NativeMenuItem("Debug")); 
+						debugMenu.submenu = createdebugMenu(); 
+					} 
+			}
+			
+			private function createviewMenu():NativeMenu
+			{
+				var viewMenu:NativeMenu = new NativeMenu(); 
+				viewMenu.addEventListener(Event.SELECT, selectCommandMenu); 
+				
+				var newCommand:NativeMenuItem = viewMenu.addItem(new NativeMenuItem("Fullscreen")); 
+				newCommand.addEventListener(Event.SELECT, selectCommand); 
+				
+				return viewMenu; 
+			}
+			
+			private function createdebugMenu():NativeMenu
+			{
+				var debugMenu:NativeMenu = new NativeMenu(); 
+				debugMenu.addEventListener(Event.SELECT, selectCommandMenu); 
+				
+				var newCommand:NativeMenuItem = debugMenu.addItem(new NativeMenuItem("Logger")); 
+				newCommand.addEventListener(Event.SELECT, selectCommand); 
+				
+				return debugMenu; 
+			}
+			
+			protected function selectCommandMenu(event:Event):void
+			{
+				trace("Selected command: " + event.target.label); 
+			}
+			
+			protected function selectCommand(event:Event):void
+			{
+				trace("Selected command: " + event.target.label); 
+			}
+			
 		]]>
 	</fx:Script>
 	
