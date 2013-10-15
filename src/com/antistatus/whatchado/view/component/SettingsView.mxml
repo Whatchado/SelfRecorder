@@ -36,7 +36,8 @@
 			}
 			public function stop():void
 			{
-				video.videoObject.attachCamera(null);
+				if(video && video.videoObject)
+					video.videoObject.attachCamera(null);
 				microphoneMonitor.stop();
 			}
 			
@@ -87,7 +88,7 @@
 				<s:SolidColor color="#ededed"/>
 			</s:fill>
 		</s:Rect>
-		<s:VideoDisplay id="video" horizontalCenter="0" verticalCenter="0" scaleX="-1" creationComplete="start(event)">
+		<s:VideoDisplay id="video" horizontalCenter="0" verticalCenter="0" creationComplete="start(event)">
 			<s:source>
 				<s:DynamicStreamingVideoSource host="" streamType="{StreamType.LIVE}">
 					<s:DynamicStreamingVideoItem/>

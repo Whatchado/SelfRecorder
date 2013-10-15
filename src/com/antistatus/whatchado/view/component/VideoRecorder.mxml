@@ -2,12 +2,14 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		  xmlns:s="library://ns.adobe.com/flex/spark" 
 		  xmlns:mx="library://ns.adobe.com/flex/mx"
-		  currentState="disconnectedState" xmlns:service="com.antistatus.whatchado.service.*">
+		  currentState="disconnectedState" xmlns:service="com.antistatus.whatchado.service.*" xmlns:component="com.antistatus.whatchado.view.component.*">
 	
 	<fx:Script>
 		<![CDATA[
+			import com.antistatus.whatchado.event.ErrorMessageEvent;
 			import com.antistatus.whatchado.event.VideoRecorderEvent;
 			import com.antistatus.whatchado.event.ViewEvent;
+			import com.antistatus.whatchado.model.vo.ErrorVO;
 			import com.antistatus.whatchado.utilities.Trace;
 			
 			import org.osmf.net.StreamType;
@@ -38,6 +40,8 @@
 			private var videoWidthRatio:Number = 240;
 			private var sec:Number;
 			
+			public var suggestedTime:int;
+			
 			public function connect():void
 			{
 				addEventListener(Event.ENTER_FRAME, updateBufferLength);
@@ -54,6 +58,11 @@
 				
 				switch (evCode)
 				{
+					case "NetConnection.Connect.Failed":
+						
+						dispatchEvent(new ErrorMessageEvent(ErrorMessageEvent.ERROR, new ErrorVO("Error", "Connecction to Recorder could not be established!", "Please restart the application.")));
+						break;
+					
 					case "NetConnection.Connect.Success":
 						currentState = STOP_STATE;
 						createStream();
@@ -87,7 +96,7 @@
 				if(mode == "test")
 					destination= File.applicationStorageDirectory.resolvePath("testrecording/test.flv");
 				else
-					destination= File.applicationStorageDirectory.resolvePath("recordings/answer"+currentAnswer+"/" + streamName + ".flv");
+					destination= File.applicationStorageDirectory.resolvePath("recordings/answer"+currentAnswer+"/" + streamName + "_"+ durationView.text.replace(":", "-") +".flv");
 				
 				if(source.exists)
 				{
@@ -145,6 +154,7 @@
 				{
 					createStream();
 					stream.publish(streamName, "record");
+					timerView.start(suggestedTime);
 				}
 			}
 			
@@ -217,9 +227,16 @@
 			public function onStop() : void
 			{
 				removeEventListener(Event.ENTER_FRAME, updateRecordTime);
-				stream.attachCamera(null);
-				stream.attachAudio(null);
-				stopRequested = true;
+				if (stream)
+				{
+					stream.attachCamera(null);
+					stream.attachAudio(null);
+				}
+				
+				if(currentState == RECORD_STATE)
+					stopRequested = true;
+				else
+					stop();
 			}
 			
 			private function stop():void 
@@ -287,8 +304,8 @@
 		]]>
 	</fx:Script>
 	<s:states>		
-		<s:State name="recordState"/>
 		<s:State name="stopState"/>	
+		<s:State name="recordState"/>
 		<s:State name="disconnectedState"/>	
 	</s:states>
 	
@@ -298,7 +315,7 @@
 				<s:SolidColor color="#000000"/>
 			</s:fill>
 		</s:Rect>
-		<s:VideoDisplay id="videoDisplay" scaleX="-1" left="0" right="0" top="0" bottom="0">
+		<s:VideoDisplay id="videoDisplay" left="0" right="0" top="0" bottom="0">
 			<s:source>
 				<s:DynamicStreamingVideoSource host="" streamType="{StreamType.LIVE}">
 					<s:DynamicStreamingVideoItem  />
@@ -329,5 +346,5 @@
 			  enabled.disconnectedState="false"
 			  click="onRecord()" click.recordState="onStop()"/>
 	
-
+	<component:TimerView id="timerView" horizontalCenter="0" width="300" height="150" top="-185" includeIn="recordState"/>
 </s:Group>

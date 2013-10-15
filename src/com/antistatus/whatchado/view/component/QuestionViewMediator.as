@@ -5,6 +5,7 @@ package com.antistatus.whatchado.view.component
 	import com.antistatus.whatchado.event.VideoControlsEvent;
 	import com.antistatus.whatchado.event.ViewEvent;
 	import com.antistatus.whatchado.model.MainModel;
+	import com.antistatus.whatchado.model.vo.NavigationButtonVO;
 	import com.antistatus.whatchado.model.vo.QuestionVO;
 	import com.antistatus.whatchado.model.vo.RecordedFileVO;
 	import com.antistatus.whatchado.utilities.Trace;
@@ -35,7 +36,6 @@ package com.antistatus.whatchado.view.component
 			addContextListener(SystemEvent.NEXT_QUESTION, nextQuestionHandler);
 			addContextListener(SystemEvent.VIDEO_COMPLETE, videoCompleteHandler);
 			addViewListener(ViewEvent.VIDEO_RECORDED, videoRecordedHandler);
-			addViewListener(ViewEvent.CLICK, tippsClickHandler);
 			addViewListener(ViewEvent.ITEM_SELECT, recordingSelectHandler);
 			addViewListener(ViewEvent.DELETE, recordingDeleteHandler);
 			nextQuestion();
@@ -69,18 +69,12 @@ package com.antistatus.whatchado.view.component
 			selectedRecordingsStore.data.recordings[model.currentQuestion] = event.targetObject.file;
 			selectedRecordingsStore.flush();
 			getRecordedFiles();
-		}
-		
-		private function tippsClickHandler(event:ViewEvent):void
-		{
-			dispatch(new VideoControlsEvent(VideoControlsEvent.STOP_VIDEO));
-			model.currentVideo = model.tippsVideo;
-			view.currentState = "start";
-			dispatch(new VideoControlsEvent(VideoControlsEvent.START_VIDEO));
+			dispatch(new SystemEvent(SystemEvent.QUESTION_FINISHED));
 		}
 		
 		private function nextQuestionHandler(event:SystemEvent):void
 		{
+			NavigationButtonVO(model.questionsButtonsDataProvider.getItemAt(model.currentQuestion)).completed = true;
 			model.currentQuestion = event.value;
 			nextQuestion();
 		}
@@ -109,7 +103,7 @@ package com.antistatus.whatchado.view.component
 				for each (var file:File in recordings) 
 				{
 					var recordedFile:RecordedFileVO = new RecordedFileVO("recordings/"+recordingsFolder.name+"/"+file.name, getFileLabel(file.name), file.creationDate);
-					recordedFile.duration = String(file.size/1000);
+					recordedFile.duration = String(file.name.split("_")[3]).replace(".flv","").replace("-", ":");
 					
 					if(model.selectedRecordings[model.currentQuestion] == file.name)
 						recordedFile.selected = true;
@@ -130,7 +124,7 @@ package com.antistatus.whatchado.view.component
 		
 		private function getFileLabel(name:String):String
 		{
-			return "AUFNAHME "+ name.split("_")[1];
+			return "FRAGE " + String(int(name.split("_")[0])+1) + " TAKE " + name.split("_")[1];
 		}
 	}
 }

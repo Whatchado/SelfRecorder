@@ -1,5 +1,6 @@
 package com.antistatus.whatchado.view
 {
+	import com.antistatus.whatchado.event.ErrorMessageEvent;
 	import com.antistatus.whatchado.event.SystemEvent;
 	import com.antistatus.whatchado.event.VideoControlsEvent;
 	import com.antistatus.whatchado.event.ViewEvent;
@@ -34,14 +35,35 @@ package com.antistatus.whatchado.view
 			addViewListener(ViewEvent.EXIT, exitFullscreenHandler);
 			addViewListener(ViewEvent.SELECT, navigationSelectHandler);
 			addViewListener(ViewEvent.SETTINGS_SUBMIT, settingsSubmitHandler);
-			addViewListener(ViewEvent.START, startQuestionsHandler);
-			addViewListener(ViewEvent.CONTINUE, nextQuestionsHandler);
+			addViewListener(ViewEvent.CONTINUE, continueViewHandler);
+			addViewListener(ViewEvent.BACK, backViewHandler);
 			addViewListener(ViewEvent.VIDEO_RECORDED, videoRecordedHandler);
+			
+			addContextListener(ErrorMessageEvent.ERROR, errorMessageHandler);
+			addContextListener(SystemEvent.QUESTION_FINISHED, questionFinishedHandler);
+			addContextListener(SystemEvent.INIT_FULLSCREEN_VIEW, fullscreenHandler);
 			
 			view.menuButtonsDataProvider = model.menuButtonsDataProvider;
 			view.questionsButtonsDataProvider = model.questionsButtonsDataProvider;
 			
 			setTimeout(switchInfoState, 2000);
+		}
+		
+		private function fullscreenHandler(event:SystemEvent):void
+		{
+			view.startFullScreen();
+		}		
+	
+		
+		private function questionFinishedHandler(event:SystemEvent):void
+		{
+			view.forwardButton.label = "speichern und weiter";
+			view.forwardButton.enabled = true;
+		}
+		
+		private function errorMessageHandler(event:ErrorMessageEvent):void
+		{
+			view.showErrorMessage(event.error);
 		}
 		
 		private function videoRecordedHandler(event:ViewEvent):void
@@ -59,25 +81,87 @@ package com.antistatus.whatchado.view
 			navigationSelectHandler(new ViewEvent(ViewEvent.SELECT, NavigationButtonVO(model.menuButtonsDataProvider.getItemAt(0)).type));
 		}
 		
-		private function startQuestionsHandler(event:ViewEvent):void
+		private function backViewHandler(event:ViewEvent):void
 		{
 			dispatch(new VideoControlsEvent(VideoControlsEvent.STOP_VIDEO));
 			
-			NavigationButtonVO(model.questionsButtonsDataProvider.getItemAt(0)).enabled = true;
-
-			view.currentState = "question";
-			
-			dispatch(new SystemEvent(SystemEvent.NEXT_QUESTION, NavigationTypeVO(NavigationButtonVO(model.menuButtonsDataProvider.getItemAt(0)).type).id));
-		}		
-		private function nextQuestionsHandler(event:ViewEvent):void
+			if(view.currentState == "test")
+			{
+				navigationSelectHandler(new ViewEvent(ViewEvent.SELECT, NavigationButtonVO(model.menuButtonsDataProvider.getItemAt(0)).type));
+			}
+			else if(view.currentState == "testrecord")
+			{
+					view.testRecordView.videoRecorder.disconnect();
+					view.currentState = "test";
+					view.testRecordButton.enabled = true;
+					view.settingsButton.enabled = false;
+					view.settingsView.start();
+					view.forwardButton.label = "speichern und weiter";
+			}
+			else if(view.currentState == "tour")
+			{
+				navigationSelectHandler(new ViewEvent(ViewEvent.SELECT, NavigationButtonVO(model.menuButtonsDataProvider.getItemAt(1)).type));
+			}
+			else if(view.currentState == "question")
+			{
+				if(model.currentQuestion>0)
+				{
+					NavigationButtonVO(model.questionsButtonsDataProvider.getItemAt(model.currentQuestion-1)).enabled = true;
+					dispatch(new SystemEvent(SystemEvent.NEXT_QUESTION, model.currentQuestion-1));
+					view.forwardButton.enabled = false;
+				}
+				else
+				{
+					navigationSelectHandler(new ViewEvent(ViewEvent.SELECT, NavigationButtonVO(model.menuButtonsDataProvider.getItemAt(2)).type));
+				}
+			}
+			else if(view.currentState == "upload")
+			{
+				model.currentQuestion = model.questionsDataProvider.length-1;
+				NavigationButtonVO(model.questionsButtonsDataProvider.getItemAt(model.currentQuestion)).enabled = true;
+				dispatch(new SystemEvent(SystemEvent.NEXT_QUESTION, model.currentQuestion));
+				view.forwardButton.enabled = false;
+			}
+		}
+		
+		private function continueViewHandler(event:ViewEvent):void
 		{
 			dispatch(new VideoControlsEvent(VideoControlsEvent.STOP_VIDEO));
 			
-			NavigationButtonVO(model.questionsButtonsDataProvider.getItemAt(model.currentQuestion+1)).enabled = true;
-
-			view.currentState = "question";
-			
-			dispatch(new SystemEvent(SystemEvent.NEXT_QUESTION, model.currentQuestion+1));
+			if(view.currentState == "intro")
+			{
+				navigationSelectHandler(new ViewEvent(ViewEvent.SELECT, NavigationButtonVO(model.menuButtonsDataProvider.getItemAt(1)).type));
+			}
+			else if(view.currentState == "test")
+			{
+				view.currentState = "testrecord";
+				view.testRecordButton.enabled = false;
+				view.settingsButton.enabled = true;
+				view.testRecordView.videoRecorder.connect();
+				view.forwardButton.label = "weiter";
+			}
+			else if(view.currentState == "testrecord")
+			{
+				view.testRecordView.videoRecorder.disconnect();
+				navigationSelectHandler(new ViewEvent(ViewEvent.SELECT, NavigationButtonVO(model.menuButtonsDataProvider.getItemAt(2)).type));
+			}
+			else if(view.currentState == "tour")
+			{
+				navigationSelectHandler(new ViewEvent(ViewEvent.SELECT, NavigationButtonVO(model.questionsButtonsDataProvider.getItemAt(0)).type));
+			}
+			else if(view.currentState == "question")
+			{
+				if(model.currentQuestion<=model.questionsDataProvider.length-1)
+				{
+					NavigationButtonVO(model.questionsButtonsDataProvider.getItemAt(model.currentQuestion+1)).enabled = true;
+					dispatch(new SystemEvent(SystemEvent.NEXT_QUESTION, model.currentQuestion+1));
+					view.forwardButton.enabled = false;
+				}
+				else
+				{
+					navigationSelectHandler(new ViewEvent(ViewEvent.SELECT, NavigationButtonVO(model.questionsButtonsDataProvider.getItemAt(model.questionsButtonsDataProvider.length-1)).type));
+				}
+			}
 		}		
 		
 		
@@ -101,18 +185,35 @@ package com.antistatus.whatchado.view
 		private function navigationSelectHandler(event:ViewEvent):void
 		{
 			dispatch(new VideoControlsEvent(VideoControlsEvent.STOP_VIDEO));
+			if(view.currentState == "testrecord")
+				view.testRecordView.videoRecorder.disconnect();
+				
 			view.currentState = NavigationTypeVO(event.targetObject).type;
 			setNavigationInactive();
 			NavigationTypeVO(event.targetObject).active = true;
 			
 			if(view.currentState == "question")
+			{
+				NavigationButtonVO(model.questionsButtonsDataProvider.getItemAt(model.currentQuestion)).enabled = true;
 				dispatch(new SystemEvent(SystemEvent.NEXT_QUESTION, NavigationTypeVO(event.targetObject).id));
+				view.forwardButton.enabled = false;
+			}
 				
 			if(view.currentState == "intro")
+			{
 				view.introText.textFlow = TextConverter.importToFlow(model.locales.introText, TextConverter.TEXT_FIELD_HTML_FORMAT)
+				view.forwardButton.label = "weiter";
+				view.forwardButton.enabled = true;				
+				view.backButton.enabled = false;				
+			}
+			else
+			{
+				view.backButton.enabled = true;				
+			}
 
 			if(view.currentState == "test")
 			{
+				
 				view.settingsView.settingsCameraHeadline.text = model.locales.settingsCameraHeadline;
 				view.settingsView.settingsCameraSubHeadline.text = model.locales.settingsCameraSubHeadline;
 				view.settingsView.settingsCameraSelectorLabel.text = model.locales.settingsCameraSelectorLabel;
@@ -122,9 +223,17 @@ package com.antistatus.whatchado.view
 				view.settingsView.settingsMicrophoneVolumeLabel.text = model.locales.settingsMicrophoneVolumeLabel;
 				view.settingsButton.label = model.locales.settingsButton;
 				view.testRecordButton.label = model.locales.testRecordButton;
-			
+				view.forwardButton.label = "speichern und weiter";
+				
 				if(view.settingsView.video.videoObject)
 					view.settingsView.start();
+			}
+			
+			if(view.currentState == "upload")
+			{
+				view.forwardButton.label = "weiter";
+				view.forwardButton.enabled = false;
+				
 			}
 		}
 		

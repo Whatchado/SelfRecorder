@@ -72,7 +72,9 @@
 			
 			public function stop():void
 			{
-				//microphoneSound.removeEventListener(SampleDataEvent.SAMPLE_DATA, soundSampleDataHandler);
+				if(!microphone)
+					return;
+				
 				microphone.removeEventListener(ActivityEvent.ACTIVITY, activityHandler);
 				removeEventListener(Event.ENTER_FRAME, changeDisplay);
 				microphone.setLoopBack(false);

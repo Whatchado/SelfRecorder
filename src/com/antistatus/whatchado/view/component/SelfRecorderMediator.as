@@ -5,6 +5,7 @@ package com.antistatus.whatchado.view.component
 	import com.antistatus.whatchado.event.ViewEvent;
 	import com.antistatus.whatchado.model.MainModel;
 	import com.antistatus.whatchado.service.Red5Manager;
+	import com.antistatus.whatchado.view.LoggerWindow;
 	
 	import flash.desktop.NativeApplication;
 	
@@ -30,7 +31,16 @@ package com.antistatus.whatchado.view.component
 		override public function initialize():void
 		{
 			addViewListener(ViewEvent.EXIT, exitAppHandler);
+			addViewListener(ViewEvent.CLICK, selectMenuHandler);
 			addContextListener(SystemEvent.RED5_ENDED, red5EndedHandler);
+		}
+		
+		private function selectMenuHandler(event:ViewEvent):void
+		{
+			if(event.targetObject.label == "Logger")
+				new LoggerWindow().open();
+			else
+				dispatch(new SystemEvent(SystemEvent.INIT_FULLSCREEN_VIEW));
 		}
 		
 		private function red5EndedHandler(event:SystemEvent):void

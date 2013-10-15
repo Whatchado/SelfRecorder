@@ -46,13 +46,16 @@ package com.antistatus.whatchado.event
 		 * <code>PlayStatusCommand</code>.
 		 */
 		public static const PLAY_STATUS_CHANGED:String = "playStatusChanged";
-
 		public static const VOLUME_CHANGED:String = "volumeChanged";
 		public static const VIDEO_DURATION_CHANGED:String = "videoDuration";
 		public static const NEXT_QUESTION:String = "nextQuestion";
 		public static const VIDEO_COMPLETE:String = "videoComplete";
 		public static const RED5_READY:String = "red5Ready";
 		public static const RED5_ENDED:String = "red5Ended";
+		public static const QUESTION_FINISHED:String = "questionFinished";
+		public static const INIT_LOGGER:String = "initLogger";
+		
+		
 		public var value:Number;
 
 		public function SystemEvent(type:String, value:Number=0, bubbles:Boolean = false, cancelable:Boolean = false)

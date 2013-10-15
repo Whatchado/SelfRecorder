@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300" creationComplete="creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			private var timer:Timer;
+			[Bindable]
+			public var time:int;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+			
+				
+			}
+			
+			protected function timerHandler(event:TimerEvent):void
+			{
+				if(time > 0)
+					time --;
+				else
+					timer.stop();
+			}
+			public function start(t:int):void
+			{
+				time = t;
+				timer = new Timer(1000);
+				timer.addEventListener(TimerEvent.TIMER, timerHandler);
+				timer.start();
+				drawCircle();
+			}
+			
+			private function drawCircle():void 
+			{
+				graphics.beginFill(0xFF0000);
+				var xx:Number = width/2;
+				var yy:int = 0;
+				var r:Number = height;
+			    var c1:Number=r * (Math.SQRT2 - 1);
+			    var c2:Number=r * Math.SQRT2 / 2;
+			    graphics.moveTo(xx+r,yy);
+			    graphics.curveTo(xx+r,yy+c1,xx+c2,yy+c2);
+			    graphics.curveTo(xx+c1,yy+r,xx,y+r);
+			    graphics.curveTo(xx-c1,yy+r,xx-c2,yy+c2);
+			    graphics.curveTo(xx-r,yy+c1,xx-r,yy);
+			}
+		]]>
+	</fx:Script>
+	<s:Label text="{time}" horizontalCenter="0" width="100%" maxDisplayedLines="1" styleName="bigTimerLabel"/>
+</s:Group>

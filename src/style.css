@@ -65,6 +65,12 @@ s|Button
 	fontFamily: robotoCondensed;
 	fontSize: 15;
 }
+.bigTimerLabel
+{
+	fontFamily: robotoCondensed;
+	fontWeight: bold;	
+	fontSize: 48;
+}
 
 .completedQuestionButton
 {
@@ -77,6 +83,18 @@ s|Button
 .defaultQuestionButton
 {
 	icon: Embed(source="../assets/skin/default_buticon_question.png");
+}
+.bottomButtonRight
+{
+	icon: Embed(source="../assets/skin/bottom_iconright.png");
+	iconPlacement: right;
+	skin-class: ClassReference("com.antistatus.whatchado.view.skin.BottomButtonSkin");
+}
+.bottomButtonLeft
+{
+	icon: Embed(source="../assets/skin/bottom_iconleft.png");
+	iconPlacement: left;
+	skin-class: ClassReference("com.antistatus.whatchado.view.skin.BottomButtonSkin");
 }
 .defaultTopButton
 {

@@ -11,11 +11,16 @@ package com.antistatus.whatchado.service
 	import com.antistatus.whatchado.model.vo.QuestionVO;
 	import com.antistatus.whatchado.utilities.Trace;
 	
+	import flash.desktop.NativeProcess;
+	import flash.desktop.NativeProcessStartupInfo;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.events.NativeProcessExitEvent;
+	import flash.events.ProgressEvent;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
+	import flash.net.SharedObject;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	
@@ -39,6 +44,7 @@ package com.antistatus.whatchado.service
 		 */
 		[Inject]
 		public var model:MainModel;
+		private var process:NativeProcess;
 
 
 		/**
@@ -61,7 +67,7 @@ package com.antistatus.whatchado.service
 			var file:File = copyFileToStorage("config.xml");
 			
 			var stream:FileStream = new FileStream();
-			stream.open( file, FileMode.READ );
+			stream.open(file, FileMode.READ );
 			parseConfigData( stream.readUTFBytes( stream.bytesAvailable ));
 			stream.close();
 		}
@@ -112,8 +118,8 @@ package com.antistatus.whatchado.service
 				}
 				else if(navigationType.type == "upload")
 				{
-					navButton.enabled = true;
-					navButton.completed = true;
+					navButton.enabled = false;
+					navButton.completed = false;
 					questionsButtons.push(navButton);					
 				}
 				else
@@ -133,9 +139,10 @@ package com.antistatus.whatchado.service
 			
 			for each (question in questionXml)
 			{
-				var questionObj:QuestionVO = new QuestionVO(question.@text.toString(), question.@video.toString(), int(question.@time));
+				var questionObj:QuestionVO = new QuestionVO(question.@text.toString(), question.@video.toString(), question.@qInsert.toString(), int(question.@time));
 				questions.push(questionObj);
 				file = copyFileToStorage(questionObj.video);
+				file = copyFileToStorage(questionObj.insert);
 			}
 			model.questionsDataProvider = new ArrayCollection(questions);
 			
@@ -172,13 +179,69 @@ package com.antistatus.whatchado.service
 			}
 			else
 			{
+				checkJavaPath();
+			}
+		}
+		
+		private function checkJavaPath():void
+		{
+			var javaPathStore:SharedObject = SharedObject.getLocal("javaPath");
+			if(javaPathStore.data.path)
+			{
+				model.javaHome = javaPathStore.data.path;
+			}
+			
+			if(model.javaHome && model.isJavaHomeValid())
+			{
 				dispatch(new SystemEvent(SystemEvent.RED5_READY));
+			}
+			else
+			{
+				process = new NativeProcess();
+				var startupInfo:NativeProcessStartupInfo = new NativeProcessStartupInfo();
+				//startupInfo.workingDirectory = File.applicationDirectory;
+				var file:File = File.applicationDirectory.resolvePath(model.isWin ? "javapath.bat":"javapath.sh");
+				startupInfo.executable = file;  
+				var args:Vector.<String> = new Vector.<String>();
+				// add the -c argument to let your shell file know it needs to run 
+				args.push('c');
+				startupInfo.arguments = args;
+				// start the process!!
+				process.addEventListener(Event.STANDARD_OUTPUT_CLOSE, processHandler);
+				process.addEventListener(NativeProcessExitEvent.EXIT, processHandler);
+				process.addEventListener(ProgressEvent.STANDARD_ERROR_DATA, processHandler);
+				process.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA, processHandler);
+				process.start(startupInfo);
+			}
+		}
+		
+		protected function processHandler(event:Event):void
+		{
+			if (event.type == Event.STANDARD_OUTPUT_CLOSE && !model.javaHome)
+				model.error = new ErrorVO("","JavaPath not set","");
+			
+			if (event.type == ProgressEvent.STANDARD_OUTPUT_DATA)
+			{
+				var data:String = process.standardOutput.readUTFBytes(process.standardOutput.bytesAvailable); 
+				Trace.log(this, "javapath.sh OUTPUT: " + data); 
+				if(data.indexOf("/Home")>-1)
+				{
+					model.javaHome = data.replace("/Home","").replace("\r","").replace("\n","");
+					var javaPathStore:SharedObject = SharedObject.getLocal("javaPath");
+					javaPathStore.data.path = model.javaHome;
+					javaPathStore.flush();
+					dispatch(new SystemEvent(SystemEvent.RED5_READY));					
+				}
+				else
+				{
+					model.error = new ErrorVO("","JavaPath not set","");	
+				}
 			}
 		}
 		
 		protected function copyServerCompleteHandler(event:Event):void
 		{
-			dispatch(new SystemEvent(SystemEvent.RED5_READY));
+			checkJavaPath();
 		}
 		
 		private function copyFileToStorage(filename:String):File

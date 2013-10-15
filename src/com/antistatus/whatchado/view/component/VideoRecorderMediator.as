@@ -3,6 +3,7 @@ package com.antistatus.whatchado.view.component
 {
 	import com.antistatus.whatchado.event.ViewEvent;
 	import com.antistatus.whatchado.model.MainModel;
+	import com.antistatus.whatchado.model.vo.QuestionVO;
 	
 	import robotlegs.bender.bundles.mvcs.Mediator;
 
@@ -27,6 +28,7 @@ package com.antistatus.whatchado.view.component
 			addContextListener(ViewEvent.VIDEO_RECORDED, videoRecordedHandler);
 
 			
+			videoRecorder.suggestedTime = QuestionVO(model.questionsDataProvider.getItemAt(model.currentQuestion)).time;
 			videoRecorder.currentAnswer = model.currentQuestion;
 			videoRecorder.currentTake = 1;
 			videoRecorder.currentCamera = model.currentCamera;

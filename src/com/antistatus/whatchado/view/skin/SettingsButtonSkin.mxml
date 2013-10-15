@@ -19,7 +19,7 @@
 			
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
-				var leftRound:Boolean = Boolean(hostComponent.id == 'settingsButton');
+				var leftRound:Boolean = Boolean(hostComponent.id == 'settingsButton' || hostComponent.id == 'interviewButton');
 				if(leftRound)
 				{
 					filler.topLeftRadiusX= 16;

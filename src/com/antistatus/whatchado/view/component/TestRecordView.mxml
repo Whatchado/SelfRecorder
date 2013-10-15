@@ -19,12 +19,17 @@
 				videoScreen.closeStream();
 			}
 			
+			protected function recordExitStateHandler(event:FlexEvent):void
+			{
+				videoRecorder.disconnect();
+			}
+			
 		]]>
 	</fx:Script>
 	
 	
 	<s:states>
-		<s:State name="record"/>
+		<s:State name="record" exitState="recordExitStateHandler(event)"/>
 		<s:State name="playback" exitState="exitStateHandler(event)"/>
 	</s:states>
 	

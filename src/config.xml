@@ -18,13 +18,13 @@
 		￼
 	</menu>
 	<questions>
-		<question id="1" text="Was steht auf deiner Visitenkarte?" video="videos/Frage01_s.mp4" time="15"/>
-		<question id="2" text="Worum geht's in deinem Job?" video="videos/Frage02_s.mp4" time="90"/>
-		<question id="3" text="Wie schaut dein Werdegang aus?" video="videos/Frage03_s.mp4" time="90"/>
-		<question id="4" text="Ginge es auch ohne deinen Werdegang?" video="videos/Frage04_s.mp4" time="30"/>
-		<question id="5" text="Was ist das Coolste an deinem Job?" video="videos/Frage05_s.mp4" time="30"/>
-		<question id="6" text="Welche Einschränkungen bringt der Job mit sich?" video="videos/Frage06_s.mp4" time="30"/>
-		<question id="7" text="Drei Ratschläge an dein 14jähriges Ich?" video="videos/Frage07_s.mp4" time="30"/>
+		<question id="1" text="Was steht auf deiner Visitenkarte?" video="videos/Frage01_s.mp4" qInsert="DE_STANDARD_01.flv" time="15"/>
+		<question id="2" text="Worum geht's in deinem Job?" video="videos/Frage02_s.mp4" qInsert="DE_STANDARD_01.flv" time="90"/>
+		<question id="3" text="Wie schaut dein Werdegang aus?" video="videos/Frage03_s.mp4" qInsert="DE_STANDARD_01.flv" time="90"/>
+		<question id="4" text="Ginge es auch ohne deinen Werdegang?" video="videos/Frage04_s.mp4" qInsert="DE_STANDARD_01.flv" time="30"/>
+		<question id="5" text="Was ist das Coolste an deinem Job?" video="videos/Frage05_s.mp4" qInsert="DE_STANDARD_01.flv" time="30"/>
+		<question id="6" text="Welche Einschränkungen bringt der Job mit sich?" video="videos/Frage06_s.mp4" qInsert="DE_STANDARD_01.flv" time="30"/>
+		<question id="7" text="Drei Ratschläge an dein 14jähriges Ich?" video="videos/Frage07_s.mp4" qInsert="DE_STANDARD_01.flv" time="30"/>
 	</questions>
 
 	<tippsButton label="Tipps" video="videos/Technik_s.mp4"/>

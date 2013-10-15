@@ -4,7 +4,6 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300" xmlns:component="com.antistatus.whatchado.view.component.*">
 	<fx:Script>
 		<![CDATA[
-			import com.antistatus.whatchado.event.ViewEvent;
 			import com.antistatus.whatchado.view.skin.VideoControlsSkin;
 			
 			import mx.collections.ArrayCollection;
@@ -15,15 +14,6 @@
 			
 			[Bindable]
 			public var recordingsDataProvider:ArrayCollection;
-			
-			protected function tippsButtonClickHandler(event:MouseEvent):void
-			{
-				dispatchEvent(new ViewEvent(ViewEvent.CLICK));
-			}
-			protected function recordButtonClickHandler(event:MouseEvent):void
-			{
-				currentState = "record";
-			}
 			
 			protected function recordEnterStateHandler(event:FlexEvent):void
 			{
@@ -44,6 +34,20 @@
 			protected function playbackEnterStateHandler(event:FlexEvent):void
 			{
 				
+			}
+			
+			protected function recordingsClickHandler(event:MouseEvent):void
+			{
+				currentState = "record";
+				interviewButton.enabled = true;
+				recordingsButton.enabled = false;
+			}
+			
+			protected function interviewClickHandler(event:MouseEvent):void
+			{
+				currentState = "start";
+				interviewButton.enabled = false;
+				recordingsButton.enabled = true;
 			}
 			
 		]]>
@@ -69,11 +73,11 @@
 	<s:Group top="185" bottom="0" left="160" right="160" includeIn="playback">
 		<s:BitmapImage width="100%" height="35" bottom="78" fillMode="repeat" source="@Embed(source='../assets/skin/controlsbg.png')"/>
 		<!--<component:VolumeControl left="90" bottom="125" skinClass="com.antistatus.whatchado.view.skin.VolumeControlSkin"/>-->
-		<component:VideoProgress bottom="113" left="0" right="0"/>
+		<component:VideoProgress bottom="113" left="0" right="0" currentState="cut"/>
 		<component:VideoControls   left="4" bottom="80" skinClass="com.antistatus.whatchado.view.skin.VideoControlsSkin"/>
 	</s:Group>
 	
-	<s:Scroller top="185" bottom="125" right="10" width="150" verticalScrollPolicy="on">
+	<s:Scroller top="185" bottom="125" right="10" width="150" verticalScrollPolicy="on" excludeFrom="start">
 		<s:DataGroup left="0" right="0" dataProvider="{recordingsDataProvider}" itemRenderer="com.antistatus.whatchado.view.component.RecordingsItemRenderer">
 			<s:layout>
 				<s:VerticalLayout/>
@@ -82,10 +86,9 @@
 	</s:Scroller>
 	
 	<s:HGroup width="100%" top="129" height="36" gap="0" horizontalAlign="center">
-		<s:Button width="233" height="36" label="interview tipps" styleName="settingsButton" id="settingsButton" enabled="false" buttonMode="true" useHandCursor="true"/>		
-		<s:Button width="233" height="36" label="deine aufnahme" styleName="settingsButton" buttonMode="true" useHandCursor="true"/>		
+		<s:Button id="interviewButton" width="233" height="36" label="interview tipps" styleName="settingsButton" enabled="false" buttonMode="true" useHandCursor="true" click="interviewClickHandler(event)"/>		
+		<s:Button id="recordingsButton" width="233" height="36" label="deine aufnahme" styleName="settingsButton" buttonMode="true" useHandCursor="true" click="recordingsClickHandler(event)"/>		
 	</s:HGroup>
 	
-	<s:Button  label="Tipps" y="200" left="10" height="30" click="tippsButtonClickHandler(event)"/>
-	<s:Button  label="Aufnahme" y="260" left="10" height="30" click="recordButtonClickHandler(event)"/>
+	
 </s:Group>

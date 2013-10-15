@@ -113,8 +113,8 @@ package com.antistatus.whatchado.model
 		
 		public function isJavaHomeValid() : Boolean
 		{
-			if (!javaHome)
-				setDefaultJavaHome();
+	/*		if (!javaHome)
+				setDefaultJavaHome();*/
 			
 			return getJavaFile().exists;
 		}	
@@ -122,8 +122,8 @@ package com.antistatus.whatchado.model
 		private function setDefaultJavaHome() : void
 		{
 			javaHome = (isWin) ? 
-				"C:\\Program Files\\Java\\jre6" : 
-				"/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0";
+				"C:\\Program Files\\Java\\jre6" : "/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents";
+			//	"/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0";
 		}
 	}
 }

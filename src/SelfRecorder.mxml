@@ -24,7 +24,6 @@
 					
 					if (NativeWindow.supportsMenu){ 
 						stage.nativeWindow.menu = new NativeMenu(); 
-						stage.nativeWindow.menu.addEventListener(Event.SELECT, selectCommandMenu); 
 						viewMenu = stage.nativeWindow.menu.addItem(new NativeMenuItem("View")); 
 						viewMenu.submenu = createviewMenu(); 
 						debugMenu = stage.nativeWindow.menu.addItem(new NativeMenuItem("Debug")); 
@@ -32,7 +31,6 @@
 					} 
 					
 					if (NativeApplication.supportsMenu){ 
-						NativeApplication.nativeApplication.menu.addEventListener(Event.SELECT, selectCommandMenu); 
 						viewMenu = NativeApplication.nativeApplication.menu.addItem(new NativeMenuItem("View")); 
 						viewMenu.submenu = createviewMenu(); 
 						debugMenu = NativeApplication.nativeApplication.menu.addItem(new NativeMenuItem("Debug")); 
@@ -43,7 +41,6 @@
 			private function createviewMenu():NativeMenu
 			{
 				var viewMenu:NativeMenu = new NativeMenu(); 
-				viewMenu.addEventListener(Event.SELECT, selectCommandMenu); 
 				
 				var newCommand:NativeMenuItem = viewMenu.addItem(new NativeMenuItem("Fullscreen")); 
 				newCommand.addEventListener(Event.SELECT, selectCommand); 
@@ -54,7 +51,6 @@
 			private function createdebugMenu():NativeMenu
 			{
 				var debugMenu:NativeMenu = new NativeMenu(); 
-				debugMenu.addEventListener(Event.SELECT, selectCommandMenu); 
 				
 				var newCommand:NativeMenuItem = debugMenu.addItem(new NativeMenuItem("Logger")); 
 				newCommand.addEventListener(Event.SELECT, selectCommand); 
@@ -62,14 +58,9 @@
 				return debugMenu; 
 			}
 			
-			protected function selectCommandMenu(event:Event):void
-			{
-				trace("Selected command: " + event.target.label); 
-			}
-			
 			protected function selectCommand(event:Event):void
 			{
-				trace("Selected command: " + event.target.label); 
+				dispatchEvent(new ViewEvent(ViewEvent.CLICK, event.target));
 			}
 			
 		]]>
