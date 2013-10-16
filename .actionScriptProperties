@@ -25,7 +25,10 @@
   <buildTargets>
     <buildTarget buildTargetName="default" platformId="default">
       <airSettings airCertificatePath="/Volumes/DATA/WORK/workspace 2013/FlashFlexLibs/certificate-xxx.p12" airTimestamp="true" anePathSet="true" version="1">
-        <airExcludes/>
+        <airExcludes>
+          <pathEntry path=".DS_Store"/>
+          <pathEntry path="com"/>
+        </airExcludes>
         <anePaths/>
         <newLaunchParams/>
         <modifiedLaunchParams/>
