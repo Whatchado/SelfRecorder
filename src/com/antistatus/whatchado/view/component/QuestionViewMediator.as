@@ -82,7 +82,7 @@ package com.antistatus.whatchado.view.component
 		public function nextQuestion():void
 		{
 			view.currentState = "start";
-			view.questionText.text = QuestionVO(model.questionsDataProvider.getItemAt(model.currentQuestion)).text;
+			//view.questionText.text = QuestionVO(model.questionsDataProvider.getItemAt(model.currentQuestion)).text;
 		 	model.currentVideo = QuestionVO(model.questionsDataProvider.getItemAt(model.currentQuestion)).video;
 			dispatch(new VideoControlsEvent(VideoControlsEvent.START_VIDEO));
 			getRecordedFiles();

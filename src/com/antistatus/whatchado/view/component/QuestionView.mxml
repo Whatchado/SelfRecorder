@@ -17,6 +17,7 @@
 			
 			protected function recordEnterStateHandler(event:FlexEvent):void
 			{
+				videoRecorder.timerView = timerView;
 				videoRecorder.connect();
 			}
 			
@@ -52,14 +53,17 @@
 			
 		]]>
 	</fx:Script>
+	<fx:Declarations>
+		<s:Fade id="fadeIn" alphaFrom="0" alphaTo="1" duration="2000"/>
+	</fx:Declarations>
 	<s:states>
 		<s:State name="start" exitState="videoExitStateHandler(event)"/>
 		<s:State name="record" enterState="recordEnterStateHandler(event)" exitState="recordExitStateHandler(event)"/>
 		<s:State name="playback" enterState="playbackEnterStateHandler(event)"/>
 	</s:states>
 		
-	<s:RichText id="questionText" width="592" height="50" bottom="10" left="100" fontSize="20"/>
-	
+	<!--<s:RichText id="questionText" width="592" height="50" bottom="10" left="100" fontSize="20"/>
+	-->
 	<s:Rect top="160" bottom="100" left="125" right="130">
 		<s:stroke>
 			<s:SolidColorStroke color="#FFFFFF" weight="2" alpha="0.4"/>
@@ -84,6 +88,8 @@
 			</s:layout>
 		</s:DataGroup>
 	</s:Scroller>
+	
+	<component:TimerView id="timerView" horizontalCenter="0" width="300" height="230" includeIn="record" visible="false" showEffect="{fadeIn}"/>
 	
 	<s:HGroup width="100%" top="129" height="36" gap="0" horizontalAlign="center">
 		<s:Button id="interviewButton" width="233" height="36" label="interview tipps" styleName="settingsButton" enabled="false" buttonMode="true" useHandCursor="true" click="interviewClickHandler(event)"/>		

@@ -26,7 +26,6 @@
 			private var streamName:String;
 			private var stopRequested:Boolean;
 			
-			private var bufferLength:Number = 0;
 			private var startTime:Number;
 			public var currentCamera:Camera;
 			public var currentMicrophone:Microphone;
@@ -41,10 +40,12 @@
 			private var sec:Number;
 			
 			public var suggestedTime:int;
+			private var timer:Timer;
+			private var timeTenth:int;
+			public var timerView:TimerView;
 			
 			public function connect():void
 			{
-				addEventListener(Event.ENTER_FRAME, updateBufferLength);
 				connection = new NetConnection();
 				connection.addEventListener(NetStatusEvent.NET_STATUS, netConnectionStatusHandler);
 				connection.connect(RTMP_SERVER);
@@ -59,19 +60,19 @@
 				switch (evCode)
 				{
 					case "NetConnection.Connect.Failed":
-						
 						dispatchEvent(new ErrorMessageEvent(ErrorMessageEvent.ERROR, new ErrorVO("Error", "Connecction to Recorder could not be established!", "Please restart the application.")));
 						break;
 					
 					case "NetConnection.Connect.Success":
 						currentState = STOP_STATE;
+						if(timerView)
+							timerView.visible = false;
 						createStream();
 						dispatchEvent(new VideoRecorderEvent(VideoRecorderEvent.CONNECTED));
 						break;
 					
 					case "NetStream.Publish.Start":
-						startTime = new Date().time;
-						addEventListener(Event.ENTER_FRAME, updateRecordTime);
+						timer.start();
 						break;
 					
 					case "NetStream.Buffer.Empty":
@@ -107,18 +108,11 @@
 				currentTake++;
 			}
 			
-			private function updateRecordTime(e:Event) : void
+			private function updateRecordTime(value:int) : void
 			{
-				durationView.text = getTimeString(new Date().time - startTime);
+				durationView.text = getTimeString(value);
 			}
 			
-			private function updateBufferLength(e:Event) : void
-			{
-				if (stream)
-					bufferLength = stream.bufferLength;
-				else
-					bufferLength = -1;
-			}
 			
 			protected function pingServer():void
 			{
@@ -154,7 +148,11 @@
 				{
 					createStream();
 					stream.publish(streamName, "record");
-					timerView.start(suggestedTime);
+					if(!timerView)
+						return;
+					timerView.visible = true;
+					timerView.reset();
+					timerView.timeLimit = suggestedTime;
 				}
 			}
 			
@@ -174,6 +172,9 @@
 				stream.videoStreamSettings = h264Settings;
 				createStreamName();
 				//videoDisplay.source = "rtmp://localhost:1935/mytest/" + streamName;
+				timer = new Timer(1000);
+				timeTenth = 0;
+				timer.addEventListener(TimerEvent.TIMER, timerListener);
 			}
 			
 			private function getDateTime():String
@@ -226,7 +227,7 @@
 			
 			public function onStop() : void
 			{
-				removeEventListener(Event.ENTER_FRAME, updateRecordTime);
+				timer.stop();
 				if (stream)
 				{
 					stream.attachCamera(null);
@@ -242,6 +243,8 @@
 			private function stop():void 
 			{
 				currentState = STOP_STATE;
+				if(timerView)
+					timerView.visible = false;
 				stream.close();
 			}
 			
@@ -277,9 +280,10 @@
 				onStop();
 			}
 			
-			private function getTimeString(milli:Number):String
+			private function getTimeString(sec:int):String
 			{
-				sec = milli/1000;
+				if(timerView)
+					timerView.setTime(sec);
 				var s:Number = sec % 60;
 				var m:Number = Math.floor((sec % 3600 ) / 60);
 				var h:Number = Math.floor(sec / (60 * 60));
@@ -294,12 +298,16 @@
 			private function doubleDigitFormat($num:uint):String
 			{
 				if ($num < 10) 
-				{
 					return ("0" + $num);
-				}
+				
 				return String($num);
 			}
 				
+			
+			protected function timerListener(event:TimerEvent):void
+			{
+				updateRecordTime(timeTenth++);
+			}
 			
 		]]>
 	</fx:Script>
@@ -346,5 +354,5 @@
 			  enabled.disconnectedState="false"
 			  click="onRecord()" click.recordState="onStop()"/>
 	
-	<component:TimerView id="timerView" horizontalCenter="0" width="300" height="150" top="-185" includeIn="recordState"/>
+	
 </s:Group>

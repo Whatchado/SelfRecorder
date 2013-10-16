@@ -67,7 +67,7 @@
     <!-- layer 8: text -->
     <!--- @copy spark.components.supportClasses.ButtonBase#labelDisplay  -->
     <s:Label id="labelDisplay" color="#FFFFFF" paddingLeft="4" paddingRight="4"
-             textAlign="center" left="14" right="14"
+             textAlign="center" left="24" right="24"
              maxDisplayedLines="1" verticalAlign="middle" top="2" bottom="28" verticalCenter="1">
     </s:Label>
     

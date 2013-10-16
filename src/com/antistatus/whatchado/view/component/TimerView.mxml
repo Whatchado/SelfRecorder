@@ -6,37 +6,63 @@
 		<![CDATA[
 			import mx.events.FlexEvent;
 			private var timer:Timer;
-			[Bindable]
-			public var time:int;
+			private var GREEN:uint = 0x137a05;
+			private var RED:uint = 0xb00909;
+			private var YELLOW:uint = 0xfff001;
+			
+			public var timeLimit:int;
 			
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
-			
+				drawCircle(GREEN);
+			}
 				
-			}
-			
-			protected function timerHandler(event:TimerEvent):void
+			public function setTime(value:int):void
 			{
-				if(time > 0)
-					time --;
+				timeDisplay.text = getTimeString(value);
+				if(value >= timeLimit)
+				{
+					drawCircle(RED);
+					timeDisplay.setStyle("color",0xFFFFFF);					
+				}
+				else if(value >= timeLimit-5 )
+				{
+					drawCircle(YELLOW);
+					timeDisplay.setStyle("color",0x000000);					
+				}
 				else
-					timer.stop();
+				{
+					drawCircle(GREEN);
+					timeDisplay.setStyle("color",0xFFFFFF);					
+				}
+					
 			}
-			public function start(t:int):void
+			private function getTimeString(sec:int):String
 			{
-				time = t;
-				timer = new Timer(1000);
-				timer.addEventListener(TimerEvent.TIMER, timerHandler);
-				timer.start();
-				drawCircle();
+				var s:Number = sec % 60;
+				var m:Number = Math.floor((sec % 3600 ) / 60);
+				var h:Number = Math.floor(sec / (60 * 60));
+				
+				var hourStr:String = (h == 0) ? "" : doubleDigitFormat(h) + ":";
+				var minuteStr:String = (h == 0 && m == 0) ? "" :  doubleDigitFormat(m) + ":";
+				var secondsStr:String = doubleDigitFormat(s);
+				
+				return hourStr + minuteStr + secondsStr;
+			}
+			private function doubleDigitFormat($num:uint):String
+			{
+				if ($num < 10) 
+					return ("0" + $num);
+				
+				return String($num);
 			}
 			
-			private function drawCircle():void 
+			private function drawCircle(color:uint):void 
 			{
-				graphics.beginFill(0xFF0000);
+				graphics.beginFill(color);
 				var xx:Number = width/2;
 				var yy:int = 0;
-				var r:Number = height;
+				var r:Number = height/2;
 			    var c1:Number=r * (Math.SQRT2 - 1);
 			    var c2:Number=r * Math.SQRT2 / 2;
 			    graphics.moveTo(xx+r,yy);
@@ -45,7 +71,13 @@
 			    graphics.curveTo(xx-c1,yy+r,xx-c2,yy+c2);
 			    graphics.curveTo(xx-r,yy+c1,xx-r,yy);
 			}
+			
+			public function reset():void
+			{
+				drawCircle(GREEN);
+			}
+			
 		]]>
 	</fx:Script>
-	<s:Label text="{time}" horizontalCenter="0" width="100%" maxDisplayedLines="1" styleName="bigTimerLabel"/>
+	<s:Label id="timeDisplay" left="0" right="0" textAlign="center" maxDisplayedLines="1" styleName="bigTimerLabel"/>
 </s:Group>
