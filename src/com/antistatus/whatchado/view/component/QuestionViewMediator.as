@@ -63,6 +63,8 @@ package com.antistatus.whatchado.view.component
 		private function videoRecordedHandler(event:ViewEvent):void
 		{
 			model.selectedRecordings[model.currentQuestion] = event.targetObject.file;
+			
+
 			Trace.log(this, event.targetObject.file);
 			var selectedRecordingsStore:SharedObject = SharedObject.getLocal("selectedRecordings");
 			if(!selectedRecordingsStore.data.recordings)
@@ -84,6 +86,8 @@ package com.antistatus.whatchado.view.component
 		public function nextQuestion():void
 		{
 			view.currentState = "start";
+			view.interviewButton.enabled = false;
+			view.recordingsButton.enabled = true;
 			//view.questionText.text = QuestionVO(model.questionsDataProvider.getItemAt(model.currentQuestion)).text;
 		 	model.currentVideo = QuestionVO(model.questionsDataProvider.getItemAt(model.currentQuestion)).video;
 			dispatch(new VideoControlsEvent(VideoControlsEvent.START_VIDEO));
@@ -112,6 +116,7 @@ package com.antistatus.whatchado.view.component
 					else
 						recordedFile.selected = false;
 					
+					model.recordedFiles[recordedFile.id] = recordedFile;
 					recordingsData.push(recordedFile);
 				}
 				recordingsData.sortOn("date",  Array.DESCENDING);

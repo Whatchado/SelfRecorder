@@ -10,6 +10,7 @@ package com.antistatus.whatchado.model
 	import flash.media.Camera;
 	import flash.media.Microphone;
 	import flash.system.Capabilities;
+	import flash.utils.Dictionary;
 	
 	import mx.collections.ArrayCollection;
 
@@ -86,6 +87,7 @@ package com.antistatus.whatchado.model
 
 		public var javaHome:String;
 		public var selectedRecordings:Array = [];
+		public var recordedFiles:Dictionary = new Dictionary();
 		
 		public function MainModel()
 		{

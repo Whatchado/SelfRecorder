@@ -204,8 +204,8 @@
 
 	<component:SettingsView id="settingsView" includeIn="test" verticalCenter="30" width="100%"/>
 	
-
 	<component:UploadView id="uploadView" includeIn="upload" height="100%" width="100%"/>
+
 	<component:TestRecordView id="testRecordView" includeIn="testrecord" height="100%" width="100%"/>
 	<s:HGroup width="100%" top="129" height="36" gap="0" includeIn="test, testrecord" horizontalAlign="center">
 		<s:Button width="233" height="36" id="settingsButton" click="settingsButtonClickHandler(event)" styleName="settingsButton" name="left" enabled="false" buttonMode="true" useHandCursor="true"/>		

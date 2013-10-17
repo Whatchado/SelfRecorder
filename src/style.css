@@ -54,6 +54,13 @@ s|Button
 	iconPlacement:right;
 }
 
+.hugeLabel
+{
+	fontFamily: robotoCondensed;
+	fontWeight: bold;	
+	fontSize: 34;
+}
+
 .headlineBig
 {
 	fontFamily: robotoCondensed;

@@ -5,6 +5,7 @@ package com.antistatus.whatchado.view.component
 	import com.antistatus.whatchado.event.VideoControlsEvent;
 	import com.antistatus.whatchado.event.ViewEvent;
 	import com.antistatus.whatchado.model.MainModel;
+	import com.antistatus.whatchado.model.vo.QuestionVO;
 	import com.antistatus.whatchado.model.vo.RecordedFileVO;
 	import com.antistatus.whatchado.model.vo.StreamVO;
 	import com.antistatus.whatchado.utilities.FileUtility;
@@ -95,9 +96,13 @@ package com.antistatus.whatchado.view.component
 			if(model.currentVideo == "playlist")
 			{
 				playlist = [];
-				for each (var record:RecordedFileVO in model.selectedRecordings) 
+				var index:int = 0;
+				for each (var recordName:String in model.selectedRecordings) 
 				{
-					playlist.push(new StreamVO("","",FileUtility.getFileUrl(record.id),true, record.startTime, record.endTime));
+					var record:String = "recordings/answer"+index+"/"+recordName;
+					playlist.push(new StreamVO("","",FileUtility.getFileUrl(QuestionVO(model.questionsDataProvider[index]).insert),true));
+					playlist.push(new StreamVO("","",FileUtility.getFileUrl(record),true, RecordedFileVO(model.recordedFiles[record]).startTime, RecordedFileVO(model.recordedFiles[record]).endTime));
+					index++;
 				}
 				saStream = playlist[0];
 				currentPlaylistIndex = 0;
