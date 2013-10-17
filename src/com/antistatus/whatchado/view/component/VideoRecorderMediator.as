@@ -5,6 +5,7 @@ package com.antistatus.whatchado.view.component
 	import com.antistatus.whatchado.event.ViewEvent;
 	import com.antistatus.whatchado.model.MainModel;
 	import com.antistatus.whatchado.model.vo.QuestionVO;
+	import com.antistatus.whatchado.utilities.Trace;
 	
 	import robotlegs.bender.bundles.mvcs.Mediator;
 
@@ -25,6 +26,8 @@ package com.antistatus.whatchado.view.component
 
 		override public function initialize():void
 		{
+			Trace.log(this, "initialized!");
+			
 			// context listeners
 			addContextListener(ViewEvent.VIDEO_RECORDED, videoRecordedHandler);
 			addViewListener(ErrorMessageEvent.ERROR, recorderErrorHandler);

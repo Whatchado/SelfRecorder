@@ -271,7 +271,6 @@
 					stream.seek(vodStartTime);
 			}
 
-
 			private function securityErrorHandler(event:SecurityErrorEvent):void
 			{
 				Trace.error(this, event);

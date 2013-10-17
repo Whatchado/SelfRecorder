@@ -33,10 +33,20 @@
 			
 			protected function cutEnterStateHandler(event:FlexEvent):void
 			{
-				//if(outDragger)
-					//outDragger.maximum = width;
-				//if(inDragger)
-					//inDragger.maximum = width;
+				if(outDragger)
+					outDragger.maximum = width;
+				if(inDragger)
+					inDragger.maximum = width;
+			}
+			
+			protected function inSliderChangeHandler(event:Event):void
+			{
+				dispatchEvent(new ViewEvent(ViewEvent.START));
+			}
+			
+			protected function outSliderChangeHandler(event:Event):void
+			{
+				dispatchEvent(new ViewEvent(ViewEvent.STOP));
 			}
 			
 		]]>
@@ -46,9 +56,12 @@
 		<s:State name="cut" enterState="cutEnterStateHandler(event)"/>
 	</s:states>
 	<component:ProgressSlider id="progress" left="0" right="0" height="100%" liveDragging="false" maximum="{secondsTotal}" minimum="0" 
-							   change="progressChangeHandler(event)" value="{secondsCurrent}" skinClass.cut="com.antistatus.whatchado.view.skin.ScrubbSliderSkinSmall" skinClass="com.antistatus.whatchado.view.skin.ScrubbSliderSkin" snapInterval=".1"/>
+							   change="progressChangeHandler(event)" value="{secondsCurrent}" skinClass.cut="com.antistatus.whatchado.view.skin.ScrubbSliderSkinSmall" 
+							   skinClass="com.antistatus.whatchado.view.skin.ScrubbSliderSkin" snapInterval=".1"/>
 
-	<s:HSlider id="inDragger" snapInterval=".1" right="0" left="0" bottom="0" includeIn="cut" skinClass="com.antistatus.whatchado.view.skin.CutScrubbSliderSkin"/>
-	<s:HSlider id="outDragger" snapInterval=".1" right="0" left="0" scaleX="-1" bottom="0" includeIn="cut" skinClass="com.antistatus.whatchado.view.skin.CutScrubbSliderSkin"/>
+	<s:HSlider id="inDragger" snapInterval=".1" right="0" left="0" bottom="0" maximum="{secondsTotal}" minimum="0" includeIn="cut" liveDragging="false"
+			   					change="inSliderChangeHandler(event)" skinClass="com.antistatus.whatchado.view.skin.CutScrubbSliderSkin"/>
+	<s:HSlider id="outDragger" snapInterval=".1" right="0" left="0" scaleX="-1" bottom="0" maximum="{secondsTotal}" minimum="0" includeIn="cut" liveDragging="false"
+			   					change="outSliderChangeHandler(event)" skinClass="com.antistatus.whatchado.view.skin.CutScrubbSliderSkin"/>
 
 </s:Group>

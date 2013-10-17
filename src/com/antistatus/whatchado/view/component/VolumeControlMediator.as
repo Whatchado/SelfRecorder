@@ -3,6 +3,7 @@ package com.antistatus.whatchado.view.component
 {
 	import com.antistatus.whatchado.event.ViewEvent;
 	import com.antistatus.whatchado.model.MainModel;
+	import com.antistatus.whatchado.utilities.Trace;
 	import com.antistatus.whatchado.view.component.VolumeControl;
 	
 	import robotlegs.bender.bundles.mvcs.Mediator;
@@ -23,6 +24,8 @@ package com.antistatus.whatchado.view.component
 
 		override public function initialize():void
 		{
+			Trace.log(this, "initialized!");
+			
 			addViewListener(ViewEvent.CHANGE, volumeControlChangeHandler);
 		}
 

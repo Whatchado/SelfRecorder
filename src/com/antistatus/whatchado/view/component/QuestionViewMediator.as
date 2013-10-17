@@ -33,6 +33,8 @@ package com.antistatus.whatchado.view.component
 
 		override public function initialize():void
 		{
+			Trace.log(this, "initialized!");
+			
 			addContextListener(SystemEvent.NEXT_QUESTION, nextQuestionHandler);
 			addContextListener(SystemEvent.VIDEO_COMPLETE, videoCompleteHandler);
 			addViewListener(ViewEvent.VIDEO_RECORDED, videoRecordedHandler);

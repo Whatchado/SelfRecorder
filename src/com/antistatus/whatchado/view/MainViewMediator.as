@@ -234,6 +234,9 @@ package com.antistatus.whatchado.view
 				view.forwardButton.label = "weiter";
 				view.forwardButton.enabled = false;
 				
+				model.currentVideo = "playlist";
+				view.uploadView.showVideo();
+				dispatch(new VideoControlsEvent(VideoControlsEvent.START_VIDEO));
 			}
 		}
 		

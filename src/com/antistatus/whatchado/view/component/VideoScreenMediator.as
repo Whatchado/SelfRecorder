@@ -5,6 +5,7 @@ package com.antistatus.whatchado.view.component
 	import com.antistatus.whatchado.event.VideoControlsEvent;
 	import com.antistatus.whatchado.event.ViewEvent;
 	import com.antistatus.whatchado.model.MainModel;
+	import com.antistatus.whatchado.model.vo.RecordedFileVO;
 	import com.antistatus.whatchado.model.vo.StreamVO;
 	import com.antistatus.whatchado.utilities.FileUtility;
 	import com.antistatus.whatchado.utilities.Trace;
@@ -34,9 +35,13 @@ package com.antistatus.whatchado.view.component
 		
 		private var progressTimer:Number = 0;
 		private var volumeWatcher:ChangeWatcher;
+		private var playlist:Array;
+		private var currentPlaylistIndex:int;
 
 		override public function initialize():void
 		{
+			Trace.log(this, "initialized!");
+			
 			// context listeners
 			addContextListener(VideoControlsEvent.PAUSE_VIDEO, pauseVideoHandler);
 			addContextListener(VideoControlsEvent.RESUME_VIDEO, resumeVideoHandler);
@@ -56,7 +61,22 @@ package com.antistatus.whatchado.view.component
 		
 		private function videoCompleteHandler(event:ViewEvent):void
 		{
-			dispatch(new SystemEvent(SystemEvent.VIDEO_COMPLETE));
+			if(model.currentVideo == "playlist" && currentPlaylistIndex < playlist.length-1)
+			{
+				currentPlaylistIndex++;
+				videoScreen.streamData = playlist[currentPlaylistIndex];
+				videoScreen.vodStartTime = videoScreen.streamData.startTime;
+				videoScreen.vodEndTime = videoScreen.streamData.endTime;
+				
+				if(!videoScreen.streamData)
+					return;
+				
+				videoScreen.connect();
+			}
+			else
+			{
+				dispatch(new SystemEvent(SystemEvent.VIDEO_COMPLETE));
+			}
 		}		
 		
 		private function videoDurationChangedHandler(event:SystemEvent):void
@@ -71,22 +91,36 @@ package com.antistatus.whatchado.view.component
 
 		private function connect():void
 		{
-				var saStream:StreamVO = new StreamVO("test", "", FileUtility.getFileUrl(model.currentVideo),true,0);
-
-				videoScreen.streamData = saStream;
-				videoScreen.vodStartTime = saStream.startTime;
-				videoScreen.vodEndTime = saStream.endTime;
-
-				if(!videoScreen.streamData)
-					return;
-
-				videoScreen.connect();
-				//model.playStatus = model.PLAY;
-				Trace.log(videoScreen.id + ":" + this + " streamData.path: ", videoScreen.streamData.path);
-				Trace.log(videoScreen.id + ":" + this + " streamData.streamName: ", videoScreen.streamData.streamName);
-				Trace.log(videoScreen.id + ":" + this + " vodStartTime: ", videoScreen.vodStartTime);
-				Trace.log(videoScreen.id + ":" + this + " vodEndTime: ", videoScreen.vodEndTime);
+			var saStream:StreamVO;
+			if(model.currentVideo == "playlist")
+			{
+				playlist = [];
+				for each (var record:RecordedFileVO in model.selectedRecordings) 
+				{
+					playlist.push(new StreamVO("","",FileUtility.getFileUrl(record.id),true, record.startTime, record.endTime));
+				}
+				saStream = playlist[0];
+				currentPlaylistIndex = 0;
+			}
+			else
+			{
+				saStream = new StreamVO("test", "", FileUtility.getFileUrl(model.currentVideo),true,0);
+			}
 			
+			videoScreen.streamData = saStream;
+			videoScreen.vodStartTime = saStream.startTime;
+			videoScreen.vodEndTime = saStream.endTime;
+
+			if(!videoScreen.streamData)
+				return;
+
+			videoScreen.connect();
+			//model.playStatus = model.PLAY;
+			Trace.log(videoScreen.id + ":" + this + " streamData.path: ", videoScreen.streamData.path);
+			Trace.log(videoScreen.id + ":" + this + " streamData.streamName: ", videoScreen.streamData.streamName);
+			Trace.log(videoScreen.id + ":" + this + " vodStartTime: ", videoScreen.vodStartTime);
+			Trace.log(videoScreen.id + ":" + this + " vodEndTime: ", videoScreen.vodEndTime);
+		
 		}
 
 		private function enterFullscreenHandler(event:ViewEvent):void

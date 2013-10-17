@@ -6,6 +6,7 @@ package com.antistatus.whatchado.view.component
 	import com.antistatus.whatchado.event.ViewEvent;
 	import com.antistatus.whatchado.model.MainModel;
 	import com.antistatus.whatchado.model.vo.StreamVO;
+	import com.antistatus.whatchado.utilities.Trace;
 	
 	import mx.binding.utils.BindingUtils;
 	import mx.binding.utils.ChangeWatcher;
@@ -45,9 +46,13 @@ package com.antistatus.whatchado.view.component
 
 		override public function initialize():void
 		{
+			Trace.log(this, "initialized!");
+			
 			addContextListener(SystemEvent.PLAY_STATUS_CHANGED, playStatusChangedHandler);
 			addContextListener(SystemEvent.VIDEO_DURATION_CHANGED, videoDurationChangedHandler);
 			addViewListener(ViewEvent.CHANGE, progressChangedHandler);
+			addViewListener(ViewEvent.START, inSliderChangedHandler);
+			addViewListener(ViewEvent.STOP, outSliderChangedHandler);
 
 			videoProgress.secondsCurrent = 0;
 
@@ -59,6 +64,18 @@ package com.antistatus.whatchado.view.component
 							return;*/
 
 			secondsCurrentWatcher = BindingUtils.bindProperty(this, "secondsCurrent", model, "currentStreamTime");
+		}
+		
+		private function inSliderChangedHandler():void
+		{
+			// TODO Auto Generated method stub
+			
+		}
+		
+		private function outSliderChangedHandler():void
+		{
+			// TODO Auto Generated method stub
+			
 		}
 		private function videoDurationChangedHandler(event:SystemEvent):void
 		{

@@ -134,6 +134,7 @@
 			{
 				var camera:Camera = currentCamera;
 				camera.setQuality(0, 100);
+				camera.setKeyFrameInterval(9);
 				camera.setMode(852, 480, 25, false);
 				return camera;
 			}

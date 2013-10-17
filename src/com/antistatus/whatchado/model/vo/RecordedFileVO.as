@@ -8,7 +8,9 @@ package com.antistatus.whatchado.model.vo
 		public var label:String = "";
 		public var date:Date;
 		public var selected:Boolean = false;
-
+		public var startTime:int;
+		public var endTime:int;
+		
 		public function RecordedFileVO(id:String, label:String, date:Date)
 		{
 			this.id = id;

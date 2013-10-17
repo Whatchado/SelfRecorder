@@ -5,6 +5,7 @@ package com.antistatus.whatchado.view.component
 	import com.antistatus.whatchado.event.VideoControlsEvent;
 	import com.antistatus.whatchado.event.ViewEvent;
 	import com.antistatus.whatchado.model.MainModel;
+	import com.antistatus.whatchado.utilities.Trace;
 	
 	import spark.components.Button;
 	
@@ -42,6 +43,8 @@ package com.antistatus.whatchado.view.component
 		 */
 		override public function initialize():void
 		{
+			Trace.log(this, "initialized!");
+			
 			addContextListener(SystemEvent.PLAY_STATUS_CHANGED, playStatusChangedHandler);
 			addViewListener(ViewEvent.CLICK, videoControlsClickHandler);
 			playStatusChangedHandler();

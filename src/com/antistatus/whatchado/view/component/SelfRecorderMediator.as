@@ -5,6 +5,7 @@ package com.antistatus.whatchado.view.component
 	import com.antistatus.whatchado.event.ViewEvent;
 	import com.antistatus.whatchado.model.MainModel;
 	import com.antistatus.whatchado.service.Red5Manager;
+	import com.antistatus.whatchado.utilities.Trace;
 	import com.antistatus.whatchado.view.LoggerWindow;
 	
 	import flash.desktop.NativeApplication;
@@ -22,14 +23,10 @@ package com.antistatus.whatchado.view.component
 		[Inject]
 		public var red5Manager:Red5Manager;
 
-		[Inject]
-		public var model:MainModel;
-
-		[Inject]
-		public var view:SelfRecorder;
-
 		override public function initialize():void
 		{
+			Trace.log(this, "initialized!");
+			
 			addViewListener(ViewEvent.EXIT, exitAppHandler);
 			addViewListener(ViewEvent.CLICK, selectMenuHandler);
 			addContextListener(SystemEvent.RED5_ENDED, red5EndedHandler);
