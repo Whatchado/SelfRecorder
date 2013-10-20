@@ -3,7 +3,7 @@
              xmlns:s="library://ns.adobe.com/flex/spark" 
              xmlns:fb="http://ns.adobe.com/flashbuilder/2009"
              minWidth="92" minHeight="58"  maxWidth="800"
-             alpha.disabled="0.5" iconGroupPaddingBottom="24" iconGroupPaddingLeft="8" iconGroupPaddingRight="8">
+             alpha.disabled="0.5" iconGroupPaddingBottom="24" y.over="-2">
      
     <fx:Metadata>
         <![CDATA[ 
@@ -47,7 +47,7 @@
     
     
     <!--- @private -->
-    <s:Rect left="2" right="2" top="0" bottom="0" topLeftRadiusX="10" topRightRadiusX="10">
+    <s:Rect left="2" right="2" top="0" bottom="0"  bottom.over="-2" topLeftRadiusX="10" topRightRadiusX="10">
         <s:fill>
 			<s:LinearGradient rotation="90">
 				<s:GradientEntry color="0xFDFDFD"/>
@@ -67,7 +67,7 @@
     <!-- layer 8: text -->
     <!--- @copy spark.components.supportClasses.ButtonBase#labelDisplay  -->
     <s:Label id="labelDisplay" color="#FFFFFF" paddingLeft="4" paddingRight="4"
-             textAlign="center" left="24" right="24"
+             textAlign="center" left="4" right="4"
              maxDisplayedLines="1" verticalAlign="middle" top="2" bottom="28" verticalCenter="1">
     </s:Label>
     

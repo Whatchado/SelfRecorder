@@ -12,6 +12,7 @@ package com.antistatus.whatchado.view.component
 	
 	import flash.filesystem.File;
 	import flash.net.SharedObject;
+	import flash.utils.setTimeout;
 	
 	import mx.collections.ArrayCollection;
 	
@@ -47,10 +48,14 @@ package com.antistatus.whatchado.view.component
 		{
 			model.currentVideo = event.targetObject.file;
 			view.currentState = "playback";
-			view.videoScreen.connect();
-			dispatch(new VideoControlsEvent(VideoControlsEvent.START_VIDEO));
 			model.selectedRecordings[model.currentQuestion] = model.currentVideo.split("/").pop();
 			getRecordedFiles();
+			setTimeout(startRecordedVideo,500);
+		}
+		
+		private function startRecordedVideo():void
+		{
+			dispatch(new VideoControlsEvent(VideoControlsEvent.START_VIDEO));
 		}
 		
 		private function recordingDeleteHandler(event:ViewEvent):void
@@ -96,7 +101,11 @@ package com.antistatus.whatchado.view.component
 		private function videoCompleteHandler(event:SystemEvent):void
 		{
 			if(view.currentState == "start")
+			{
 				view.currentState = "record";
+				view.interviewButton.enabled = false;
+				view.recordingsButton.enabled = true;				
+			}
 		}
 		
 		private function getRecordedFiles():void

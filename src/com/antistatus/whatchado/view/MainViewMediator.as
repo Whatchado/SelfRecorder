@@ -196,6 +196,16 @@ package com.antistatus.whatchado.view
 			{
 				NavigationButtonVO(model.questionsButtonsDataProvider.getItemAt(model.currentQuestion)).enabled = true;
 				dispatch(new SystemEvent(SystemEvent.NEXT_QUESTION, NavigationTypeVO(event.targetObject).id));
+				
+				for each (var button:NavigationButtonVO in model.questionsButtonsDataProvider) 
+				{
+					button.select = false;
+				}
+				
+				var questionButton:NavigationButtonVO = NavigationButtonVO(model.questionsButtonsDataProvider.getItemAt(NavigationTypeVO(event.targetObject).id));
+				if(questionButton.completed)
+					questionButton.select = true;
+				
 				view.forwardButton.enabled = false;
 			}
 				

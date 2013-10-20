@@ -5,6 +5,7 @@ package com.antistatus.whatchado.model.vo
 	{
 		public var enabled:Boolean = true;
 		public var completed:Boolean = true;
+		public var select:Boolean = true;
 		public var name:String;
 		public var type:NavigationTypeVO;
 		public var index:int;

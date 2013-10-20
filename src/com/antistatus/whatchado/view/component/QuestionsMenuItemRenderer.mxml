@@ -16,5 +16,6 @@
 		]]>
 	</fx:Script>
 	
-	<s:Button label="{NavigationButtonVO(data).name}" useHandCursor="true" enabled="{NavigationButtonVO(data).enabled}" styleName="{NavigationButtonVO(data).enabled ? (NavigationButtonVO(data).completed ? 'completedQuestionButton' : 'incompleteQuestionButton') : 'defaultQuestionButton'}" click="clickHandler(event)" skinClass="com.antistatus.whatchado.view.skin.QuestionsMenuButtonSkin" buttonMode="true"/>
+	<s:Button label="{NavigationButtonVO(data).name}" useHandCursor="true" enabled="{NavigationButtonVO(data).enabled}"
+			  styleName="{NavigationButtonVO(data).enabled ? (NavigationButtonVO(data).completed ?  (NavigationButtonVO(data).select ? 'activeQuestionButton':'completedQuestionButton') : 'incompleteQuestionButton') : 'defaultQuestionButton'}" click="clickHandler(event)" skinClass="com.antistatus.whatchado.view.skin.QuestionsMenuButtonSkin" buttonMode="true"/>
 </s:ItemRenderer>

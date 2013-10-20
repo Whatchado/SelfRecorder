@@ -2,7 +2,7 @@
 <s:SparkButtonSkin xmlns:fx="http://ns.adobe.com/mxml/2009" 
              xmlns:s="library://ns.adobe.com/flex/spark" 
              xmlns:fb="http://ns.adobe.com/flashbuilder/2009"
-             minWidth="70" minHeight="30">
+             minWidth="70" minHeight="30" y.over="-2">
      
     <fx:Metadata>
         <![CDATA[ 
@@ -40,7 +40,7 @@
         <s:State name="up" />
         <s:State name="over" />
         <s:State name="down" />
-        <s:State name="disabled" />
+        <s:State name="disabled"/>
     </s:states>
     
     
@@ -53,6 +53,11 @@
     <s:Rect left="2" right="4" top="0" bottom="0" radiusX="10" includeIn="disabled">
         <s:fill>
             <s:SolidColor color="#e3e3e3"/>
+        </s:fill>
+    </s:Rect>
+    <s:Rect left="2" right="4" top="0" bottom="0" radiusX="10" visible="{Boolean(getStyle('color') == 0xFFFFFF)}">
+        <s:fill>
+            <s:SolidColor color="#377784"/>
         </s:fill>
     </s:Rect>
     

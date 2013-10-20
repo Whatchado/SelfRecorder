@@ -3,7 +3,7 @@
              xmlns:s="library://ns.adobe.com/flex/spark" 
              xmlns:fb="http://ns.adobe.com/flashbuilder/2009"
              minWidth="70" minHeight="40" 
-             alpha.disabled="0.5" iconGroupPaddingTop="13">
+             alpha.disabled="0.5" iconGroupPaddingTop="13" y.over="2">
      
     <fx:Metadata>
         <![CDATA[ 
@@ -47,7 +47,7 @@
     
     
     <!--- @private -->
-    <s:Rect left="2" right="4" top="0" bottom="0" bottomLeftRadiusX="10" bottomRightRadiusX="10">
+    <s:Rect left="2" right="4" top="0" top.over="-2" bottom="0" bottomLeftRadiusX="10" bottomRightRadiusX="10">
         <s:fill>
             <s:SolidColor color="#FFFFFF"/>
         </s:fill>

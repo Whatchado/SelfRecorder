@@ -66,17 +66,17 @@ package com.antistatus.whatchado.view.component
 			secondsCurrentWatcher = BindingUtils.bindProperty(this, "secondsCurrent", model, "currentStreamTime");
 		}
 		
-		private function inSliderChangedHandler():void
+		private function inSliderChangedHandler(event:ViewEvent):void
 		{
 			// TODO Auto Generated method stub
 			
 		}
 		
-		private function outSliderChangedHandler():void
+		private function outSliderChangedHandler(event:ViewEvent):void
 		{
 			// TODO Auto Generated method stub
-			
 		}
+			
 		private function videoDurationChangedHandler(event:SystemEvent):void
 		{
 			videoProgress.secondsTotal = event.value;

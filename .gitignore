@@ -2,3 +2,4 @@
 .DS_Store
 bin-release
 bin-debug
+bin-release-temp

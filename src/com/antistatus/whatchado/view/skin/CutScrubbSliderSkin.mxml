@@ -31,7 +31,7 @@
 		<s:State name="normal"/>
 		<s:State name="disabled"/>
 	</s:states>
-	<s:BitmapImage  width="{thumb.x}" bottom="0" height="12" fillMode="repeat" source="@Embed(source='../assets/skin/cutSliderBg.png')"/>
+	<s:BitmapImage  width="{thumb.x}" bottom="0" height="12" fillMode="repeat" source="@Embed(source='../assets/skin/cutSliderBg.png')" blendMode="add"/>
 	
 	<s:Button id="track" left="0" right="0" height="20" bottom="0" visible="false" skinClass="com.antistatus.whatchado.view.skin.EmptyButtonSkin"/>
 	

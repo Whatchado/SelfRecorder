@@ -14,6 +14,7 @@ package com.antistatus.whatchado.service
 	import flash.desktop.NativeProcessStartupInfo;
 	import flash.events.DataEvent;
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.events.NativeProcessExitEvent;
 	import flash.events.ProgressEvent;
 	import flash.events.TimerEvent;
@@ -41,8 +42,8 @@ package com.antistatus.whatchado.service
 		
 		private var forceCloseProcessTimer:Timer = new Timer(10000);
 
-		private var startRed5Process:NativeProcess;
-
+		public var startRed5Process:NativeProcess;
+		
 		public function launchRed5():void
 		{
 			invokeRed5(true);
@@ -104,6 +105,7 @@ package com.antistatus.whatchado.service
 				dispatch(new Event("addressInUse", true));
 			
 			dispatch(new DataEvent("logging", false, false, log));
+			Trace.log(this, log);
 		}
 
 		private function invokeRed5(launch:Boolean):void
@@ -171,6 +173,9 @@ package com.antistatus.whatchado.service
 		private function startProcess(startupInfo:NativeProcessStartupInfo):void
 		{
 			startRed5Process = new NativeProcess();
+			startRed5Process.addEventListener(IOErrorEvent.IO_ERROR, onError);
+			startRed5Process.addEventListener(IOErrorEvent.STANDARD_OUTPUT_IO_ERROR, onError);
+			startRed5Process.addEventListener(IOErrorEvent.STANDARD_ERROR_IO_ERROR, onError);
 			startRed5Process.addEventListener(NativeProcessExitEvent.EXIT, onProcessExit);
 			startRed5Process.addEventListener(ProgressEvent.STANDARD_ERROR_DATA, onError);
 			startRed5Process.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA, onOutput);

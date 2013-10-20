@@ -17,23 +17,31 @@
 				drawCircle(GREEN);
 			}
 				
+			public function setTimer(value:String):void
+			{
+				timerDisplay.text = value;
+			}
 			public function setTime(value:int):void
 			{
 				timeDisplay.text = getTimeString(value);
-				if(value >= timeLimit)
+				
+				if(value == 0)
 				{
 					drawCircle(RED);
 					timeDisplay.setStyle("color",0xFFFFFF);					
+					timerDisplay.setStyle("color",0xFFFFFF);					
 				}
-				else if(value >= timeLimit-5 )
+				else if(value <= 5 )
 				{
 					drawCircle(YELLOW);
 					timeDisplay.setStyle("color",0x000000);					
+					timerDisplay.setStyle("color",0x000000);					
 				}
 				else
 				{
 					drawCircle(GREEN);
 					timeDisplay.setStyle("color",0xFFFFFF);					
+					timerDisplay.setStyle("color",0xFFFFFF);					
 				}
 					
 			}
@@ -75,9 +83,17 @@
 			public function reset():void
 			{
 				drawCircle(GREEN);
+				timeDisplay.text = "00";
+				timerDisplay.text = "00:00";
+			}
+			
+			public function getTime():Object
+			{
+				return timerDisplay.text;
 			}
 			
 		]]>
 	</fx:Script>
-	<s:Label id="timeDisplay" left="0" right="0" textAlign="center" maxDisplayedLines="1" styleName="bigTimerLabel"/>
+	<s:Label id="timeDisplay" left="0" right="0" top="4" textAlign="center" maxDisplayedLines="1" styleName="bigTimerLabel"/>
+	<s:Label id="timerDisplay" left="0" right="0" top="60" textAlign="center" maxDisplayedLines="1" styleName="mediumTimerLabel"/>
 </s:Group>

@@ -60,7 +60,7 @@
 				switch (evCode)
 				{
 					case "NetConnection.Connect.Failed":
-						dispatchEvent(new ErrorMessageEvent(ErrorMessageEvent.ERROR, new ErrorVO("Error", "Connecction to Recorder could not be established!", "Please restart the application.")));
+						dispatchEvent(new ErrorMessageEvent(ErrorMessageEvent.ERROR, new ErrorVO("Error", "Connection to Recorder could not be established!", "Please restart the application.")));
 						break;
 					
 					case "NetConnection.Connect.Success":
@@ -97,7 +97,7 @@
 				if(mode == "test")
 					destination= File.applicationStorageDirectory.resolvePath("testrecording/test.flv");
 				else
-					destination= File.applicationStorageDirectory.resolvePath("recordings/answer"+currentAnswer+"/" + streamName + "_"+ durationView.text.replace(":", "-") +".flv");
+					destination= File.applicationStorageDirectory.resolvePath("recordings/answer"+currentAnswer+"/" + streamName + "_"+ timerView.getTime().replace(":", "-") +".flv");
 				
 				if(source.exists)
 				{
@@ -110,7 +110,15 @@
 			
 			private function updateRecordTime(value:int) : void
 			{
-				durationView.text = getTimeString(value);
+				//durationView.text = getTimeString(value);
+				
+				
+				
+				if(timerView)
+				{
+					timerView.setTime(value<=suggestedTime? suggestedTime-value : 0);
+					timerView.setTimer(getTimeString(value));
+				}
 			}
 			
 			
@@ -151,8 +159,8 @@
 					stream.publish(streamName, "record");
 					if(!timerView)
 						return;
-					timerView.visible = true;
 					timerView.reset();
+					timerView.visible = true;
 					timerView.timeLimit = suggestedTime;
 				}
 			}
@@ -283,8 +291,7 @@
 			
 			private function getTimeString(sec:int):String
 			{
-				if(timerView)
-					timerView.setTime(sec);
+				
 				var s:Number = sec % 60;
 				var m:Number = Math.floor((sec % 3600 ) / 60);
 				var h:Number = Math.floor(sec / (60 * 60));
@@ -337,7 +344,7 @@
 				   source="@Embed(source='../assets/skin/recordingButton.png')" 
 				   excludeFrom="recordState" alpha.disconnectedState=".5"/>
 	
-	<s:BitmapImage bottom="0" horizontalCenter="0" width="148" height="125" source="@Embed(source='../assets/skin/recordingButtonRec.png')" includeIn="recordState"/>
+	<s:BitmapImage bottom="0" horizontalCenter="0" width="148" height="125" source="@Embed(source='../assets/skin/recordingButtonStop.png')" includeIn="recordState"/>
 	<!--/{bufferLength.toPrecision(2)}/{BUFFER_TIME}-->
 	<s:Label id="durationView"  includeIn="recordState"
 			 width="180"

@@ -22,6 +22,7 @@ package com.antistatus.whatchado.view.component
 
 		[Inject]
 		public var red5Manager:Red5Manager;
+		private var appCloseRequested:Boolean = false;
 
 		override public function initialize():void
 		{
@@ -42,12 +43,21 @@ package com.antistatus.whatchado.view.component
 		
 		private function red5EndedHandler(event:SystemEvent):void
 		{
-			NativeApplication.nativeApplication.exit();
+			if(appCloseRequested)
+				NativeApplication.nativeApplication.exit();
 		}
 		
 		private function exitAppHandler(event:ViewEvent):void
 		{
-			red5Manager.stop();
+			if(red5Manager.startRed5Process.running)
+			{
+				red5Manager.stop();
+				appCloseRequested = true;
+			}
+			else
+			{
+				NativeApplication.nativeApplication.exit();
+			}
 		}
 	}
 }

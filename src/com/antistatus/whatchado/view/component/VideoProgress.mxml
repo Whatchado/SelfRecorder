@@ -41,10 +41,20 @@
 			
 			protected function inSliderChangeHandler(event:Event):void
 			{
-				dispatchEvent(new ViewEvent(ViewEvent.START));
+				progress.position = inDragger.value;
 			}
 			
 			protected function outSliderChangeHandler(event:Event):void
+			{
+				progress.position = secondsTotal - outDragger.value;
+			}
+			
+			protected function inDraggerChangeEndHandler(event:FlexEvent):void
+			{
+				dispatchEvent(new ViewEvent(ViewEvent.START));
+			}
+			
+			protected function outDraggerChangeEndHandler(event:FlexEvent):void
 			{
 				dispatchEvent(new ViewEvent(ViewEvent.STOP));
 			}
@@ -59,9 +69,9 @@
 							   change="progressChangeHandler(event)" value="{secondsCurrent}" skinClass.cut="com.antistatus.whatchado.view.skin.ScrubbSliderSkinSmall" 
 							   skinClass="com.antistatus.whatchado.view.skin.ScrubbSliderSkin" snapInterval=".1"/>
 
-	<s:HSlider id="inDragger" snapInterval=".1" right="0" left="0" bottom="0" maximum="{secondsTotal}" minimum="0" includeIn="cut" liveDragging="false"
-			   					change="inSliderChangeHandler(event)" skinClass="com.antistatus.whatchado.view.skin.CutScrubbSliderSkin"/>
-	<s:HSlider id="outDragger" snapInterval=".1" right="0" left="0" scaleX="-1" bottom="0" maximum="{secondsTotal}" minimum="0" includeIn="cut" liveDragging="false"
-			   					change="outSliderChangeHandler(event)" skinClass="com.antistatus.whatchado.view.skin.CutScrubbSliderSkin"/>
+	<s:HSlider id="inDragger" snapInterval=".1" right="0" left="0" bottom="0" maximum="{secondsTotal}" minimum="0" includeIn="cut" liveDragging="true"
+			   					change="inSliderChangeHandler(event)" changeEnd="inDraggerChangeEndHandler(event)" skinClass="com.antistatus.whatchado.view.skin.CutScrubbSliderSkin"/>
+	<s:HSlider id="outDragger" snapInterval=".1" right="0" left="0" scaleX="-1" bottom="0" maximum="{secondsTotal}" minimum="0" includeIn="cut" liveDragging="true"
+			   					change="outSliderChangeHandler(event)" changeEnd="outDraggerChangeEndHandler(event)" skinClass="com.antistatus.whatchado.view.skin.CutScrubbSliderSkin"/>
 
 </s:Group>

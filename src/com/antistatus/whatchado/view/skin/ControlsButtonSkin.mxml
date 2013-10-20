@@ -78,6 +78,9 @@
 			bottom="1"
 			radiusX="2"
 			alpha="{(labelText.indexOf('volume')==-1)?1:0}">
+		<s:fill>
+			<s:SolidColor alpha="0"/>
+		</s:fill>
 		<s:stroke>
 			<s:SolidColorStroke color="#919498"/>
 		</s:stroke>

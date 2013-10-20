@@ -175,7 +175,7 @@ package com.antistatus.whatchado.service
 				var sourceDir:File = File.applicationDirectory.resolvePath("server"); 
 				sourceDir.addEventListener(Event.COMPLETE, copyServerCompleteHandler);
 				
-				sourceDir.copyToAsync(resultDir);
+				sourceDir.copyToAsync(resultDir, true);
 			}
 			else
 			{

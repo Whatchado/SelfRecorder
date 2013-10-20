@@ -76,21 +76,36 @@ s|Button
 {
 	fontFamily: robotoCondensed;
 	fontWeight: bold;	
-	fontSize: 68;
+	fontSize: 50;
+	color: #FFFFFF;
+}
+.mediumTimerLabel
+{
+	fontFamily: robotoCondensed;
+	fontWeight: bold;	
+	fontSize: 30;
 	color: #FFFFFF;
 }
 
 .completedQuestionButton
 {
 	icon: Embed(source="../assets/skin/ok_buticon.png");
+	color: #000000;
 }
 .incompleteQuestionButton
 {
 	icon: Embed(source="../assets/skin/reco_buticon.png");
+	color: #000000;
 }
 .defaultQuestionButton
 {
 	icon: Embed(source="../assets/skin/default_buticon_question.png");
+	color: #000000;
+}
+.activeQuestionButton
+{
+	icon: Embed(source="../assets/skin/ok_buticon_active.png");
+	color: #FFFFFF;
 }
 .bottomButtonRight
 {

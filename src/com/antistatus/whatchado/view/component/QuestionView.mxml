@@ -4,6 +4,7 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300" xmlns:component="com.antistatus.whatchado.view.component.*">
 	<fx:Script>
 		<![CDATA[
+			import com.antistatus.whatchado.event.VideoControlsEvent;
 			import com.antistatus.whatchado.view.skin.VideoControlsSkin;
 			
 			import mx.collections.ArrayCollection;
@@ -34,6 +35,7 @@
 			
 			protected function playbackEnterStateHandler(event:FlexEvent):void
 			{
+				videoScreen.connect();
 				
 			}
 			
@@ -74,13 +76,6 @@
 	
 	<component:VideoRecorder top="185" bottom="0" left="160" right="160" id="videoRecorder" includeIn="record"/>
 	
-	<s:Group top="185" bottom="0" left="160" right="160" includeIn="playback">
-		<s:BitmapImage width="100%" height="35" bottom="78" fillMode="repeat" source="@Embed(source='../assets/skin/controlsbg.png')"/>
-		<!--<component:VolumeControl left="90" bottom="125" skinClass="com.antistatus.whatchado.view.skin.VolumeControlSkin"/>-->
-		<component:VideoProgress bottom="113" left="0" right="0" currentState="cut"/>
-		<component:VideoControls   left="4" bottom="80" skinClass="com.antistatus.whatchado.view.skin.VideoControlsSkin"/>
-	</s:Group>
-	
 	<s:Scroller top="185" bottom="125" right="10" width="150" verticalScrollPolicy="on" excludeFrom="start">
 		<s:DataGroup left="0" right="0" dataProvider="{recordingsDataProvider}" itemRenderer="com.antistatus.whatchado.view.component.RecordingsItemRenderer">
 			<s:layout>
@@ -88,6 +83,15 @@
 			</s:layout>
 		</s:DataGroup>
 	</s:Scroller>
+	
+	
+	<s:Group top="185" bottom="0" left="160" right="160" includeIn="playback">
+		<s:BitmapImage width="100%" height="35" bottom="78" fillMode="repeat" source="@Embed(source='../assets/skin/controlsbg.png')"/>
+		<!--<component:VolumeControl left="90" bottom="125" skinClass="com.antistatus.whatchado.view.skin.VolumeControlSkin"/>-->
+		<component:VideoProgress bottom="113" left="0" right="0" currentState="cut"/>
+		<component:VideoControls   left="4" bottom="80" skinClass="com.antistatus.whatchado.view.skin.VideoControlsSkin"/>
+	</s:Group>
+	
 	
 	<component:TimerView id="timerView" horizontalCenter="0" width="300" height="230" includeIn="record" visible="false" showEffect="{fadeIn}"/>
 	
