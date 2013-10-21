@@ -199,7 +199,7 @@
 
 	
 	
-	<component:QuestionView includeIn="question" width="100%" height="100%"/>
+	<component:QuestionView id="questionView" includeIn="question" width="100%" height="100%"/>
 	<view:UserProfileView/>
 
 	<component:SettingsView id="settingsView" includeIn="test" verticalCenter="30" width="100%"/>

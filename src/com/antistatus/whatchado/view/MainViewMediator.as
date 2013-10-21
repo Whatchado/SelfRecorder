@@ -72,8 +72,13 @@ package com.antistatus.whatchado.view
 			{
 				model.currentVideo = "testrecording/test.flv";
 				view.testRecordView.showTestVideo();
-				dispatch(new VideoControlsEvent(VideoControlsEvent.START_VIDEO));
+				setTimeout(playTestVIdeo, 500);
 			}
+		}
+		
+		private function playTestVIdeo():void
+		{
+			dispatch(new VideoControlsEvent(VideoControlsEvent.START_VIDEO));
 		}
 		
 		private function switchInfoState():void
@@ -197,16 +202,28 @@ package com.antistatus.whatchado.view
 				NavigationButtonVO(model.questionsButtonsDataProvider.getItemAt(model.currentQuestion)).enabled = true;
 				dispatch(new SystemEvent(SystemEvent.NEXT_QUESTION, NavigationTypeVO(event.targetObject).id));
 				
-				for each (var button:NavigationButtonVO in model.questionsButtonsDataProvider) 
+				/*if(model.selectedRecordings[model.currentQuestion])
 				{
-					button.select = false;
+					model.currentVideo = "recordings/answer"+model.currentQuestion+"/" + model.selectedRecordings[model.currentQuestion];
+					view.questionView.currentState = "playback";
+					view.questionView.interviewButton.enabled = true;
+					view.questionView.recordingsButton.enabled = false;
 				}
+				else
+				{
+					NavigationButtonVO(model.questionsButtonsDataProvider.getItemAt(model.currentQuestion)).enabled = true;
+					dispatch(new SystemEvent(SystemEvent.NEXT_QUESTION, NavigationTypeVO(event.targetObject).id));
+					view.forwardButton.enabled = false;
+				}*/
+				
+				for each (var button:NavigationButtonVO in model.questionsButtonsDataProvider) 
+					button.select = false;
 				
 				var questionButton:NavigationButtonVO = NavigationButtonVO(model.questionsButtonsDataProvider.getItemAt(NavigationTypeVO(event.targetObject).id));
 				if(questionButton.completed)
 					questionButton.select = true;
 				
-				view.forwardButton.enabled = false;
+				
 			}
 				
 			if(view.currentState == "intro")

@@ -4,7 +4,6 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300" xmlns:component="com.antistatus.whatchado.view.component.*">
 	<fx:Script>
 		<![CDATA[
-			import com.antistatus.whatchado.event.VideoControlsEvent;
 			import com.antistatus.whatchado.view.skin.VideoControlsSkin;
 			
 			import mx.collections.ArrayCollection;
@@ -76,7 +75,7 @@
 	
 	<component:VideoRecorder top="185" bottom="0" left="160" right="160" id="videoRecorder" includeIn="record"/>
 	
-	<s:Scroller top="185" bottom="125" right="10" width="150" verticalScrollPolicy="on" excludeFrom="start">
+	<s:Scroller top="185" bottom="113" right="10" width="150" verticalScrollPolicy="on" includeIn="record,playback">
 		<s:DataGroup left="0" right="0" dataProvider="{recordingsDataProvider}" itemRenderer="com.antistatus.whatchado.view.component.RecordingsItemRenderer">
 			<s:layout>
 				<s:VerticalLayout/>

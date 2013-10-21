@@ -154,8 +154,8 @@ package com.antistatus.whatchado.view.component
 			if (event.info.code == "NetStream.Play.Stop")
 				model.playStatus = MainModel.PAUSE;
 
-			if (event.info.code == "NetStream.Buffer.Flush")
-				model.playStatus = MainModel.PAUSE;
+			/*if (event.info.code == "NetStream.Buffer.Flush")
+				model.playStatus = MainModel.PAUSE;*/
 		}
 
 		private function pauseVideoHandler(event:VideoControlsEvent):void

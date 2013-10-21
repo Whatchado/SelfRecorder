@@ -104,7 +104,7 @@
 					source.copyTo(destination, true);
 					source.deleteFile();
 				}
-				dispatchEvent(new ViewEvent(ViewEvent.VIDEO_RECORDED, {file: streamName + ".flv"}, true));
+				dispatchEvent(new ViewEvent(ViewEvent.VIDEO_RECORDED, {file: destination.name}, true));
 				currentTake++;
 			}
 			

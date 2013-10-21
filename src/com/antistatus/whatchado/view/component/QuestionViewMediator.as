@@ -68,7 +68,7 @@ package com.antistatus.whatchado.view.component
 		private function videoRecordedHandler(event:ViewEvent):void
 		{
 			model.selectedRecordings[model.currentQuestion] = event.targetObject.file;
-			
+			model.currentVideo = "recordings/answer"+model.currentQuestion+"/" + event.targetObject.file;
 
 			Trace.log(this, event.targetObject.file);
 			var selectedRecordingsStore:SharedObject = SharedObject.getLocal("selectedRecordings");
@@ -79,6 +79,8 @@ package com.antistatus.whatchado.view.component
 			selectedRecordingsStore.flush();
 			getRecordedFiles();
 			dispatch(new SystemEvent(SystemEvent.QUESTION_FINISHED));
+			view.currentState = "playback";
+			setTimeout(startRecordedVideo,500);
 		}
 		
 		private function nextQuestionHandler(event:SystemEvent):void
@@ -128,7 +130,7 @@ package com.antistatus.whatchado.view.component
 					model.recordedFiles[recordedFile.id] = recordedFile;
 					recordingsData.push(recordedFile);
 				}
-				recordingsData.sortOn("date",  Array.DESCENDING);
+				recordingsData.sortOn("date", Array.NUMERIC | Array.DESCENDING);
 				view.recordingsDataProvider = new ArrayCollection(recordingsData);
 				
 			}
