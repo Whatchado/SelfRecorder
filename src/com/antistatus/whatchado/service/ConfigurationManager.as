@@ -3,7 +3,6 @@ package com.antistatus.whatchado.service
 	import com.antistatus.whatchado.model.vo.ConfigVO;
 	import com.antistatus.whatchado.utilities.Trace;
 	
-	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.filesystem.File;
@@ -11,8 +10,6 @@ package com.antistatus.whatchado.service
 	import flash.filesystem.FileStream;
 	import flash.system.Capabilities;
 	
-	import mx.core.FlexGlobals;
-	import mx.managers.PopUpManager;
 	
 	[Event(name="configured", type="flash.events.DataEvent")]
 	public class ConfigurationManager extends EventDispatcher

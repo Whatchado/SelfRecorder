@@ -5,6 +5,7 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import com.antistatus.whatchado.event.ViewEvent;
 			import com.antistatus.whatchado.view.skin.VideoControlsSkin;
 			
 			import mx.events.FlexEvent;
@@ -22,6 +23,11 @@
 			protected function start(event:FlexEvent):void
 			{
 				videoScreen.connect();
+			}
+			
+			protected function uploadButtonClickHandler(event:MouseEvent):void
+			{
+				dispatchEvent(new ViewEvent(ViewEvent.CLICK));
 			}
 			
 		]]>
@@ -47,5 +53,6 @@
 		<component:VideoProgress bottom="113" left="0" right="0"/>
 		<component:VideoControls blendMode="invert" left="4" bottom="80" skinClass="com.antistatus.whatchado.view.skin.VideoControlsSkin"/>
 	</s:Group>
-		
+	<s:Button label="Deine Story Speichern" width="233" height="36" bottom="17" horizontalCenter="0" id="uploadButton" click="uploadButtonClickHandler(event)" styleName="uploadButton" buttonMode="true" useHandCursor="true"/>		
+	
 </s:Group>

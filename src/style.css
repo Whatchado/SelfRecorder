@@ -144,3 +144,7 @@ s|Button
 {
 	skin-class: ClassReference("com.antistatus.whatchado.view.skin.SettingsButtonSkin");
 }
+.uploadButton
+{
+	skin-class: ClassReference("com.antistatus.whatchado.view.skin.UploadButtonSkin");
+}

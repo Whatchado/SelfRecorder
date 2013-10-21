@@ -118,7 +118,7 @@ package com.antistatus.whatchado.service
 				}
 				else if(navigationType.type == "upload")
 				{
-					navButton.enabled = false;
+					navButton.enabled = true;
 					navButton.completed = false;
 					questionsButtons.push(navButton);					
 				}

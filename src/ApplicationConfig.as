@@ -17,6 +17,8 @@ package
 	import com.antistatus.whatchado.view.component.QuestionView;
 	import com.antistatus.whatchado.view.component.QuestionViewMediator;
 	import com.antistatus.whatchado.view.component.SelfRecorderMediator;
+	import com.antistatus.whatchado.view.component.UploadView;
+	import com.antistatus.whatchado.view.component.UploadViewMediator;
 	import com.antistatus.whatchado.view.component.VideoControls;
 	import com.antistatus.whatchado.view.component.VideoControlsMediator;
 	import com.antistatus.whatchado.view.component.VideoProgress;
@@ -72,6 +74,7 @@ package
 			mediatorMap.map(VideoRecorder).toMediator(VideoRecorderMediator);
 			mediatorMap.map(QuestionView).toMediator(QuestionViewMediator);
 			mediatorMap.map(SelfRecorder).toMediator(SelfRecorderMediator);
+			mediatorMap.map(UploadView).toMediator(UploadViewMediator);
 			
 			
 			commandMap.map(LifecycleEvent.POST_INITIALIZE, LifecycleEvent).toCommand(InitConfigCommand);
