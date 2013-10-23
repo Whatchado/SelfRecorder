@@ -23,6 +23,7 @@
 			protected function start(event:FlexEvent):void
 			{
 				videoScreen.connect();
+				
 			}
 			
 			protected function uploadButtonClickHandler(event:MouseEvent):void

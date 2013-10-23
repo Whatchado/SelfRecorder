@@ -262,7 +262,7 @@ package com.antistatus.whatchado.view
 				view.forwardButton.enabled = false;
 				
 				model.currentVideo = "playlist";
-				
+				dispatch(new SystemEvent(SystemEvent.PROCESS_VIDEOS));
 				dispatch(new VideoControlsEvent(VideoControlsEvent.START_VIDEO));
 			}
 		}

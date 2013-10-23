@@ -95,6 +95,8 @@ package com.antistatus.whatchado.view.component
 			var saStream:StreamVO;
 			if(model.currentVideo == "playlist")
 			{
+				return;// --
+				
 				playlist = [];
 				var index:int = 0;
 				for each (var recordName:String in model.selectedRecordings) 

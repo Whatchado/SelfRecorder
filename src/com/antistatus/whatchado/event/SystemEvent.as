@@ -54,6 +54,7 @@ package com.antistatus.whatchado.event
 		public static const RED5_ENDED:String = "red5Ended";
 		public static const QUESTION_FINISHED:String = "questionFinished";
 		public static const INIT_LOGGER:String = "initLogger";
+		public static const PROCESS_VIDEOS:String = "processVideos";
 		
 		
 		public var value:Number;

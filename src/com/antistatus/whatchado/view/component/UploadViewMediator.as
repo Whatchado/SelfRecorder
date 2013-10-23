@@ -2,8 +2,14 @@
 package com.antistatus.whatchado.view.component
 {
 	
+	import com.antistatus.whatchado.event.SystemEvent;
 	import com.antistatus.whatchado.event.ViewEvent;
 	import com.antistatus.whatchado.model.MainModel;
+	import com.antistatus.whatchado.model.vo.QuestionVO;
+	import com.antistatus.whatchado.model.vo.RecordedFileVO;
+	import com.antistatus.whatchado.model.vo.StreamVO;
+	import com.antistatus.whatchado.service.FFmpegManager;
+	import com.antistatus.whatchado.utilities.FileUtility;
 	import com.antistatus.whatchado.utilities.Trace;
 	
 	import flash.events.Event;
@@ -26,11 +32,29 @@ package com.antistatus.whatchado.view.component
 
 		[Inject]
 		public var view:UploadView;
+		
+		[Inject]
+		public var ffmpegManager:FFmpegManager;
 
 		override public function initialize():void
 		{
 			Trace.log(this, "initialized!");
 			addViewListener(ViewEvent.CLICK, uploadClickHandler);
+			addContextListener(SystemEvent.PROCESS_VIDEOS, startFFmpegHandler);
+		}
+		
+		private function startFFmpegHandler(event:SystemEvent):void
+		{
+			var playlist:Array = [];
+			var index:int = 0;
+			for each (var recordName:String in model.selectedRecordings) 
+			{
+				var record:String = "recordings/answer"+index+"/"+recordName;
+				playlist.push(new StreamVO("","",FileUtility.getFilePath(QuestionVO(model.questionsDataProvider[index]).insert),true));
+				playlist.push(new StreamVO("","",FileUtility.getFilePath(record),true, RecordedFileVO(model.recordedFiles[record]).startTime, RecordedFileVO(model.recordedFiles[record]).endTime));
+				index++;
+			}
+			ffmpegManager.processVideos(playlist);
 		}
 		
 		private function uploadClickHandler(event:ViewEvent):void

@@ -18,6 +18,18 @@ package com.antistatus.whatchado.utilities
 				return null;
 			}
 		}
+		public static function getFilePath(fileName:String):String
+		{
+			if(fileName)
+			{
+				var f:File = File.applicationStorageDirectory.resolvePath(fileName);
+				return f.nativePath;
+			}
+			else
+			{
+				return null;
+			}
+		}
 
 		public function FileUtility()
 		{

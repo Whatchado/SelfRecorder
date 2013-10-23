@@ -9,6 +9,7 @@ package
 	import com.antistatus.whatchado.model.MainModel;
 	import com.antistatus.whatchado.model.UserModel;
 	import com.antistatus.whatchado.service.ConfigDataService;
+	import com.antistatus.whatchado.service.FFmpegManager;
 	import com.antistatus.whatchado.service.Red5Manager;
 	import com.antistatus.whatchado.view.MainView;
 	import com.antistatus.whatchado.view.MainViewMediator;
@@ -60,6 +61,7 @@ package
 			injector.map(MainModel).asSingleton();
 			injector.map(ConfigDataService).asSingleton();
 			injector.map(Red5Manager).asSingleton();
+			injector.map(FFmpegManager).asSingleton();
 			
 			
 			

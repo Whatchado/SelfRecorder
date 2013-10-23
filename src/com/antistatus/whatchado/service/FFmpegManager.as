@@ -7,6 +7,7 @@ package com.antistatus.whatchado.service
 	import com.antistatus.whatchado.base.BaseActor;
 	import com.antistatus.whatchado.event.SystemEvent;
 	import com.antistatus.whatchado.model.MainModel;
+	import com.antistatus.whatchado.model.vo.StreamVO;
 	import com.antistatus.whatchado.utilities.Trace;
 	
 	import flash.desktop.NativeApplication;
@@ -21,7 +22,7 @@ package com.antistatus.whatchado.service
 
 	public class FFmpegManager extends BaseActor
 	{
-		private static const FFMPEG:String = "ffmpeg";
+		private static const FFMPEG:String = "ffmpeg/ffmpeg";
 
 		/**
 		 * Constructor
@@ -53,7 +54,7 @@ package com.antistatus.whatchado.service
 			Trace.log(this, log);
 		}
 
-		private function processVideos(playlist:Array):void
+		public function processVideos(playlist:Array):void
 		{
 			var ffmpeg:File = File.applicationDirectory;
 			var startupInfo:NativeProcessStartupInfo = new NativeProcessStartupInfo();
@@ -61,9 +62,22 @@ package com.antistatus.whatchado.service
 
 			var processArguments:Vector.<String> = new Vector.<String>();
 			
-			var args:String;
-
-			processArguments.push(args);
+			
+			for each (var videoSource:StreamVO in playlist) 
+			{
+				processArguments.push("-i");
+				processArguments.push(videoSource.path);
+			}
+			
+			processArguments.push("-b:v");
+			processArguments.push("4800k");
+			processArguments.push("-ar");
+			processArguments.push("44100");
+			processArguments.push("-ac");
+			processArguments.push("2");
+			processArguments.push("-f");
+			processArguments.push("flv");
+			processArguments.push("output.flv");
 
 
 			startupInfo.arguments = processArguments;
