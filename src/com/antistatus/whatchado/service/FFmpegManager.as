@@ -60,13 +60,13 @@ package com.antistatus.whatchado.service
 			var startupInfo:NativeProcessStartupInfo = new NativeProcessStartupInfo();
 			startupInfo.executable = ffmpeg.resolvePath(FFMPEG);
 
+			var outputPath:String = File.applicationStorageDirectory.resolvePath("output").nativePath;		
 			var processArguments:Vector.<String> = new Vector.<String>();
-			
 			
 			for each (var videoSource:StreamVO in playlist) 
 			{
 				processArguments.push("-i");
-				processArguments.push(videoSource.path);
+				processArguments.push(videoSource.streamName);
 			}
 			
 			processArguments.push("-b:v");
@@ -77,7 +77,8 @@ package com.antistatus.whatchado.service
 			processArguments.push("2");
 			processArguments.push("-f");
 			processArguments.push("flv");
-			processArguments.push("output.flv");
+			processArguments.push("-y");
+			processArguments.push(outputPath+"/output.flv");
 
 
 			startupInfo.arguments = processArguments;

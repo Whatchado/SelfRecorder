@@ -10,6 +10,7 @@ package com.antistatus.whatchado.view
 	import com.antistatus.whatchado.utilities.Trace;
 	import com.antistatus.whatchado.view.MainView;
 	
+	import flash.net.SharedObject;
 	import flash.utils.setTimeout;
 	
 	import flashx.textLayout.conversion.TextConverter;
@@ -45,6 +46,19 @@ package com.antistatus.whatchado.view
 			
 			view.menuButtonsDataProvider = model.menuButtonsDataProvider;
 			view.questionsButtonsDataProvider = model.questionsButtonsDataProvider;
+			
+			
+			
+			var selectedRecordingsStore:SharedObject = SharedObject.getLocal("selectedRecordings");
+			if(selectedRecordingsStore.data.recordings)
+			{
+				for (var i:int = 0; i <  selectedRecordingsStore.data.recordings.length; i++) 
+				{
+					model.selectedRecordings[i] = selectedRecordingsStore.data.recordings[i];
+					NavigationButtonVO(model.questionsButtonsDataProvider.getItemAt(i)).completed = true;						
+				}
+			}
+			
 			
 			setTimeout(switchInfoState, 2000);
 		}
